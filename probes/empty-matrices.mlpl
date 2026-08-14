@@ -1,0 +1,4 @@
+# Probe: zero-sized rank-2 shapes preserve their dimensions.
+no_rows : [row, feature] = reshape([], [0, 3])
+no_columns : [row, feature] = reshape([], [2, 0])
+ok({probe: "empty-matrices", no_rows: shape(no_rows), no_rows_labels: labels(no_rows), no_columns: shape(no_columns), no_columns_labels: labels(no_columns), transposed_no_rows: shape(transpose(no_rows))})

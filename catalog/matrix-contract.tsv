@@ -1,0 +1,5 @@
+lesson	input_shapes	output_shape	required_features	status
+LA07	matrix:[rows,columns]; vector:[columns]	vector:[rows]	take,shape,labels,matmul	probed
+LA08	left:[m,k]; right:[k,n]	product:[m,n]	take,dot,matmul	probed
+LA09	A:[m,k]; B:[k,n]; x:[n]	vector:[m]	matmul,transpose,labels	probed
+LA10	matrix:[2,2]	scalar	bounded-cell-extraction	probed

@@ -1,0 +1,4 @@
+# Probe expected to fail: [2,3] cannot multiply [2,2].
+left = reshape(range(6), [2, 3])
+right = reshape(range(4), [2, 2])
+ok(matmul(left, right))

@@ -1,0 +1,23 @@
+# Pure rank-2 matrix anatomy and checked extraction helpers.
+# loops: 0
+
+def u:is_matrix(value) { "Return one exactly when value has rank two."; eq(rank(value), 2) }
+def u:matrix_dimensions(matrix) { "Return named row and column counts for a rank-two matrix.";
+  if u:is_matrix(matrix) { dimensions = shape(matrix); ok({rows: take(dimensions, 0, 0), columns: take(dimensions, 0, 1)}) } else { err({kind: "matrix_rank", actual: rank(matrix), expected: 2}) }
+}
+def u:valid_matrix_index(index, upper_bound) { "Require a finite zero-based integer strictly below one dimension.";
+  (1 - lt(index, 0)) * lt(index, upper_bound) * eq(index, floor(index))
+}
+def u:matrix_row(matrix, row_index) { "Extract one row while preserving the remaining column-axis label.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  if u:valid_matrix_index(row_index, dimensions.rows) { ok(take(matrix, 0, row_index)) } else { err({kind: "row_index", index: row_index, rows: dimensions.rows}) }
+}
+def u:matrix_column(matrix, column_index) { "Extract one column while preserving the remaining row-axis label.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  if u:valid_matrix_index(column_index, dimensions.columns) { ok(take(matrix, 1, column_index)) } else { err({kind: "column_index", columns: dimensions.columns, index: column_index}) }
+}
+def u:matrix_cell(matrix, row_index, column_index) { "Extract one scalar cell after validating both matrix coordinates.";
+  row = u:matrix_row(matrix, row_index)?;
+  dimensions = u:matrix_dimensions(matrix)?;
+  if u:valid_matrix_index(column_index, dimensions.columns) { ok(take(row, 0, column_index)) } else { err({kind: "column_index", columns: dimensions.columns, index: column_index}) }
+}

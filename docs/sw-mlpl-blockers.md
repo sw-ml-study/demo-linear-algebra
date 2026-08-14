@@ -80,6 +80,17 @@ operations for bounded lessons. If doing so exposes missing indexing, slicing,
 or cell operations, record that specific measured obstruction rather than
 promoting the convenience function itself.
 
+Matrix extraction probes also found an imprecise native out-of-bounds `take`
+diagnostic (`shape mismatch: 2 vs 2 elements`). This is awkward, not blocking:
+`lib/matrices.mlpl` validates rank/integer bounds and returns structured row or
+column errors using ordinary MLPL. See `docs/matrix-capability-baseline.md`.
+
+The probes also show that a scalar extracted from a labeled matrix retains
+empty label metadata: numeric `eq` treats it as the same number, while
+structural `equal` distinguishes it from a positional scalar. This is semantic
+friction, not a current blocker; matrix lessons preserve and explain it rather
+than silently stripping provenance.
+
 ## Evidence template
 
 For each finding record: configured command and version; minimal source;

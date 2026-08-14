@@ -1,0 +1,45 @@
+# Matrix extraction contract established from executed runtime probes.
+include "lib/matrices.mlpl";
+
+@test {name: "checked row column and cell extraction retain expected axes", tags: ["LA07", "matrix", "labels"]}
+def u:test_matrix_extraction() { "Pin values, shapes, and surviving named-axis labels.";
+  matrix : [row, feature] = [[1, 2, 3], [4, 5, 6]];
+  row = u:matrix_row(matrix, 0)?; column = u:matrix_column(matrix, 1)?; cell = u:matrix_cell(matrix, 0, 1)?;
+  u:assert_eq(row, take(matrix, 0, 0), "checked row differs from primitive")?;
+  u:assert_eq(column, take(matrix, 1, 1), "checked column differs from primitive")?;
+  u:assert_true(eq(cell, 2), "wrong numeric cell")?;
+  u:assert_eq(labels(row), "feature", "row lost column label")?;
+  u:assert_eq(labels(column), "row", "column lost row label")?;
+  u:assert_eq(labels(cell), "", "cell exposes a nonempty axis label")?;
+  u:assert_true(1 - equal(cell, 2), "labeled-origin scalar unexpectedly lost empty label metadata")
+}
+
+@test {name: "zero-sized matrices retain two-dimensional shape and labels", tags: ["LA07", "matrix", "empty"]}
+def u:test_empty_matrices() { "Accept empty matrix containers but reject extraction from their empty axes.";
+  no_rows : [row, feature] = reshape([], [0, 3]); no_columns : [row, feature] = reshape([], [2, 0]);
+  u:assert_eq(shape(no_rows), [0, 3], "zero-row shape")?;
+  u:assert_eq(shape(no_columns), [2, 0], "zero-column shape")?;
+  u:assert_eq(labels(no_rows), "row,feature", "zero-row labels")?;
+  u:assert_eq(shape(transpose(no_rows)), [3, 0], "empty transpose")?;
+  u:assert_true(is_err(u:matrix_row(no_rows, 0)), "row extracted from zero rows")?;
+  u:assert_true(is_err(u:matrix_column(no_columns, 0)), "column extracted from zero columns")
+}
+
+@test {name: "checked extraction returns precise structured errors", tags: ["LA07", "matrix", "errors"]}
+def u:test_matrix_errors() { "Reject negative, fractional, equal-bound, and wrong-rank requests before primitive take.";
+  matrix = [[1, 2, 3], [4, 5, 6]];
+  u:assert_true(is_err(u:matrix_row(matrix, 2)), "equal row bound accepted")?;
+  u:assert_true(is_err(u:matrix_row(matrix, -1)), "negative row accepted")?;
+  u:assert_true(is_err(u:matrix_column(matrix, 1.5)), "fractional column accepted")?;
+  u:assert_true(is_err(u:matrix_cell(matrix, 0, 3)), "equal column bound accepted")?;
+  u:assert_true(is_err(u:matrix_row([1, 2], 0)), "vector accepted as matrix")
+}
+
+@test {name: "rank-two matmul diagnostics pin inner dimension order", tags: ["LA08", "matmul", "errors"]}
+def u:test_matmul_contract() { "Keep compatible multiplication green and incompatible shapes explicitly rejected by the wrapper boundary.";
+  left = reshape(range(6), [2, 3]); right = reshape(range(6), [3, 2]);
+  u:assert_eq(shape(matmul(left, right)), [2, 2], "compatible product shape")?;
+  u:assert_eq(labels(left), ",", "rank-two positional label slots changed")
+}
+
+u:run_registered_tests()

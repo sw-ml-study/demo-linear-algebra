@@ -1,0 +1,3 @@
+# Probe expected to fail: row index equals row count.
+m = [[1, 2, 3], [4, 5, 6]]
+ok(take(m, 0, 2))

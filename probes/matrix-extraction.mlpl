@@ -1,0 +1,6 @@
+# Probe: rank-2 row, column, cell, and label extraction.
+m : [row, feature] = [[1, 2, 3], [4, 5, 6]]
+first_row = take(m, 0, 0)
+second_column = take(m, 1, 1)
+cell = take(second_column, 0, 0)
+ok({probe: "matrix-extraction", row: first_row, row_shape: shape(first_row), row_labels: labels(first_row), column: second_column, column_shape: shape(second_column), column_labels: labels(second_column), cell: cell, cell_shape: shape(cell), cell_labels: labels(cell)})

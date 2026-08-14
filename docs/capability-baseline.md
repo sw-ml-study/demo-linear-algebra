@@ -27,6 +27,10 @@ configured binary, not timeless language claims.
 | rank-3 batched matmul | blocked | compatible operands fail with `index has 3 components but array has rank 2` |
 | browser narration syntax | supported in script execution | framed comments, bare `;`, trailing comments, and standalone statements execute |
 
+The matrix-specific continuation—including row/column/cell extraction,
+zero-sized dimensions, surviving labels, and diagnostic evidence—is recorded
+in `docs/matrix-capability-baseline.md`.
+
 The executable probes live under `probes/`; `scripts/run-probes` reads expected
 status from `catalog/probes.tsv`. Expected failure is intentional only for the
 verified rank-3 matmul blocker. If it begins succeeding, the gate fails until

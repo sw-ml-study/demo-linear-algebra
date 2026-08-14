@@ -1,6 +1,6 @@
 number = 1
 slug = "matrix-anatomy-and-extraction-probes"
-status = "pending"
+status = "in-progress"
 description = "Verify current row, column, and cell extraction; empty dimensions; label rete..."
 role = "production"
 context_files = []

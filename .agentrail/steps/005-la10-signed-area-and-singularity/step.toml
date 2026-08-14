@@ -1,8 +1,9 @@
 number = 5
 slug = "la10-signed-area-and-singularity"
-status = "in-progress"
+status = "completed"
 description = "Implement LA10 using bounded 2D determinant lesson code. Visualize signed ori..."
 role = "production"
 context_files = []
 created_at = "2026-08-14T14:43:14"
-commits = []
+completed_at = "2026-08-14T15:54:27"
+commits = ["6432333ecaa13af6165d3e3161b0935b05dabf55"]

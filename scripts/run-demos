@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+mlpl=$($repo_root/scripts/select-mlpl)
+mkdir -p "$repo_root/out"
+found=0
+for demo in "$repo_root"/demos/[0-9][0-9]-*/*.mlpl; do
+  [ -f "$demo" ] || continue
+  found=1
+  printf 'demo: %s\n' "${demo#$repo_root/}"
+  (cd "$repo_root" && "$mlpl" --source-dir "$repo_root" "$demo")
+done
+[ "$found" -eq 1 ] || { echo "no CLI demos found" >&2; exit 1; }

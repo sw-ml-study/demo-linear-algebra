@@ -1,0 +1,23 @@
+# Lesson LA01 -- vectors are feature arrays.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/vectors.mlpl";
+include "../../lib/vector_render.mlpl";
+
+print("WHAT THIS SHOWS -- A vector is a rank-one feature array. Addition combines matching components; scaling changes every component by one scalar.")
+print("PREREQUISITES -- scalar arithmetic and rank-one arrays. SHAPES -- x,y:[3], x+y:[3].")
+x = [2, 1, -1]
+y = [1, 2, 4]
+sum_xy = u:vector_add(x, y)?
+scaled_x = u:vector_scale(2, x)?
+zero = u:zero_vector_like(x)?
+disp([x, y, sum_xy, scaled_x, zero])
+written = write_text("out/LA01-vector-laws.svg", u:vector_laws_svg())
+commutes = equal(u:vector_add(x, y)?, u:vector_add(y, x)?)
+identity = equal(u:vector_add(x, zero)?, x)
+print("HOW TO READ THE RESULT -- Rows are x, y, x+y, 2*x, and the zero vector. In the SVG, head-to-tail x then y reaches the pink x+y endpoint.")
+print("THE POINT -- Feature vectors combine componentwise, and scaling acts uniformly. These fixtures demonstrate the laws on these arrays; they do not prove every vector-space axiom.")
+if commutes * identity * equal(sum_xy, [3, 3, 3]) * equal(scaled_x, [4, 2, -2]) * is_ok(written) {
+  ok({lesson: "LA01", checks: 5, artifact: "out/LA01-vector-laws.svg"})
+} else { err("LA01 vector invariant failed") }

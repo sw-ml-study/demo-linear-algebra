@@ -20,3 +20,15 @@ just check
 Tests use native mlplunit discovery through `mlplunit.conf`. Set absolute
 `MLPL` or `MLPLUNIT` paths to override the documented adjacent development
 tools without installing over stable binaries.
+
+## Lesson LA01 — vectors are feature arrays
+
+![Vector addition and scaling: blue x followed by green y reaches pink x plus y; purple twice x retains direction and doubles its components](assets/previews/LA01-vector-laws.svg)
+
+The rows in the CLI output make componentwise addition authoritative. The
+diagram makes the same relationship spatial: placing `y` at the head of `x`
+lands at `x+y`, while `2*x` preserves direction and doubles each component.
+
+- [CLI lesson](demos/01-vectors/vector_laws.mlpl)
+- [Standalone web lesson](demos/web/vector_laws.mlpl)
+- [Native mlplunit coverage](tests/test_vectors.mlpl)

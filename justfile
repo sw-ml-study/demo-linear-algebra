@@ -9,10 +9,14 @@ tests *args:
 probes:
     ./scripts/run-probes
 
+demos:
+    ./scripts/run-demos
+
 web:
     ./scripts/build-web-demos
 
 audit:
     ./scripts/check-structure
+    ./scripts/check-assets
 
-check: probes tests web audit
+check: probes demos tests web audit

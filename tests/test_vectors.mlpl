@@ -1,0 +1,40 @@
+# LA01 vector-array laws and boundary behavior.
+include "lib/vectors.mlpl";
+
+@test {name: "vector addition and scaling produce componentwise results", tags: ["LA01", "vectors"]}
+def u:test_vector_operations() { "Check the defining componentwise operations.";
+  u:assert_eq(u:vector_add([2, 1, -1], [1, 2, 4])?, [3, 3, 3], "componentwise sum")?;
+  u:assert_eq(u:vector_scale(2, [2, 1, -1])?, [4, 2, -2], "uniform scale")?;
+  u:assert_eq(u:vector_scale(0, [2, 1, -1])?, [0, 0, 0], "zero scale")
+}
+
+@test {name: "finite fixtures obey vector addition laws", tags: ["LA01", "laws"]}
+def u:test_vector_laws() { "Check commutativity, associativity, identity, and distributivity on explicit fixtures.";
+  x = [2, 1, -1]; y = [1, 2, 4]; z = [-3, 5, 2]; zero = u:zero_vector_like(x)?;
+  u:assert_eq(u:vector_add(x, y)?, u:vector_add(y, x)?, "commutativity")?;
+  u:assert_eq(u:vector_add(u:vector_add(x, y)?, z)?, u:vector_add(x, u:vector_add(y, z)?)?, "associativity")?;
+  u:assert_eq(u:vector_add(x, zero)?, x, "additive identity")?;
+  u:assert_eq(u:vector_scale(3, u:vector_add(x, y)?)?, u:vector_add(u:vector_scale(3, x)?, u:vector_scale(3, y)?)?, "scale distributes over addition")
+}
+
+@test {name: "a perturbed sum is a visible counterexample", tags: ["LA01", "counterexample"]}
+def u:test_wrong_sum_witness() { "Ensure a single wrong component is rejected rather than hidden by aggregate output.";
+  actual = u:vector_add([2, 1, -1], [1, 2, 4])?;
+  u:assert_true(1 - equal(actual, [3, 3, 4]), "perturbed third component was accepted")
+}
+
+@test {name: "vector operations cover empty and singleton shapes", tags: ["LA01", "edges"]}
+def u:test_vector_edges() { "Pin the additive laws at rank-one boundary sizes.";
+  u:assert_eq(u:vector_add([], [])?, [], "empty vectors")?;
+  u:assert_eq(u:vector_add([4], [-4])?, [0], "singleton inverse")?;
+  u:assert_eq(u:zero_vector_like([])?, [], "empty zero vector")
+}
+
+@test {name: "vector operations reject mismatched dimensions and ranks", tags: ["LA01", "errors"]}
+def u:test_vector_shape_errors() { "Reject mismatched feature counts and non-vector inputs with Results.";
+  u:assert_true(is_err(u:vector_add([1, 2], [1, 2, 3])), "dimension mismatch accepted")?;
+  u:assert_true(is_err(u:vector_add([[1, 2]], [[3, 4]])), "matrix addition accepted as vector addition")?;
+  u:assert_true(is_err(u:vector_scale(2, [[1, 2]])), "matrix scaling accepted as vector scaling")
+}
+
+u:run_registered_tests()

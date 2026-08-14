@@ -5,7 +5,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 
 | ID | Lesson | Prerequisites | Learner can execute and explain | ML connection |
 |---|---|---|---|---|
-| LA01 | Vectors are feature arrays | scalar arithmetic | shape, add, and scale rank-1 arrays | one example as a feature vector |
+| LA01 | Vectors are feature arrays **(runnable)** | scalar arithmetic | shape, add, and scale rank-1 arrays | one example as a feature vector |
 | LA02 | Dot product measures alignment | LA01 | element products reduce to one alignment score | logits and embedding scores |
 | LA03 | Length, distance, and normalization | LA02, square root | compute norms and verify unit length within tolerance | normalized representations |
 | LA04 | Cosine similarity | LA03 | compare direction independently of magnitude, including zero-vector policy | semantic retrieval |

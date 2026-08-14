@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+generated="$repo_root/out/LA01-vector-laws.svg"
+committed="$repo_root/assets/previews/LA01-vector-laws.svg"
+[ -f "$generated" ] || { echo "missing generated LA01 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA01 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA01 preview is stale; regenerate it from the demo" >&2; exit 1; }
+echo "assets: fresh"

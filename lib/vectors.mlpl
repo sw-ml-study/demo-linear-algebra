@@ -1,0 +1,16 @@
+# Pure rank-1 vector operations for the introductory curriculum.
+# loops: 0
+
+def u:is_vector(value) { "Return one exactly when value has rank one."; eq(rank(value), 1) }
+def u:same_vector_shape(left, right) { "Check that two rank-one arrays have the same shape.";
+  u:is_vector(left) * u:is_vector(right) * equal(shape(left), shape(right))
+}
+def u:vector_add(left, right) { "Add corresponding vector components or return a shape error.";
+  if u:same_vector_shape(left, right) { ok(left + right) } else { err({kind: "vector_shape", left: shape(left), right: shape(right)}) }
+}
+def u:vector_scale(scalar, vector) { "Scale every component of a rank-one vector.";
+  if u:is_vector(vector) { ok(scalar * vector) } else { err({kind: "vector_rank", actual: rank(vector), expected: 1}) }
+}
+def u:zero_vector_like(vector) { "Construct the additive identity with the vector's shape.";
+  if u:is_vector(vector) { ok(fill(shape(vector), 0)) } else { err({kind: "vector_rank", actual: rank(vector), expected: 1}) }
+}

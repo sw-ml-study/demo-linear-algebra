@@ -1,0 +1,29 @@
+# Web Lesson LA05 -- linear combinations create span.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA01 vector addition and scaling.
+# * SHAPES -- basis vectors and results:[2]; coefficients:scalars.
+# * EXECUTABLE CLAIM -- 2e1+3e2=[2,3]; dependent b,2b have non-unique coordinates.
+# * NUMERICAL CONTRACT -- integer fixtures use exact equality.
+# * BOUNDARY -- determinant zero is used only as a 2D dependence witness.
+# * WHAT THIS SHOWS -- independent directions fill a plane; dependent ones stay on a line.
+# **************************************************************************
+;
+e1 = [1, 0]  # first independent direction
+e2 = [0, 1]  # second independent direction
+target = 2 * e1 + 3 * e2  # one point in their span
+b = [1, 2]  # dependent direction one
+twice_b = [2, 4]  # no new direction
+first_coordinates = 4 * b + 0 * twice_b  # reaches [4,8]
+second_coordinates = 2 * b + 1 * twice_b  # different coefficients, same target
+disp([e1, e2, target, b, twice_b, first_coordinates])  # visible numeric witness
+equal(first_coordinates, second_coordinates)  # one exposes non-unique coordinates
+# THE VISUAL -- a grid for independent directions and a line for dependent ones.
+def u:span_visual() { "Render the LA05 independent and dependent span witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 320\" role=\"img\"><title>Linear combinations and span</title><desc>Independent basis arrows cover grid points; dependent arrows and their targets stay on one line.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.a{stroke:#7aa2f7;stroke-width:5}.b{stroke:#9ece6a;stroke-width:5}.d{stroke:#e0af68;stroke-width:4}.t{fill:#f7768e}</style><rect width=\"800\" height=\"320\" fill=\"#1a1b26\"/><rect class=\"p\" x=\"20\" y=\"45\" width=\"370\" height=\"250\"/><rect class=\"p\" x=\"410\" y=\"45\" width=\"370\" height=\"250\"/><text x=\"35\" y=\"30\">INDEPENDENT: plane</text><path class=\"a\" d=\"M100 240H310\"/><path class=\"b\" d=\"M100 240V80\"/><circle class=\"t\" cx=\"310\" cy=\"80\" r=\"8\"/><text x=\"170\" y=\"270\">2e1+3e2=[2,3]</text><text x=\"425\" y=\"30\">DEPENDENT: line</text><path class=\"d\" d=\"M440 270L750 65\"/><path class=\"a\" d=\"M470 250L580 177\"/><path class=\"b\" d=\"M470 250L690 104\"/><circle class=\"t\" cx=\"690\" cy=\"104\" r=\"8\"/><text x=\"430\" y=\"285\">det=0; two coefficient pairs reach [4,8]</text></svg>" }  # fixed checked fixture
+span_visual = u:span_visual()  # bind once
+span_visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- two directions form a grid; collinear arrows do not.
+# * THE POINT -- span is the set of all available linear combinations.
+# **************************************************************************

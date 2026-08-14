@@ -1,0 +1,47 @@
+# LA05-LA06 linear combinations, dependence, and projection.
+include "lib/numerics.mlpl";
+include "lib/vectors.mlpl";
+
+@test {name: "independent basis combinations reach expected 2D targets", tags: ["LA05", "span"]}
+def u:test_independent_combinations() { "Check standard-basis coordinates and signed combinations.";
+  u:assert_eq(u:linear_combination2(2, [1, 0], 3, [0, 1])?, [2, 3], "standard basis target")?;
+  u:assert_eq(u:linear_combination2(-1, [1, 0], 4, [0, 1])?, [-1, 4], "signed target")?;
+  u:assert_eq(u:basis_determinant2([1, 0], [0, 1])?, 1, "independence witness")
+}
+
+@test {name: "dependent basis has a concrete non-unique coefficient witness", tags: ["LA05", "dependence", "counterexample"]}
+def u:test_dependent_witness() { "Show two coefficient pairs reaching one target when determinant is zero.";
+  b = [1, 2]; twice = [2, 4];
+  first = u:linear_combination2(4, b, 0, twice)?; second = u:linear_combination2(2, b, 1, twice)?;
+  u:assert_eq(u:basis_determinant2(b, twice)?, 0, "dependent determinant")?;
+  u:assert_eq(first, [4, 8], "first coefficients")?;
+  u:assert_eq(second, first, "non-unique coefficients did not meet")
+}
+
+@test {name: "projection reconstructs the vector with orthogonal residual", tags: ["LA06", "projection"]}
+def u:test_projection_decomposition() { "Check coefficient, shadow, residual, reconstruction, and orthogonality.";
+  tolerance = 0.000000001; v = [3, 1]; b = [1, 1]; parts = u:project_onto(v, b)?;
+  u:assert_eq(u:approx_equal(parts.coefficient, 2, tolerance)?, 1, "coefficient")?;
+  u:assert_eq(u:approx_equal(parts.projection, [2, 2], tolerance)?, 1, "projection")?;
+  u:assert_eq(u:approx_equal(parts.residual, [1, -1], tolerance)?, 1, "residual")?;
+  u:assert_eq(u:approx_equal(parts.projection + parts.residual, v, tolerance)?, 1, "reconstruction")?;
+  u:assert_eq(u:approx_equal(u:vector_dot(parts.residual, b)?, 0, tolerance)?, 1, "orthogonality")
+}
+
+@test {name: "projection of an in-span vector has zero residual", tags: ["LA06", "edges"]}
+def u:test_in_span_projection() { "Pin the exact case where a vector already lies in the target span.";
+  parts = u:project_onto([6, 3], [2, 1])?;
+  u:assert_eq(parts.coefficient, 3, "in-span coefficient")?;
+  u:assert_eq(parts.projection, [6, 3], "in-span projection")?;
+  u:assert_eq(parts.residual, [0, 0], "in-span residual")
+}
+
+@test {name: "span and projection reject invalid shapes and zero direction", tags: ["LA05", "LA06", "errors"]}
+def u:test_span_projection_errors() { "Reject mismatched vectors, non-2D determinant fixtures, and a zero projection denominator.";
+  u:assert_true(is_err(u:linear_combination2(1, [1], 1, [1, 2])), "combination mismatch accepted")?;
+  u:assert_true(is_err(u:basis_determinant2([1, 0, 0], [0, 1, 0])), "3D determinant accepted as 2D witness")?;
+  u:assert_true(is_err(u:project_onto([3, 1], [0, 0])), "zero projection direction accepted")?;
+  u:assert_true(is_err(u:project_onto([3], [1, 1])), "projection mismatch accepted")
+}
+
+u:run_registered_tests()

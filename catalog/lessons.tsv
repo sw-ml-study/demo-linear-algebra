@@ -3,5 +3,5 @@ LA01	Vectors are feature arrays	runnable	demos/01-vectors/vector_laws.mlpl	demos
 LA02	Dot product measures alignment	runnable	demos/02-dot-product/alignment.mlpl	demos/web/dot_alignment.mlpl
 LA03	Length distance and normalization	runnable	demos/03-norm-distance/normalize.mlpl	demos/web/norm_distance.mlpl
 LA04	Cosine similarity	runnable	demos/04-cosine-similarity/retrieval.mlpl	demos/web/cosine_retrieval.mlpl
-LA05	Linear combinations and span	planned	-	-
-LA06	Orthogonality and projection	planned	-	-
+LA05	Linear combinations and span	runnable	demos/05-span/combinations.mlpl	demos/web/span.mlpl
+LA06	Orthogonality and projection	runnable	demos/06-projection/shadow.mlpl	demos/web/projection.mlpl

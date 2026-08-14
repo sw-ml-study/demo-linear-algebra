@@ -1,0 +1,22 @@
+# Lesson LA06 -- projection separates a shadow and orthogonal residual.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/numerics.mlpl";
+include "../../lib/vectors.mlpl";
+include "../../lib/span_projection_render.mlpl";
+
+tolerance = 0.000000001
+print("WHAT THIS SHOWS -- Projection chooses the multiple of a direction whose leftover residual is perpendicular to that direction.")
+print("PREREQUISITES -- LA02 dot and LA03 norm. SHAPES -- v,b,projection,residual:[2]; coefficient:scalar.")
+v = [3, 1]
+b = [1, 1]
+parts = u:project_onto(v, b)?
+reconstructed = parts.projection + parts.residual
+residual_dot = u:vector_dot(parts.residual, b)?
+disp([v, b, parts.projection, parts.residual, reconstructed])
+written = write_text("out/LA06-projection.svg", u:projection_svg())
+print("NUMERICAL CONTRACT -- reconstruction and residual orthogonality use inclusive absolute tolerance 1e-9, although this fixture is exact.")
+print("HOW TO READ THE RESULT -- Green is v's shadow on b. Pink completes the head-to-tail path back to blue v, and the right-angle marker corresponds to residual dot b = 0.")
+print("THE POINT -- v decomposes into a component in span(b) plus an orthogonal residual. A zero direction has no projection denominator and returns Err(zero_direction).")
+if (u:approx_equal(reconstructed, v, tolerance)?) * (u:approx_equal(residual_dot, 0, tolerance)?) * is_err(u:project_onto(v, [0, 0])) * is_ok(written) { ok({lesson: "LA06", coefficient: parts.coefficient, artifact: "out/LA06-projection.svg"}) } else { err("LA06 projection invariant failed") }

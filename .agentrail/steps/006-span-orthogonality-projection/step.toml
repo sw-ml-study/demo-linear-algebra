@@ -1,6 +1,6 @@
 number = 6
 slug = "span-orthogonality-projection"
-status = "pending"
+status = "in-progress"
 description = "Implement LA05 and LA06 with linear combinations, dependent-basis and zero-de..."
 role = "production"
 context_files = []

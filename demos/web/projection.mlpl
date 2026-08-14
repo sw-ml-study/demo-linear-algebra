@@ -1,0 +1,27 @@
+# Web Lesson LA06 -- projection splits a shadow and orthogonal residual.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA02 dot products and LA03 norms.
+# * SHAPES -- v,b,projection,residual:[2]; coefficient:scalar.
+# * EXECUTABLE CLAIM -- v=projection+residual and dot(residual,b)=0.
+# * NUMERICAL CONTRACT -- this integer fixture is exact; course tolerance is 1e-9.
+# * BOUNDARY -- projecting onto zero is undefined because dot(0,0)=0.
+# * WHAT THIS SHOWS -- a vector becomes a shadow in span(b) plus perpendicular leftover.
+# **************************************************************************
+;
+v = [3, 1]  # vector to decompose
+b = [1, 1]  # nonzero target direction
+coefficient = dot(v, b) / dot(b, b)  # 4/2=2
+projection = coefficient * b  # [2,2], the shadow in span(b)
+residual = v - projection  # [1,-1], what the shadow misses
+disp([v, b, projection, residual, projection + residual])  # decomposition evidence
+equal(projection + residual, v) * eq(dot(residual, b), 0)  # reconstruction and right angle
+# THE VISUAL -- green shadow plus pink perpendicular residual reconstruct blue v.
+def u:projection_visual() { "Render the LA06 shadow and orthogonal-residual witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 340\" role=\"img\"><title>Orthogonal projection</title><desc>Vector v equals its green projection plus a pink residual perpendicular to direction b.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.g{stroke:#e0af68;stroke-width:3;stroke-dasharray:8 6}.v{fill:none;stroke-width:6}.o{stroke:#7aa2f7}.s{stroke:#9ece6a}.r{stroke:#f7768e}.q{fill:none;stroke:#c0caf5;stroke-width:2}</style><rect width=\"800\" height=\"340\" fill=\"#1a1b26\"/><rect class=\"p\" x=\"20\" y=\"45\" width=\"760\" height=\"270\"/><text x=\"30\" y=\"30\">v=[3,1] = [2,2] + [1,-1]</text><path class=\"g\" d=\"M70 290L620 55\"/><path class=\"v o\" d=\"M120 260L650 170\"/><path class=\"v s\" d=\"M120 260L470 110\"/><path class=\"v r\" d=\"M470 110L650 170\"/><path class=\"q\" d=\"M452 118L470 137L488 129\"/><text x=\"260\" y=\"185\">projection</text><text x=\"525\" y=\"105\">residual</text><text x=\"400\" y=\"300\" text-anchor=\"middle\">dot(residual,b)=0; reconstruction exact</text></svg>" }  # fixed checked fixture
+projection_visual = u:projection_visual()  # bind once
+projection_visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- head-to-tail shadow and residual finish at v.
+# * THE POINT -- projection is the in-span part; residual is orthogonal evidence.
+# **************************************************************************

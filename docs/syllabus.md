@@ -9,8 +9,8 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA02 | Dot product measures alignment **(runnable)** | LA01 | element products reduce to one alignment score | logits and embedding scores |
 | LA03 | Length, distance, and normalization **(runnable)** | LA02, square root | compute norms and verify unit length within tolerance | normalized representations |
 | LA04 | Cosine similarity **(runnable)** | LA03 | compare direction independently of magnitude, including zero-vector policy | semantic retrieval |
-| LA05 | Linear combinations and span | LA01 | generate combinations and distinguish inside/outside bounded examples | feature synthesis |
-| LA06 | Orthogonality and projection | LA02-LA03 | decompose a vector into projection plus orthogonal residual | dimensionality reduction |
+| LA05 | Linear combinations and span **(runnable)** | LA01 | generate combinations and distinguish independent/dependent bounded examples | feature synthesis |
+| LA06 | Orthogonality and projection **(runnable)** | LA02-LA03 | decompose a vector into projection plus orthogonal residual | dimensionality reduction |
 | LA07 | Matrices store transformations | LA01 | read rows/columns and map basis vectors | weights as transformations |
 | LA08 | Matrix multiplication is composed dot products | LA02, LA07 | trace row-column products and validate shapes | dense layers |
 | LA09 | Composition and transpose | LA08 | verify `A(Bx)=(AB)x` and transpose identities | chained layers and Q/K scores |

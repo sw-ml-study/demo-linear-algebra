@@ -41,3 +41,15 @@ def u:rank_three_by_cosine(query, first, second, third) { "Score and rank three 
   scores = [u:cosine_similarity(query, first)?, u:cosine_similarity(query, second)?, u:cosine_similarity(query, third)?];
   ok({scores: scores, order: grade_down(scores)})
 }
+def u:linear_combination2(first_scale, first, second_scale, second) { "Combine two same-shaped vectors with two scalar coefficients.";
+  if u:same_vector_shape(first, second) { ok(first_scale * first + second_scale * second) } else { err({kind: "vector_shape", first: shape(first), second: shape(second)}) }
+}
+def u:basis_determinant2(first, second) { "Compute the signed 2D basis area used to detect dependent directions.";
+  if u:same_vector_shape(first, second) * equal(shape(first), [2]) { ok(take(first, 0, 0) * take(second, 0, 1) - take(first, 0, 1) * take(second, 0, 0)) } else { err({kind: "basis_shape", expected: [2], first: shape(first), second: shape(second)}) }
+}
+def u:project_onto(vector, direction) { "Decompose a vector into its projection onto a nonzero direction and an orthogonal residual.";
+  if u:same_vector_shape(vector, direction) {
+    denominator = u:vector_dot(direction, direction)?;
+    if eq(denominator, 0) { err({kind: "zero_direction", message: "projection needs a nonzero direction"}) } else { coefficient = (u:vector_dot(vector, direction)?) / denominator; projection = coefficient * direction; ok({coefficient: coefficient, projection: projection, residual: vector - projection}) }
+  } else { err({kind: "vector_shape", vector: shape(vector), direction: shape(direction)}) }
+}

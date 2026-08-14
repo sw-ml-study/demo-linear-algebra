@@ -21,4 +21,14 @@ committed="$repo_root/assets/previews/LA04-cosine-retrieval.svg"
 [ -f "$generated" ] || { echo "missing generated LA04 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA04 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA04 preview is stale; regenerate it from the demo" >&2; exit 1; }
+generated="$repo_root/out/LA05-span.svg"
+committed="$repo_root/assets/previews/LA05-span.svg"
+[ -f "$generated" ] || { echo "missing generated LA05 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA05 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA05 preview is stale" >&2; exit 1; }
+generated="$repo_root/out/LA06-projection.svg"
+committed="$repo_root/assets/previews/LA06-projection.svg"
+[ -f "$generated" ] || { echo "missing generated LA06 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA06 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA06 preview is stale" >&2; exit 1; }
 echo "assets: fresh"

@@ -70,3 +70,18 @@ candidates.
 - [CLI lesson](demos/04-cosine-similarity/retrieval.mlpl)
 - [Standalone web lesson](demos/web/cosine_retrieval.mlpl)
 - [Native mlplunit coverage](tests/test_cosine_similarity.mlpl)
+
+## Lessons LA05–LA06 — span and projection
+
+![Independent basis directions covering a plane beside dependent directions confined to a line](assets/previews/LA05-span.svg)
+
+![A vector reconstructed from its shadow on a direction and a perpendicular residual](assets/previews/LA06-projection.svg)
+
+LA05 contrasts two independent directions with a dependent pair whose
+determinant is zero and whose coordinates are non-unique. LA06 turns that span
+into a decomposition: the projection lies in `span(b)`, the residual is
+orthogonal to `b`, and the two reconstruct the original vector.
+
+- [LA05 CLI](demos/05-span/combinations.mlpl) and [web](demos/web/span.mlpl)
+- [LA06 CLI](demos/06-projection/shadow.mlpl) and [web](demos/web/projection.mlpl)
+- [Native mlplunit coverage](tests/test_span_projection.mlpl)

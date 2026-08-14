@@ -1,0 +1,22 @@
+# Lesson LA05 -- linear combinations create span.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/vectors.mlpl";
+include "../../lib/span_projection_render.mlpl";
+
+print("WHAT THIS SHOWS -- Coefficients scale and add basis vectors. Independent 2D directions cover a plane; dependent directions remain on one line.")
+print("PREREQUISITES -- LA01 addition/scaling. SHAPES -- basis and result vectors:[2], coefficients:scalars.")
+e1 = [1, 0]
+e2 = [0, 1]
+target = u:linear_combination2(2, e1, 3, e2)?
+b = [1, 2]
+twice_b = [2, 4]
+dependent_first = u:linear_combination2(4, b, 0, twice_b)?
+dependent_second = u:linear_combination2(2, b, 1, twice_b)?
+determinants = [u:basis_determinant2(e1, e2)?, u:basis_determinant2(b, twice_b)?]
+disp([e1, e2, target, b, twice_b, dependent_first])
+written = write_text("out/LA05-span.svg", u:span_svg())
+print("HOW TO READ THE RESULT -- The grid needs two independent directions. On the right, both basis arrows lie on one line and two coefficient pairs reach [4,8].")
+print("THE POINT -- Span is every linear combination available from chosen directions. determinant zero is a concrete 2D dependence witness; these fixtures do not characterize arbitrary dimensions.")
+if equal(target, [2, 3]) * equal(dependent_first, dependent_second) * equal(determinants, [1, 0]) * is_ok(written) { ok({lesson: "LA05", artifact: "out/LA05-span.svg"}) } else { err("LA05 span invariant failed") }

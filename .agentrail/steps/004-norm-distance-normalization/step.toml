@@ -1,8 +1,9 @@
 number = 4
 slug = "norm-distance-normalization"
-status = "in-progress"
+status = "completed"
 description = "Implement LA03 with a shared approximate-equality contract, documented tolera..."
 role = "production"
 context_files = []
 created_at = "2026-08-14T12:30:42"
-commits = []
+completed_at = "2026-08-14T12:53:35"
+commits = ["f12e61d458867c4f897850132a6013f45660bc1c"]

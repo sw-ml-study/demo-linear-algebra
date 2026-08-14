@@ -1,0 +1,1 @@
+Implement LA02 from elementwise products and reduction, use the dot builtin as an independent oracle, visualize aligned, orthogonal, and opposed vectors plus row-column accumulation, test boundary cases, and state exactly what the finite fixtures establish.

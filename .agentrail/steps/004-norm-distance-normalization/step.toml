@@ -1,0 +1,8 @@
+number = 4
+slug = "norm-distance-normalization"
+status = "pending"
+description = "Implement LA03 with a shared approximate-equality contract, documented tolera..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T12:30:42"
+commits = []

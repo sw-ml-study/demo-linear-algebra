@@ -1,0 +1,8 @@
+number = 5
+slug = "cosine-embedding-similarity"
+status = "pending"
+description = "Implement LA04 with deterministic small embedding fixtures, golden cosine sco..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T12:30:42"
+commits = []

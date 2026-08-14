@@ -1,0 +1,1 @@
+Implement syllabus lesson LA01 with whole-array vector addition and scaling, law and counterexample tests, dimension-mismatch plus zero/singleton cases, CLI narration, catalog/syllabus updates, and the first standalone web visual following the required prolog and epilog anatomy.

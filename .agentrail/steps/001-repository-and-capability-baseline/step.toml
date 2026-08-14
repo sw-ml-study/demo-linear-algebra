@@ -1,0 +1,8 @@
+number = 1
+slug = "repository-and-capability-baseline"
+status = "pending"
+description = "Establish thin just/script entry points, native mlplunit discovery and shared..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T12:30:41"
+commits = []

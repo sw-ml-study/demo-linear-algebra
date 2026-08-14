@@ -1,0 +1,1 @@
+Run the complete repository gate; audit lesson names, comments, prologs and epilogs, numerical claims, static visual fallbacks, generated previews, syllabus and catalog links, and capability evidence. Publish the foundation acceptance report and reconcile the queued matrices saga from observed runtime behavior.

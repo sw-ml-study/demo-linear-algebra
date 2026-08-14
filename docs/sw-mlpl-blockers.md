@@ -1,0 +1,84 @@
+# sw-MLPL linear-algebra capability ledger
+
+Status: **candidate baseline from source inspection; runtime probes pending in
+the foundation saga**.
+
+A missing convenience builtin is not automatically a blocker. This repository
+calls something blocking only when a planned lesson cannot be expressed
+correctly, readably, and with honest numerical behavior using supported MLPL.
+Every promoted blocker must have a minimal file under `probes/`, configured
+binary/version evidence, required semantics, acceptance cases, and affected
+lesson IDs.
+
+## Supported baseline to verify
+
+The current public builtin catalog includes `dot`, rank-2 `matmul`, scalar
+broadcasting, `reshape`, `transpose`, `transpose_axes`, axis reductions, axis
+labels, seeded random arrays, `argmax`, and stable `softmax`. Foundation probes
+must check success cases, shape errors, label propagation, and higher-rank
+rejection/behavior rather than inferring semantics from names.
+
+## B1 — batched and higher-rank matrix multiplication (candidate blocker)
+
+Affected: LA20 attention and realistic multi-example/head tensor work.
+
+Required behavior, if current `matmul` rejects it:
+
+```text
+matmul([batch,m,k], [batch,k,n]) -> [batch,m,n]
+matmul([batch,m,k], [k,n])       -> [batch,m,n]
+```
+
+The contract must define batch broadcasting, contraction axes, named-axis
+compatibility, output labels, and precise mismatch diagnostics. Acceptance
+fixtures include batch size one, unequal compatible batch prefixes, incompatible
+prefixes, rank-2 compatibility, and attention-shaped rank-4 arrays. Repeated
+explicit loops are acceptable only as a small teaching bridge, not as evidence
+that general tensor matmul exists.
+
+## B2 — stable general linear solve with diagnostics (candidate blocker)
+
+Affected: LA11-LA13 and production-quality least squares in LA17.
+
+Pedagogical Gaussian elimination for tiny matrices is part of the curriculum,
+but it does not replace a numerically stable solve. A general primitive should
+return a `Result` and distinguish non-square input, dimension mismatch,
+singularity/rank deficiency, and non-finite input. The upstream design should
+decide whether factorization metadata (pivoting, rank, condition estimate) is a
+record or separate API; this repo must not guess the signature before probes
+show the smallest lesson-blocking need.
+
+Acceptance must cover exact small systems, multiple right-hand sides, a
+singular matrix, an ill-conditioned fixture with residual tolerance, and shape
+diagnostics. The test oracle must be independently derived or cross-checked,
+not the same implementation copied twice.
+
+## B3 — decomposition boundary: QR/eigen/SVD (candidate blocker)
+
+Affected: robust LA14-LA18.
+
+Classical Gram-Schmidt and fixed-iteration power methods are valuable teaching
+algorithms and can be written from basic operations. They are not robust,
+general QR/eigen/SVD implementations. Promote only the smallest decomposition
+that blocks the next honest lesson, with explicit ordering/sign conventions,
+multi-result representation, convergence/error behavior, degenerate spectra,
+and reconstruction/orthogonality acceptance checks.
+
+Likely priority is stable QR or least-squares before a broad eigensolver; SVD
+becomes justified by PCA and low-rank reconstruction. Do not request all three
+merely to resemble NumPy.
+
+## Expressible conveniences, not blockers initially
+
+`norm`, distance, cosine similarity, outer product, trace, diagonal extraction,
+2D determinant, projection, and covariance can be composed from current array
+operations for bounded lessons. If doing so exposes missing indexing, slicing,
+or cell operations, record that specific measured obstruction rather than
+promoting the convenience function itself.
+
+## Evidence template
+
+For each finding record: configured command and version; minimal source;
+observed stdout/stderr and exit status; expected semantics; affected lessons;
+workaround and its correctness/complexity cost; upstream acceptance cases; and
+the downstream code deleted or unlocked when the capability lands.

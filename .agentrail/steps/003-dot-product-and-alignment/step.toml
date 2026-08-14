@@ -1,0 +1,8 @@
+number = 3
+slug = "dot-product-and-alignment"
+status = "pending"
+description = "Implement LA02 from elementwise products and reduction, use the dot builtin a..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T12:30:42"
+commits = []

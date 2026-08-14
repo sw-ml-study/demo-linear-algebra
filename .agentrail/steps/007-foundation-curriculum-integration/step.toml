@@ -1,0 +1,8 @@
+number = 7
+slug = "foundation-curriculum-integration"
+status = "pending"
+description = "Run the complete repository gate; audit lesson names, comments, prologs and e..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T12:30:42"
+commits = []

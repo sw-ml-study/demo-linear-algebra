@@ -1,0 +1,610 @@
+consider the demo repos here:
+https://github.com/orgs/sw-ml-study/repositories and given the sw-mlpl language focus and capabilities, does it make sense to add more math oriented demo repos, say demo-linear-algebra (others?)?  Remember that the focus is ML coding (training, Engram, mHC, ICL, ICRL, fine tuning, etc.) but secondary goal is a general purpose (array-oriented, functional) programming language, and these demo repos are for dogfooding and as forcing functions to verify and expand the language in a focused way.  linear alegebra seems important for ML, right?
+
+Yes. Given the way you are using the demo repositories—as dogfood, executable teaching material, and forcing functions for language design—I think demo-linear-algebra is not merely reasonable; it should probably be one of the highest-priority demo repos.
+
+The current sw-MLPL description explicitly positions the language as array-oriented, functional-first, ML-focused, with native arrays/tensors, broadcasting, autograd, model facilities, and accelerator backends. The earlier ML milestone also specifically introduced dot, matmul, elementwise math, reductions, and logistic-regression training, while identifying rank/cell semantics as unfinished work. That makes linear algebra a particularly good place to stress exactly the abstractions sw-MLPL claims to specialize in.
+
+I would organize the demo ecosystem around three axes
+
+You already have what I would call programming-model demos:
+
+demo-algorithms, demo-combinators, demo-functional-pipelines, demo-memory, demo-extensions, etc.
+
+And you now have mathematical-structure demos:
+
+demo-abstract-algebra and demo-category-theory.
+
+What is missing is a third category:
+
+computational mathematics that directly underpins ML
+
+That category should get considerably more emphasis than pure mathematics because it directly supports your primary goal.
+
+My initial ranking would be:
+
+Priority	Repository	ML relevance	Language forcing value
+1	demo-linear-algebra	Extremely high	Extremely high
+2	demo-optimization	Extremely high	Extremely high
+3	demo-probability-statistics	Extremely high	Very high
+4	demo-numerical-methods	Very high	Extremely high
+5	demo-information-theory	Very high	High
+6	demo-signal-processing	Medium/high	Very high
+later	demo-discrete-math	Medium	High
+later	demo-geometry	situational	High
+
+A conventional ML mathematical foundation likewise centers strongly on linear algebra, calculus/optimization, and probability/statistics.
+
+But I would not create all of these immediately. Start with demo-linear-algebra. It will tell you a lot about what should come next.
+
+demo-linear-algebra is almost ideal for sw-MLPL
+
+It sits directly at the intersection of your two goals:
+
+             Machine Learning
+                    |
+                    |
+             Linear Algebra
+              /           \
+             /             \
+ Array programming       General-purpose
+ / functional style      language testing
+
+More importantly, this is not just "let's teach matrices."
+
+The real question the repo asks is:
+
+Can sw-MLPL express linear algebra naturally enough that an ML programmer doesn't wish they were using NumPy/JAX/Julia/APL?
+
+That is an excellent forcing function.
+
+Your language already has dot and matmul; therefore the repo starts from working primitives rather than hypothetical capabilities. And the current documentation groups builtins under areas including Array, Linear Algebra, Math, ML primitives, and Autograd, so this is consistent with the language's existing conceptual model rather than expanding it sideways.
+
+I would make it progressive rather than encyclopedic
+
+A useful progression would look roughly like this:
+
+scalars
+   ↓
+vectors
+   ↓
+vector operations
+   ↓
+matrices
+   ↓
+matrix operations
+   ↓
+linear transformations
+   ↓
+systems of equations
+   ↓
+vector spaces / basis / rank
+   ↓
+orthogonality
+   ↓
+eigenvalues/eigenvectors
+   ↓
+matrix factorizations
+   ↓
+least squares
+   ↓
+PCA / dimensionality reduction
+   ↓
+low-rank approximations
+   ↓
+ML applications
+
+But each leaf should ideally demonstrate both the mathematics and a language capability.
+
+For example:
+
+Demo	Math concept	sw-MLPL forcing function
+vector addition	vector spaces	elementwise arrays
+dot product	inner product	reductions
+outer product	tensor construction	rank manipulation
+matrix multiply	linear maps	shape checking
+transpose	dual orientation	axis manipulation
+norms	magnitude	reductions + sqrt
+projection	subspaces	composition
+Gram-Schmidt	orthogonal basis	functional iteration
+linear solve	systems	numerical algorithms
+LU	factorization	indexing/update semantics
+QR	orthogonal factorization	array slicing
+eigenvectors	invariant directions	iterative algorithms
+SVD	factorization	multi-result APIs
+least squares	regression	composition/autograd
+PCA	ML dimensionality reduction	datasets + visualization
+cosine similarity	embeddings	reductions/broadcasting
+low-rank approximation	compression	slicing/rank
+LoRA-style update	ML fine tuning	low-rank matrices
+attention	transformer math	batched matmul/axes
+
+That last group is especially important.
+
+Don't stop at textbook linear algebra. Make the progression eventually answer:
+
+Why does an ML programmer care?
+
+For example:
+
+Dot product → embeddings
+dot(a,b)
+     ↓
+cosine similarity
+     ↓
+embedding similarity
+     ↓
+vector search / RAG
+Matrix multiplication → neural networks
+X @ W
+  ↓
+linear layer
+  ↓
+MLP
+Matrix multiplication + transpose → attention
+Q @ transpose(K)
+         ↓
+       scores
+         ↓
+       softmax
+         ↓
+      weights @ V
+SVD → low-rank approximation
+W
+↓
+U Σ Vᵀ
+↓
+truncate rank
+↓
+compressed W
+
+And then:
+
+low-rank decomposition
+        ↓
+LoRA
+        ↓
+parameter-efficient fine tuning
+
+Now demo-linear-algebra directly feeds the fine-tuning work rather than being a math side project.
+
+It could expose some important language gaps
+
+This is where the repo becomes particularly valuable.
+
+The current old ML milestone explicitly listed rank/cell semantics as future work. Linear algebra will put enormous pressure on precisely that area.
+
+For example, what should this mean?
+
+matmul(A, B)
+
+when:
+
+A : [batch, sequence, hidden]
+B : [hidden, projected]
+
+And what about:
+
+A : [batch, heads, sequence, head_dim]
+B : [batch, heads, head_dim, sequence]
+
+You immediately encounter:
+
+rank polymorphism
+cells
+broadcasting
+named axes
+batched matrix multiplication
+axis permutation
+shape errors
+shape inference
+higher-rank tensors
+reductions over selected axes
+
+Those aren't esoteric mathematical features. They are core ML programming-language semantics.
+
+So demo-linear-algebra could become one of your primary tests of whether the APL/J/BQN influence is actually paying off.
+
+One thing I would not do
+
+I would resist implementing a giant MATLAB-like linear algebra library immediately.
+
+For example, don't conclude:
+
+"We need 75 new builtins."
+
+Instead let the demos discover which things naturally decompose from existing sw-MLPL operations.
+
+This is exactly analogous to your recent thinking about combinators and u:fns.
+
+Suppose Gram-Schmidt can be elegantly written as compositions of:
+
+dot
+each
+over
+take
+drop
+sqrt
+sum
+
+plus a few array operations.
+
+That's better evidence about the language than:
+
+gram_schmidt(x)
+
+being a builtin.
+
+The demo should distinguish:
+
+language primitive
+        ↓
+general library function
+        ↓
+domain-specific convenience function
+
+Linear algebra is an excellent laboratory for discovering those boundaries.
+
+The next repo should probably be demo-optimization
+
+I would actually name it demo-optimization, rather than demo-calculus.
+
+Calculus is important, but optimization is the reason most ML programmers care about the relevant calculus.
+
+It could teach:
+
+function
+   ↓
+derivative
+   ↓
+partial derivative
+   ↓
+gradient
+   ↓
+chain rule
+   ↓
+automatic differentiation
+   ↓
+gradient descent
+   ↓
+SGD
+   ↓
+momentum
+   ↓
+Adam
+
+And then more interesting things:
+
+Jacobian
+Hessian
+gradient clipping
+learning-rate schedules
+finite-difference gradient checking
+convex vs non-convex optimization
+loss surfaces
+
+This would hammer on sw-MLPL's built-in reverse-mode autograd, which the current language already advertises as a first-class feature.
+
+There's a very nice division:
+
+demo-linear-algebra
+    What computations are models made of?
+
+
+demo-optimization
+    How do models learn?
+
+That's much stronger than generic "math tutorials."
+
+Then demo-probability-statistics
+
+This one is equally central, but it will probably expose a different class of missing language facilities.
+
+Remember that the earlier ML milestone still listed random array constructors as future work.
+
+A probability repo could force:
+
+RNG
+seeding
+random arrays
+distributions
+sampling
+histograms
+reductions
+sorting
+quantiles
+grouping
+aggregation
+numerical stability
+
+and eventually:
+
+mean
+variance
+standard deviation
+covariance
+correlation
+
+
+Bernoulli
+uniform
+normal
+categorical
+
+
+sampling
+Monte Carlo
+maximum likelihood
+Bayes' theorem
+
+Then ML:
+
+logits
+softmax
+cross entropy
+negative log likelihood
+sampling temperature
+top-k
+top-p
+
+And then modern model concepts:
+
+entropy
+KL divergence
+perplexity
+
+So again, it isn't separate from ML at all.
+
+demo-numerical-methods may be unusually important for your project
+
+For many languages I'd rank it lower.
+
+For sw-MLPL, I'd rank it unusually high because of your interest in small-memory ML, quantization, CPU/edge inference, streaming, unusual accelerators, and low precision.
+
+Its central question becomes:
+
+Mathematically correct is not necessarily computationally correct.
+
+Examples:
+
+floating-point error
+catastrophic cancellation
+overflow / underflow
+stable softmax
+log-sum-exp
+conditioning
+iterative convergence
+precision
+quantization error
+
+Then:
+
+FP32
+FP16
+BF16
+INT8
+INT4
+ternary
+
+This naturally leads toward exactly the sort of ML implementation issues you're exploring.
+
+For example:
+
+naive softmax:
+
+
+exp(x) / sum(exp(x))
+
+
+versus stable softmax:
+
+
+exp(x - max(x)) / sum(exp(x - max(x)))
+
+That's simultaneously:
+
+mathematics,
+ML,
+numerical programming,
+array programming,
+language dogfooding.
+
+Very high value.
+
+demo-information-theory belongs later
+
+Information theory is hugely relevant to modern ML:
+
+entropy
+cross entropy
+KL divergence
+mutual information
+coding
+compression
+perplexity
+
+But initially much of that can live inside demo-probability-statistics.
+
+I would create demo-information-theory only when you have enough material to make its own coherent story, perhaps eventually extending into:
+
+Shannon entropy
+compression
+arithmetic coding
+tokenization
+model entropy
+perplexity
+quantization
+rate/distortion
+
+At that point it becomes a fascinating bridge between LLMs, compression, and representation.
+
+There is another good one: demo-signal-processing
+
+Not as fundamental to LLMs, but nearly perfect for an array language.
+
+Think:
+
+samples
+ ↓
+windows
+ ↓
+convolution
+ ↓
+FFT
+ ↓
+frequency domain
+ ↓
+filters
+
+Forcing functions include:
+
+sliding windows
+convolution
+complex numbers
+FFT
+reshape
+padding
+striding
+streaming arrays
+large files
+
+And it has immediate ML connections through audio, spectrograms, CNN convolution, positional/frequency representations, etc.
+
+That makes it much more compelling than a generic demo-math.
+
+I would avoid demo-math
+
+That becomes a junk drawer:
+
+prime numbers
+matrix multiplication
+calculus
+probability
+geometry
+FFT
+statistics
+
+and stops acting as a focused forcing function.
+
+The strength of your current repo strategy is that each repository poses a relatively clear question to sw-MLPL.
+
+For example:
+
+demo-combinators
+Can the functional model express useful combinator patterns?
+
+
+demo-memory
+Can the language express and investigate memory behavior?
+
+
+demo-abstract-algebra
+Can MLPL model algebraic structures cleanly?
+
+
+demo-category-theory
+Can its functional abstractions express categorical ideas?
+
+
+demo-linear-algebra
+Can an array-oriented ML language express the mathematics
+at the heart of ML naturally?
+
+That last one is an exceptionally good question.
+
+And linear algebra can connect directly to your newer ML research
+
+This is another reason I'd put it first.
+
+Consider your topics:
+
+                    linear algebra
+                         |
+       +-----------------+-----------------+
+       |                 |                 |
+    training          inference          embeddings
+       |                 |                 |
+ gradients          matmul/GEMM          dot product
+       |                 |                 |
+ Hessians           quantization       similarity
+       |
+       +--------- low-rank methods
+                         |
+                       LoRA
+
+Then newer architectural ideas:
+
+mHC is particularly matrix-heavy: transformations, residual streams, learned mixing, normalization/constraints, and repeated matrix operations.
+
+Engram still depends on embeddings, projections, similarity/addressing, and transformations even though the architectural idea emphasizes memory.
+
+ICL / ICRL eventually connect into representations, similarity, attention, and optimization even when the "learning" isn't ordinary weight updating.
+
+So you could deliberately include a final directory such as:
+
+web/
+  01-vectors.mlpl
+  02-dot-product.mlpl
+  ...
+  30-svd.mlpl
+  31-pca.mlpl
+
+
+  ml/
+    embeddings.mlpl
+    linear-layer.mlpl
+    attention.mlpl
+    pca.mlpl
+    low-rank.mlpl
+    lora.mlpl
+
+The exact organization can evolve, but the principle is valuable:
+
+every foundational mathematical concept eventually terminates in an ML application.
+
+My proposed math-oriented roadmap
+
+I would therefore not pursue "more mathematics" in the abstract.
+
+I would pursue mathematics that stresses the language and explains machine learning, in approximately this order:
+
+                         sw-MLPL
+                            |
+          +-----------------+------------------+
+          |                                    |
+ programming-model demos             mathematical foundations
+          |                                    |
+ algorithms                              LINEAR ALGEBRA
+ combinators                                  |
+ pipelines                              OPTIMIZATION
+ memory                                       |
+ extensions                        PROBABILITY / STATISTICS
+                                               |
+                                      NUMERICAL METHODS
+                                               |
+                                  +------------+-----------+
+                                  |                        |
+                           information theory      signal processing
+
+demo-abstract-algebra and demo-category-theory then remain valuable orthogonal research/teaching experiments, rather than becoming the beginning of a project to recreate a university mathematics curriculum.
+
+So my priority would be
+
+Build demo-linear-algebra next.
+
+Then let that repo identify shortcomings in:
+
+rank/cell semantics
+multidimensional array operations
+named axes
+batched operations
+reductions
+decomposition APIs
+multiple-return values
+numerical behavior
+visualization
+autograd composition
+
+After that, demo-optimization and demo-probability-statistics would give you the three mathematical legs necessary to support almost everything from a simple regression model through transformers.
+
+And I suspect demo-linear-algebra will be one of the strongest demos you have for explaining why sw-MLPL is an array-oriented language in the first place: the notation and execution model can potentially make vector → matrix → tensor → ML model feel like one continuous programming model instead of Python gluing together NumPy, framework tensors, object hierarchies, and helper libraries. That is very close to the core argument for the language.

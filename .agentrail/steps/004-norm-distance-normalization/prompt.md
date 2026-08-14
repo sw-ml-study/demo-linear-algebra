@@ -1,0 +1,1 @@
+Implement LA03 with a shared approximate-equality contract, documented tolerance, a just-outside-tolerance failing fixture, zero-vector normalization policy, scale and triangle fixtures, CLI teaching flow, and static-readable geometric web visuals.

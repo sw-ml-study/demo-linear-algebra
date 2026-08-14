@@ -1,0 +1,1 @@
+Implement LA04 with deterministic small embedding fixtures, golden cosine scores and retrieval ordering, magnitude-invariance and zero-vector cases, a standalone web visualization, and an explicit connection to semantic retrieval.

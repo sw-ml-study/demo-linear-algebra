@@ -1,0 +1,8 @@
+number = 2
+slug = "vectors-and-array-laws"
+status = "pending"
+description = "Implement syllabus lesson LA01 with whole-array vector addition and scaling, ..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T12:30:41"
+commits = []

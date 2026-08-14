@@ -1,0 +1,1 @@
+Implement LA05 and LA06 with linear combinations, dependent-basis and zero-denominator witnesses, projection reconstruction and orthogonal-residual checks, basis/shadow visuals, full mlplunit coverage, and explicit finite-example boundaries.

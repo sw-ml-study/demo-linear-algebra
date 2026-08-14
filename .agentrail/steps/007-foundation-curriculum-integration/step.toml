@@ -1,8 +1,9 @@
 number = 7
 slug = "foundation-curriculum-integration"
-status = "in-progress"
+status = "completed"
 description = "Run the complete repository gate; audit lesson names, comments, prologs and e..."
 role = "production"
 context_files = []
 created_at = "2026-08-14T12:30:42"
-commits = []
+completed_at = "2026-08-14T14:41:42"
+commits = ["0f504edebfa208c1b444dcabfb4a91dba3ea10f0"]

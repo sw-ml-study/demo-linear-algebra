@@ -1,6 +1,6 @@
 number = 4
 slug = "la09-composition-and-transpose"
-status = "pending"
+status = "in-progress"
 description = "Implement LA09 with A(Bx)=(AB)x, transpose identities, and named-axis behavio..."
 role = "production"
 context_files = []

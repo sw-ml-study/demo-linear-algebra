@@ -7,3 +7,4 @@ LA05	Linear combinations and span	runnable	demos/05-span/combinations.mlpl	demos
 LA06	Orthogonality and projection	runnable	demos/06-projection/shadow.mlpl	demos/web/projection.mlpl
 LA07	Matrices store transformations	runnable	demos/07-matrix-transform/basis_grid.mlpl	demos/web/matrix_basis.mlpl
 LA08	Matrix multiplication is composed dot products	runnable	demos/08-matrix-multiplication/row_column.mlpl	demos/web/row_column_matmul.mlpl
+LA09	Composition and transpose	runnable	demos/09-composition-transpose/successive.mlpl	demos/web/composition_transpose.mlpl

@@ -1,0 +1,26 @@
+# Lesson LA09 -- composition order and transpose identities.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/matrices.mlpl";
+include "../../lib/composition_render.mlpl";
+
+print("WHAT THIS SHOWS -- Applying B then A equals applying the composed matrix AB once; transpose swaps axes and reverses product order.")
+print("PREREQUISITES -- LA08 rank-2 multiplication. SHAPES -- B:[hidden=2,input=2], A:[output=2,hidden=2], x:[input=2], AB:[output=2,input=2].")
+a : [output, hidden] = [[1, 1], [0, 1]]
+b : [hidden, input] = [[2, 0], [0, 3]]
+x : [input] = [1, 2]
+successive = matmul(a, matmul(b, x))
+product = matmul(a, b)
+composed = matmul(product, x)
+a_positional = [[1, 1], [0, 1]]
+b_positional = [[2, 0], [0, 3]]
+reversed = matmul(matmul(b_positional, a_positional), [1, 2])
+transpose_identity = equal(transpose(product), matmul(transpose(b), transpose(a)))
+disp([successive, composed, reversed])
+disp([product, transpose(product)])
+written = write_text("out/LA09-composition.svg", u:composition_svg())
+print("NUMERICAL CONTRACT -- Exact integer arithmetic checks A(Bx)=(AB)x=[8,6], B(Ax)=[6,6], (AB)^T=B^T A^T, and (A^T)^T=A.")
+print("HOW TO READ THE RESULT -- Follow x through blue B then pink A; the final grid and [8,6] endpoint match the one-step AB route. Purple [6,6] marks the invalid reversed order.")
+print("THE POINT -- Matrix products encode ordered function composition. Transpose swaps named axes and reverses a product. BOUNDARY -- finite equality witnesses do not prove the identities generally; named axes reject B@A because input!=output, while positional copies expose its different [6,6] value.")
+if equal(successive, composed) * (1 - equal(successive, reversed)) * transpose_identity * equal(transpose(transpose(a)), a) * equal(labels(product), "output,input") * equal(labels(transpose(product)), "input,output") * is_ok(written) { ok({lesson: "LA09", successive: successive, reversed: reversed, product_labels: labels(product), artifact: "out/LA09-composition.svg"}) } else { err("LA09 composition or transpose invariant failed") }

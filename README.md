@@ -115,3 +115,17 @@ result against native rank-2 `matmul`.
 - [CLI lesson](demos/08-matrix-multiplication/row_column.mlpl)
 - [Standalone web lesson](demos/web/row_column_matmul.mlpl)
 - [Native mlplunit coverage](tests/test_matrix_multiplication.mlpl)
+
+## Lesson LA09 — composition and transpose
+
+![An input grid transformed by B then A reaches the same result as one composed AB transform](assets/previews/LA09-composition.svg)
+
+The exact fixture verifies `A(Bx)=(AB)x=[8,6]`. Named axes reject the invalid
+`B@A` order, while positional copies make `B(Ax)=[6,6]` a visible numeric
+counterexample. It also checks double transpose,
+`(AB)^T=B^T A^T`, and the semantic axis transition from `output,input` to
+`input,output`.
+
+- [CLI lesson](demos/09-composition-transpose/successive.mlpl)
+- [Standalone web lesson](demos/web/composition_transpose.mlpl)
+- [Native mlplunit coverage](tests/test_composition_transpose.mlpl)

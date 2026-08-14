@@ -13,7 +13,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA06 | Orthogonality and projection **(runnable)** | LA02-LA03 | decompose a vector into projection plus orthogonal residual | dimensionality reduction |
 | LA07 | Matrices store transformations **(runnable)** | LA01, LA05 | read rows/columns, map basis vectors, and inspect a transformed grid | weights as transformations |
 | LA08 | Matrix multiplication is composed dot products **(runnable)** | LA02, LA07 | derive every cell, trace row-column products, and reject an inner mismatch | dense layers |
-| LA09 | Composition and transpose | LA08 | verify `A(Bx)=(AB)x` and transpose identities | chained layers and Q/K scores |
+| LA09 | Composition and transpose **(runnable)** | LA08 | verify `A(Bx)=(AB)x`, reject reordered `BA`, and track transposed axes | chained layers and Q/K scores |
 | LA10 | Determinant as signed area (2D first) | LA07 | relate a bounded formula to a transformed basis grid | volume change and singularity |
 | LA11 | Linear systems and residuals | LA08 | classify bounded unique/singular/inconsistent fixtures | fitting parameters |
 | LA12 | Elimination and rank | LA11 | perform and inspect pedagogical row reduction | identifiability |
@@ -42,6 +42,13 @@ each output location. The shared `inner` dimension is consumed, leaving
 `C:[rows,columns]`. Its active-cell trace keeps the component products visible
 before accumulation and its checked wrapper rejects mismatched inner sizes
 before invoking the native primitive.
+
+LA09 treats matrix multiplication as ordered function composition. With
+`B:[hidden,input]` and `A:[output,hidden]`, `AB:[output,input]` performs B
+first and A second. Named axes reject `B@A` because `input` and `output` do
+not align even though both sizes are two; positional copies provide the
+noncommuting numeric counterexample. Transpose swaps label order and obeys `(AB)^T=B^T A^T` on the exact
+fixture; labels remain part of structural equality rather than decoration.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

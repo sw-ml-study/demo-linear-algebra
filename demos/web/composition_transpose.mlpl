@@ -1,0 +1,32 @@
+# Web Lesson LA09 -- ordered composition and transpose.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA08 rank-2 matrix multiplication.
+# * SHAPES -- B:[hidden=2,input=2], A:[output=2,hidden=2], x:[input=2], AB:[output=2,input=2].
+# * EXECUTABLE CLAIM -- A(Bx)=(AB)x=[8,6], while B(Ax)=[6,6]; (AB)^T=B^T A^T.
+# * NUMERICAL CONTRACT -- all values and identity checks use exact integer arithmetic.
+# * BOUNDARY -- these finite witnesses do not prove general identities; AB and BA cannot be interchanged.
+# * WHAT THIS SHOWS -- multiplication records ordered function composition and transpose swaps axis roles.
+# **************************************************************************
+;
+a : [output, hidden] = [[1, 1], [0, 1]]  # shear hidden coordinates into outputs
+b : [hidden, input] = [[2, 0], [0, 3]]  # scale inputs into hidden coordinates
+x : [input] = [1, 2]  # input point
+successive = matmul(a, matmul(b, x))  # B first, then A: [8,6]
+product = matmul(a, b)  # composed [output,input] map
+composed = matmul(product, x)  # one-step [8,6]
+a_positional = [[1, 1], [0, 1]]  # positional copy permits numeric counterexample
+b_positional = [[2, 0], [0, 3]]  # named B@A would reject input versus output axes
+reversed = matmul(matmul(b_positional, a_positional), [1, 2])  # invalid reorder reaches [6,6]
+transpose_identity = equal(transpose(product), matmul(transpose(b), transpose(a)))  # reverse order when transposing
+disp([successive, composed, reversed])  # equality and counterexample evidence
+equal(successive, composed) * (1 - equal(successive, reversed)) * transpose_identity * equal(labels(product), "output,input") * equal(labels(transpose(product)), "input,output")  # executable claims
+# THE VISUAL -- the B-then-A route and one-step AB route share the pink endpoint; BA is called out separately.
+def u:composition_visual() { "Render the LA09 successive and composed grid witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 960 470\" role=\"img\"><title>Successive matrix transforms equal one composed transform</title><desc>An input grid is scaled by B and then sheared by A. The pink result [8,6] matches direct AB, while reversing order reaches [6,6].</desc><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" fill=\"#c0caf5\"/></marker></defs><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.g{fill:none;stroke:#565f89;stroke-width:2}.b{stroke:#7aa2f7}.c{stroke:#f7768e}.v{fill:none;stroke-width:5;marker-end:url(#a)}.q{fill:#e0af68;font-size:26px}.bad{fill:#bb9af7}</style><rect width=\"960\" height=\"470\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">A(Bx)=(AB)x=[8,6], but B(Ax)=[6,6]</text><rect class=\"p\" x=\"20\" y=\"60\" width=\"270\" height=\"300\"/><text x=\"40\" y=\"90\">input x=[1,2]</text><path class=\"g\" d=\"M50 320H260M50 270H260M50 220H260M80 340V110M130 340V110M180 340V110M230 340V110\"/><path class=\"v b\" d=\"M80 320L130 220\"/><text class=\"q\" x=\"300\" y=\"220\">→ B →</text><rect class=\"p\" x=\"370\" y=\"60\" width=\"270\" height=\"300\"/><text x=\"390\" y=\"90\">Bx=[2,6]</text><path class=\"g b\" d=\"M400 320H610M400 260H610M400 200H610M430 340V110M500 340V110M570 340V110\"/><path class=\"v b\" d=\"M430 320L500 140\"/><text class=\"q\" x=\"650\" y=\"220\">→ A →</text><rect class=\"p\" x=\"720\" y=\"60\" width=\"220\" height=\"300\"/><text x=\"740\" y=\"90\">A(Bx)</text><path class=\"g c\" d=\"M740 320L910 235M740 270L910 185M740 220L910 135M770 340L900 145M820 340L930 175\"/><path class=\"v c\" d=\"M750 325L900 145\"/><text x=\"830\" y=\"390\" text-anchor=\"middle\">same result from (AB)x</text><text class=\"bad\" x=\"480\" y=\"435\" text-anchor=\"middle\">order matters: BA maps x to [6,6]</text></svg>" }  # fixed checked fixture
+visual = u:composition_visual()  # bind once
+visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- blue B changes the grid first; pink A finishes exactly where the composed AB route finishes.
+# * THE POINT -- composing learned transforms multiplies in execution order from right to left; transpose reverses that order.
+# **************************************************************************

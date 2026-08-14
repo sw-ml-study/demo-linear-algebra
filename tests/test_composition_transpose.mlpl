@@ -1,0 +1,37 @@
+# LA09 composition, transpose identities, and named-axis semantics.
+include "lib/matrices.mlpl";
+
+@test {name: "successive transforms equal their composed matrix", tags: ["LA09", "composition"]}
+def u:test_composition_association() { "Verify A(Bx)=(AB)x on a noncommuting 2D fixture.";
+  a = [[1, 1], [0, 1]]; b = [[2, 0], [0, 3]]; x = [1, 2];
+  successive = u:matrix_transform(a, u:matrix_transform(b, x)?)?; composed = u:matrix_transform(matmul(a, b), x)?;
+  u:assert_eq(successive, [8, 6], "successive result")?;
+  u:assert_eq(composed, successive, "composed result")
+}
+
+@test {name: "reversing noncommuting transforms is a finite counterexample", tags: ["LA09", "order", "counterexample"]}
+def u:test_composition_order_matters() { "Show BA differs from AB and B(Ax) differs from A(Bx).";
+  a = [[1, 1], [0, 1]]; b = [[2, 0], [0, 3]]; x = [1, 2]; ab = matmul(a, b); ba = matmul(b, a);
+  u:assert_true(1 - equal(ab, ba), "noncommuting products unexpectedly equal")?;
+  u:assert_eq(u:matrix_transform(ba, x)?, [6, 6], "reversed result")?;
+  u:assert_true(1 - equal(u:matrix_transform(ab, x)?, u:matrix_transform(ba, x)?), "reordering counterexample disappeared")
+}
+
+@test {name: "transpose reverses products and is its own inverse", tags: ["LA09", "transpose"]}
+def u:test_transpose_identities() { "Pin double transpose and (AB)^T=B^T A^T.";
+  a = [[1, 2, 3], [4, 5, 6]]; b = [[1, 2], [0, 1], [2, 0]];
+  u:assert_eq(transpose(transpose(a)), a, "double transpose")?;
+  u:assert_eq(transpose(matmul(a, b)), matmul(transpose(b), transpose(a)), "product transpose")
+}
+
+@test {name: "transpose and composition preserve semantic named axes", tags: ["LA09", "labels"]}
+def u:test_composition_labels() { "Check label order and structural equality's metadata sensitivity.";
+  a : [output, hidden] = [[1, 1], [0, 1]]; b : [hidden, input] = [[2, 0], [0, 3]]; product = matmul(a, b); transposed = transpose(product);
+  u:assert_eq(labels(product), "output,input", "composition labels")?;
+  u:assert_eq(labels(transpose(a)), "hidden,output", "transpose labels")?;
+  u:assert_eq(labels(transposed), "input,output", "product transpose labels")?;
+  u:assert_true(1 - equal(product, [[2, 3], [0, 3]]), "labels ignored by structural equality")?;
+  u:assert_true(reduce_mul(eq(product, [[2, 3], [0, 3]])), "numeric equality changed")
+}
+
+u:run_registered_tests()

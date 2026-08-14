@@ -5,7 +5,7 @@ tab=$(printf '\t')
 lesson_count=0
 while IFS="$tab" read -r id title status cli web; do
   [ "$id" = id ] && continue
-  case "$id" in LA0[1-7]) ;; *) continue;; esac
+  case "$id" in LA0[1-8]) ;; *) continue;; esac
   lesson_count=$((lesson_count + 1))
   [ "$status" = runnable ] || { echo "$id is not runnable" >&2; exit 1; }
   [ -f "$repo_root/$cli" ] || { echo "$id missing CLI path: $cli" >&2; exit 1; }
@@ -23,14 +23,14 @@ while IFS="$tab" read -r id title status cli web; do
   [ -f "$generated" ] || { echo "$id generated web copy missing" >&2; exit 1; }
   cmp "$repo_root/$web" "$generated" || { echo "$id generated web copy is stale" >&2; exit 1; }
 done < "$repo_root/catalog/lessons.tsv"
-[ "$lesson_count" -eq 7 ] || { echo "expected seven runnable lessons through LA07, found $lesson_count" >&2; exit 1; }
+[ "$lesson_count" -eq 8 ] || { echo "expected eight runnable lessons through LA08, found $lesson_count" >&2; exit 1; }
 
 if find "$repo_root/demos/web" -type f -name '*.mlpl' -exec grep -lE 'include "|write_text\(|read_text\(' {} \; | grep .; then
   echo "authored web lessons must be standalone and effect-free" >&2
   exit 1
 fi
 
-for preview in "$repo_root"/assets/previews/LA0[1-7]-*.svg; do
+for preview in "$repo_root"/assets/previews/LA0[1-8]-*.svg; do
   grep -q '<title>' "$preview" || { echo "preview lacks title: $preview" >&2; exit 1; }
   grep -q '<desc>' "$preview" || { echo "preview lacks description: $preview" >&2; exit 1; }
   if grep -qE '<animate|@keyframes' "$preview"; then
@@ -43,5 +43,7 @@ grep -q 'MLPL v0.20.0' "$repo_root/docs/capability-baseline.md"
 grep -q 'index has 3 components but array has rank 2' "$repo_root/docs/sw-mlpl-blockers.md"
 grep -q '^LA06.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA07.*runnable' "$repo_root/catalog/lessons.tsv"
+grep -q '^LA08.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q 'W\*0=0' "$repo_root/docs/syllabus.md"
-echo "curriculum: seven lessons integrated through LA07"
+grep -q 'shared `inner` dimension is consumed' "$repo_root/docs/syllabus.md"
+echo "curriculum: eight lessons integrated through LA08"

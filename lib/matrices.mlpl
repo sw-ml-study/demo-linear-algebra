@@ -25,3 +25,16 @@ def u:matrix_transform(matrix, vector) { "Apply a rank-two matrix [output,input]
   dimensions = u:matrix_dimensions(matrix)?;
   if 1 - eq(rank(vector), 1) { err({kind: "transform_vector_rank", actual: rank(vector), expected: 1}) } else { if eq(dimensions.columns, tally(vector)) { ok(matmul(matrix, vector)) } else { err({kind: "transform_shape", matrix: shape(matrix), vector: shape(vector), expected_input: dimensions.columns}) } }
 }
+def u:matrix_product_dimensions(left, right) { "Validate [rows,inner] times [inner,columns] and return the product dimensions.";
+  left_dimensions = u:matrix_dimensions(left)?; right_dimensions = u:matrix_dimensions(right)?;
+  if eq(left_dimensions.columns, right_dimensions.rows) { ok({rows: left_dimensions.rows, inner: left_dimensions.columns, columns: right_dimensions.columns}) } else { err({kind: "matmul_inner_dimension", left: shape(left), right: shape(right), left_inner: left_dimensions.columns, right_inner: right_dimensions.rows}) }
+}
+def u:matrix_product_cell(left, right, row_index, column_index) { "Expose one product cell as its active row, column, component products, and accumulated sum.";
+  dimensions = u:matrix_product_dimensions(left, right)?;
+  if u:valid_matrix_index(row_index, dimensions.rows) * u:valid_matrix_index(column_index, dimensions.columns) { row = u:matrix_row(left, row_index)?; column = u:matrix_column(right, column_index)?; products = row * column; ok({row: row, column: column, products: products, sum: reduce_add(products)}) } else { err({kind: "product_index", row: row_index, column: column_index, rows: dimensions.rows, columns: dimensions.columns}) }
+}
+def u:matrix_multiply_derived(left, right) { "Derive every rank-two product cell by a row-column dot rather than calling matmul.";
+  dimensions = u:matrix_product_dimensions(left, right)?; cells = fill([dimensions.rows * dimensions.columns], 0); row = 0;
+  while lt(row, dimensions.rows) { column = 0; while lt(column, dimensions.columns) { trace = u:matrix_product_cell(left, right, row, column)?; cells = scatter(cells, row * dimensions.columns + column, trace.sum); column = column + 1 }; row = row + 1 };
+  ok(reshape(cells, [dimensions.rows, dimensions.columns]))
+}

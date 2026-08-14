@@ -1,0 +1,39 @@
+# LA08 matrix multiplication derived from row-column dot products.
+include "lib/matrices.mlpl";
+
+@test {name: "every product cell is a row-column dot", tags: ["LA08", "matmul", "derivation"]}
+def u:test_derived_matrix_product() { "Cross-check all four derived cells against their explicit dots and native rank-two matmul.";
+  left = [[1, 2], [3, 4]]; right = [[5, 6], [7, 8]]; derived = u:matrix_multiply_derived(left, right)?;
+  u:assert_eq(derived, [[19, 22], [43, 50]], "derived product values")?;
+  u:assert_eq(derived, matmul(left, right), "native matmul parity")?;
+  u:assert_eq(u:matrix_product_cell(left, right, 0, 0)?.sum, 19, "cell 0,0")?;
+  u:assert_eq(u:matrix_product_cell(left, right, 0, 1)?.sum, 22, "cell 0,1")?;
+  u:assert_eq(u:matrix_product_cell(left, right, 1, 0)?.sum, 43, "cell 1,0")?;
+  u:assert_eq(u:matrix_product_cell(left, right, 1, 1)?.sum, 50, "cell 1,1")
+}
+
+@test {name: "active cell trace exposes products and accumulator", tags: ["LA08", "trace"]}
+def u:test_product_cell_trace() { "Pin the visible second-row first-column accumulation.";
+  trace = u:matrix_product_cell([[1, 2], [3, 4]], [[5, 6], [7, 8]], 1, 0)?;
+  u:assert_eq(trace.row, [3, 4], "active row")?;
+  u:assert_eq(trace.column, [5, 7], "active column")?;
+  u:assert_eq(trace.products, [15, 28], "component products")?;
+  u:assert_eq(trace.sum, reduce_add(trace.products), "accumulator")
+}
+
+@test {name: "rectangular product consumes inner dimension", tags: ["LA08", "shapes"]}
+def u:test_rectangular_matrix_product() { "Check [2,3] times [3,2] becomes [2,2].";
+  left = [[1, 2, 3], [4, 5, 6]]; right = [[7, 8], [9, 10], [11, 12]]; derived = u:matrix_multiply_derived(left, right)?;
+  u:assert_eq(shape(derived), [2, 2], "product shape")?;
+  u:assert_eq(derived, [[58, 64], [139, 154]], "rectangular values")?;
+  u:assert_eq(derived, matmul(left, right), "rectangular native parity")
+}
+
+@test {name: "matrix multiplication rejects incompatible and invalid boundaries", tags: ["LA08", "errors"]}
+def u:test_matrix_product_errors() { "Return checked diagnostics before native matmul or extraction fails.";
+  u:assert_true(is_err(u:matrix_multiply_derived([[1, 2, 3]], [[1, 2], [3, 4]])), "inner mismatch accepted")?;
+  u:assert_true(is_err(u:matrix_multiply_derived([1, 2], [[1], [2]])), "wrong-rank left accepted")?;
+  u:assert_true(is_err(u:matrix_product_cell([[1, 2]], [[1], [2]], 1, 0)), "out-of-range product cell accepted")
+}
+
+u:run_registered_tests()

@@ -12,7 +12,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA05 | Linear combinations and span **(runnable)** | LA01 | generate combinations and distinguish independent/dependent bounded examples | feature synthesis |
 | LA06 | Orthogonality and projection **(runnable)** | LA02-LA03 | decompose a vector into projection plus orthogonal residual | dimensionality reduction |
 | LA07 | Matrices store transformations **(runnable)** | LA01, LA05 | read rows/columns, map basis vectors, and inspect a transformed grid | weights as transformations |
-| LA08 | Matrix multiplication is composed dot products | LA02, LA07 | trace row-column products and validate shapes | dense layers |
+| LA08 | Matrix multiplication is composed dot products **(runnable)** | LA02, LA07 | derive every cell, trace row-column products, and reject an inner mismatch | dense layers |
 | LA09 | Composition and transpose | LA08 | verify `A(Bx)=(AB)x` and transpose identities | chained layers and Q/K scores |
 | LA10 | Determinant as signed area (2D first) | LA07 | relate a bounded formula to a transformed basis grid | volume change and singularity |
 | LA11 | Linear systems and residuals | LA08 | classify bounded unique/singular/inconsistent fixtures | fitting parameters |
@@ -36,6 +36,12 @@ returns `W*x:[2]`. Its two columns are `W*e1` and `W*e2`; their integer
 combinations create the transformed grid. The exact fixture checks additivity,
 scaling, and `W*0=0`, but does not prove those laws for every matrix or add a
 translation term.
+
+LA08 expands `A:[rows,inner] @ B:[inner,columns]` into one dot product for
+each output location. The shared `inner` dimension is consumed, leaving
+`C:[rows,columns]`. Its active-cell trace keeps the component products visible
+before accumulation and its checked wrapper rejects mismatched inner sizes
+before invoking the native primitive.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

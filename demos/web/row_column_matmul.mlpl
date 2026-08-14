@@ -1,0 +1,31 @@
+# Web Lesson LA08 -- every matrix-product cell is one row-column dot.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA02 dot products and LA07 matrix rows/columns.
+# * SHAPES -- A:[row=2,inner=2], B:[inner=2,column=2], C:[row=2,column=2].
+# * EXECUTABLE CLAIM -- four explicit row-column dots equal native A@B=[[19,22],[43,50]].
+# * NUMERICAL CONTRACT -- this fixture uses exact integer multiplication and addition.
+# * BOUNDARY -- [1,3]@[2,2] is incompatible; this rank-2 lesson makes no batched-matmul claim.
+# * WHAT THIS SHOWS -- each output cell consumes the shared inner axis and keeps one left row and right column.
+# **************************************************************************
+;
+left : [row, inner] = [[1, 2], [3, 4]]  # rows feed output rows
+right : [inner, column] = [[5, 6], [7, 8]]  # columns feed output columns
+c00 = reduce_add([1, 2] * [5, 7])  # 5+14=19
+c01 = reduce_add([1, 2] * [6, 8])  # 6+16=22
+c10_products = [3, 4] * [5, 7]  # active products [15,28]
+c10 = reduce_add(c10_products)  # active accumulator 43
+c11 = reduce_add([3, 4] * [6, 8])  # 18+32=50
+derived = [[c00, c01], [c10, c11]]  # every cell derived visibly
+native = matmul(left, right)  # independent rank-2 primitive cross-check
+disp([c10_products, derived])  # active accumulation and full product evidence
+equal(derived, [[19, 22], [43, 50]]) * reduce_mul(eq(derived, native))  # exact value and native parity
+# THE VISUAL -- blue active row meets green active column; pink output cell receives the two-step accumulator.
+def u:row_column_visual() { "Render the LA08 active row-column accumulator."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 940 470\" role=\"img\"><title>Matrix multiplication is a grid of row-column dot products</title><desc>The second row of A and first column of B are highlighted. Products 3 times 5 and 4 times 7 accumulate to output cell 43, alongside the other derived cells.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.c{fill:#1a1b26;stroke:#565f89}.r{fill:#7aa2f7}.k{fill:#9ece6a}.a{fill:#f7768e}.g{fill:#e0af68;font-size:21px}</style><rect width=\"940\" height=\"470\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">A:[2,2] @ B:[2,2]: one row dot one column per output</text><rect class=\"p\" x=\"25\" y=\"60\" width=\"270\" height=\"190\"/><text x=\"45\" y=\"92\">A rows</text><rect class=\"c\" x=\"55\" y=\"115\" width=\"185\" height=\"50\"/><rect class=\"r\" x=\"55\" y=\"175\" width=\"185\" height=\"50\"/><text x=\"95\" y=\"147\">1</text><text x=\"190\" y=\"147\">2</text><text x=\"95\" y=\"207\">3</text><text x=\"190\" y=\"207\">4</text><rect class=\"p\" x=\"325\" y=\"60\" width=\"270\" height=\"190\"/><text x=\"345\" y=\"92\">B columns</text><rect class=\"k\" x=\"355\" y=\"115\" width=\"90\" height=\"110\"/><text x=\"395\" y=\"147\">5</text><text x=\"395\" y=\"207\">7</text><text x=\"490\" y=\"147\">6</text><text x=\"490\" y=\"207\">8</text><rect class=\"p\" x=\"625\" y=\"60\" width=\"290\" height=\"190\"/><text x=\"645\" y=\"92\">C=A @ B</text><text x=\"695\" y=\"147\">19</text><text x=\"790\" y=\"147\">22</text><rect class=\"a\" x=\"660\" y=\"175\" width=\"90\" height=\"50\"/><text x=\"695\" y=\"207\">43</text><text x=\"790\" y=\"207\">50</text><rect class=\"p\" x=\"130\" y=\"300\" width=\"680\" height=\"120\"/><text class=\"g\" x=\"470\" y=\"340\" text-anchor=\"middle\">C[1,0] = 3*5 + 4*7</text><text x=\"470\" y=\"375\" text-anchor=\"middle\">products [15,28] - accumulator 15 then 43</text><text x=\"470\" y=\"405\" text-anchor=\"middle\">inner 2 consumed; output shape [A rows=2,B columns=2]</text></svg>" }  # fixed checked fixture
+visual = u:row_column_visual()  # bind once
+visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- blue row and green column create pink C[1,0]; the accumulator exposes both products before 43.
+# * THE POINT -- matrix multiplication is a rectangular grid of dot products with a strict shared-inner-dimension contract.
+# **************************************************************************

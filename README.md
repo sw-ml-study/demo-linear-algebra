@@ -102,3 +102,16 @@ grid while the origin remains fixed.
 - [CLI lesson](demos/07-matrix-transform/basis_grid.mlpl)
 - [Standalone web lesson](demos/web/matrix_basis.mlpl)
 - [Native mlplunit coverage](tests/test_matrix_transform.mlpl)
+
+## Lesson LA08 — matrix multiplication is row-column dots
+
+![The active second row and first column produce output cell 43 through products 15 and 28](assets/previews/LA08-row-column.svg)
+
+For `A:[rows,inner] @ B:[inner,columns]`, each output cell is one left row
+dotted with one right column. The lesson derives all four cells of a 2×2
+product, exposes the `15 + 28 = 43` accumulator, and independently checks the
+result against native rank-2 `matmul`.
+
+- [CLI lesson](demos/08-matrix-multiplication/row_column.mlpl)
+- [Standalone web lesson](demos/web/row_column_matmul.mlpl)
+- [Native mlplunit coverage](tests/test_matrix_multiplication.mlpl)

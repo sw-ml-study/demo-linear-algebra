@@ -1,0 +1,22 @@
+# Lesson LA08 -- every matrix-product cell is one row-column dot.
+# visual: ascii, svg
+# loops: bounded by matrix shape
+
+include "../../lib/matrices.mlpl";
+include "../../lib/matmul_render.mlpl";
+
+print("WHAT THIS SHOWS -- Matrix multiplication pairs every left row with every right column, multiplies aligned inner components, and accumulates one output cell.")
+print("PREREQUISITES -- LA02 dot products and LA07 matrix rows/columns. SHAPES -- A:[row=2,inner=2], B:[inner=2,column=2], C:[row=2,column=2].")
+left : [row, inner] = [[1, 2], [3, 4]]
+right : [inner, column] = [[5, 6], [7, 8]]
+active = u:matrix_product_cell(left, right, 1, 0)?
+derived = u:matrix_multiply_derived(left, right)?
+native = matmul(left, right)
+disp([active.row, active.column, active.products])
+disp(derived)
+written = write_text("out/LA08-row-column.svg", u:matmul_accumulator_svg())
+print("NUMERICAL CONTRACT -- Exact integer dots derive [[19,22],[43,50]] and numeric equality cross-checks native rank-2 matmul.")
+print("HOW TO READ THE RESULT -- Blue selects A row [3,4], green selects B column [5,7], and pink C[1,0] receives 3*5 + 4*7 = 43.")
+print("THE POINT -- The shared inner axis is consumed by each dot; A rows and B columns remain as the product axes. BOUNDARY -- incompatible [1,3]@[2,2] returns Err(matmul_inner_dimension), and this rank-2 lesson does not claim batched matmul.")
+mismatch = u:matrix_multiply_derived([[1, 2, 3]], [[1, 2], [3, 4]])
+if reduce_mul(eq(derived, native)) * reduce_mul(eq(active.products, [15, 28])) * eq(active.sum, 43) * is_err(mismatch) * is_ok(written) { ok({lesson: "LA08", left_shape: shape(left), right_shape: shape(right), product_shape: shape(derived), artifact: "out/LA08-row-column.svg"}) } else { err("LA08 row-column derivation failed") }

@@ -36,4 +36,9 @@ committed="$repo_root/assets/previews/LA07-matrix-basis.svg"
 [ -f "$generated" ] || { echo "missing generated LA07 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA07 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA07 preview is stale" >&2; exit 1; }
+generated="$repo_root/out/LA08-row-column.svg"
+committed="$repo_root/assets/previews/LA08-row-column.svg"
+[ -f "$generated" ] || { echo "missing generated LA08 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA08 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA08 preview is stale" >&2; exit 1; }
 echo "assets: fresh"

@@ -1,0 +1,40 @@
+# Web Lesson LA04 -- cosine similarity ranks embedding directions.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES
+# * LA02 dot products and LA03 norms/normalization.
+# * SHAPES
+# * query,candidate:[2]; scores:[3]; order:[3].
+# * EXECUTABLE CLAIM
+# * cosine=dot/(norm*norm); scores rank exact, diagonal, opposite as [0,1,2].
+# * NUMERICAL CONTRACT
+# * Scores use inclusive absolute tolerance 0.000000001; order is exact.
+# * BOUNDARY
+# * A zero embedding has no direction, so cosine is undefined and rejected.
+# * WHAT THIS SHOWS
+# * Direction-only similarity turns deterministic embeddings into retrieval.
+# **************************************************************************
+;
+query = [1, 0]  # the embedding used to retrieve neighbors
+first = [2, 0]  # longer but exactly the same direction
+second = [1, 1]  # diagonal, therefore partially aligned
+third = [-1, 0]  # exactly opposed
+scores = [dot(query, first) / sqrt(dot(query, query) * dot(first, first)), dot(query, second) / sqrt(dot(query, query) * dot(second, second)), dot(query, third) / sqrt(dot(query, query) * dot(third, third))]  # normalized alignments
+order = grade_down(scores)  # descending retrieval indices
+disp([scores, order])  # numeric scores and the golden ranking
+equal(order, [0, 1, 2])  # one means exact-direction, diagonal, opposed
+# **************************************************************************
+# * THE VISUAL
+# * Same-direction arrows differ in length but score 1. The right panel makes
+# * positive and negative score direction visible and pins retrieval order.
+# **************************************************************************
+def u:cosine_retrieval_visual() { "Render the LA04 embedding direction and ranking witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 920 440\" width=\"920\" height=\"440\" role=\"img\"><title>Cosine embedding retrieval</title><desc>A query and three candidate arrows show same, diagonal, and opposite directions. Score bars rank exact first, related second, and opposite last.</desc><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" fill=\"#c0caf5\"/></marker></defs><style>text{font-family:monospace;fill:#c0caf5}.axis{stroke:#565f89;stroke-width:2}.v{fill:none;stroke-width:5;marker-end:url(\23 a)}.query{stroke:#7aa2f7}.best{stroke:#9ece6a}.related{stroke:#e0af68}.opposite{stroke:#f7768e}.barbg{fill:#24283b}.bar{fill:#9ece6a}.bar2{fill:#e0af68}.bar3{fill:#f7768e}.panel{fill:#24283b;stroke:#414868;stroke-width:2}</style><rect width=\"920\" height=\"440\" fill=\"#1a1b26\"/><rect class=\"panel\" x=\"20\" y=\"55\" width=\"430\" height=\"350\" rx=\"14\"/><rect class=\"panel\" x=\"470\" y=\"55\" width=\"430\" height=\"350\" rx=\"14\"/><text x=\"30\" y=\"30\" font-size=\"20\">DIRECTION, NOT MAGNITUDE</text><path class=\"axis\" d=\"M55 270H420M120 370V85\"/><path class=\"v query\" d=\"M120 270L280 270\"/><path class=\"v best\" d=\"M120 270L390 270\"/><path class=\"v related\" d=\"M120 270L270 120\"/><path class=\"v opposite\" d=\"M120 270L55 270\"/><text x=\"285\" y=\"300\">query [1,0]</text><text x=\"280\" y=\"250\">[2,0]: 1.0</text><text x=\"245\" y=\"115\">[1,1]: 0.707</text><text x=\"45\" y=\"300\">[-1,0]: -1</text><text x=\"485\" y=\"30\" font-size=\"20\">GOLDEN RETRIEVAL ORDER</text><text x=\"500\" y=\"110\">0 exact-direction</text><rect class=\"barbg\" x=\"500\" y=\"125\" width=\"350\" height=\"34\"/><rect class=\"bar\" x=\"675\" y=\"125\" width=\"175\" height=\"34\"/><text x=\"860\" y=\"148\">1.0</text><text x=\"500\" y=\"205\">1 related-diagonal</text><rect class=\"barbg\" x=\"500\" y=\"220\" width=\"350\" height=\"34\"/><rect class=\"bar2\" x=\"675\" y=\"220\" width=\"124\" height=\"34\"/><text x=\"810\" y=\"243\">0.707</text><text x=\"500\" y=\"300\">2 opposite-direction</text><rect class=\"barbg\" x=\"500\" y=\"315\" width=\"350\" height=\"34\"/><rect class=\"bar3\" x=\"500\" y=\"315\" width=\"175\" height=\"34\"/><text x=\"685\" y=\"338\">-1.0</text><text x=\"685\" y=\"390\" text-anchor=\"middle\">grade_down(scores) = [0,1,2]</text></svg>" }  # infrastructure for checked fixtures
+cosine_retrieval_visual = u:cosine_retrieval_visual()  # bind named visual once
+cosine_retrieval_visual  # display exactly once
+# **************************************************************************
+# * HOW TO READ THE RESULT
+# * Arrow direction determines score; bars order exact, related, then opposed.
+# * THE POINT
+# * Cosine removes magnitude so embedding direction can drive retrieval.
+# **************************************************************************

@@ -1,0 +1,26 @@
+# Lesson LA04 -- cosine similarity ranks embedding directions.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/numerics.mlpl";
+include "../../lib/vectors.mlpl";
+include "../../lib/cosine_render.mlpl";
+
+tolerance = 0.000000001
+print("WHAT THIS SHOWS -- Cosine divides dot alignment by both lengths, so positive rescaling preserves a vector's similarity and direction drives retrieval.")
+print("PREREQUISITES -- LA02 dot and LA03 norm/normalization. SHAPES -- query,candidates:[2], scores:[3], order:[3].")
+query = [1, 0]
+exact_direction = [2, 0]
+related_diagonal = [1, 1]
+opposite_direction = [-1, 0]
+ranking = u:rank_three_by_cosine(query, exact_direction, related_diagonal, opposite_direction)?
+disp([query, exact_direction, related_diagonal, opposite_direction])
+disp([ranking.scores, ranking.order])
+scaled_same = u:cosine_similarity(query, [20, 0])?
+written = write_text("out/LA04-cosine-retrieval.svg", u:cosine_retrieval_svg())
+print("NUMERICAL CONTRACT -- scores use inclusive absolute tolerance 1e-9; grade_down must return the exact golden order [0,1,2].")
+print("HOW TO READ THE RESULT -- Arrow direction determines the score; bar length/direction shows positive versus negative similarity. The longer [20,0] still scores 1.")
+print("THE POINT -- Embedding retrieval ranks direction similarity rather than raw magnitude. These handcrafted embeddings explain the mechanism; they do not establish semantic quality of a learned model.")
+if (u:approx_equal(ranking.scores, [1, 0.7071067811865475, -1], tolerance)?) * equal(ranking.order, [0, 1, 2]) * (u:approx_equal(scaled_same, 1, tolerance)?) * is_err(u:cosine_similarity(query, [0, 0])) * is_ok(written) {
+  ok({lesson: "LA04", order: ranking.order, tolerance: tolerance, artifact: "out/LA04-cosine-retrieval.svg"})
+} else { err("LA04 cosine retrieval invariant failed") }

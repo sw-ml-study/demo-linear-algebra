@@ -57,3 +57,16 @@ explicitly rejected because zero has no direction.
 - [CLI lesson](demos/03-norm-distance/normalize.mlpl)
 - [Standalone web lesson](demos/web/norm_distance.mlpl)
 - [Native mlplunit coverage](tests/test_norm_distance.mlpl)
+
+## Lesson LA04 — cosine similarity and retrieval
+
+![Query and candidate embedding directions beside golden cosine-score bars ordered exact, related, and opposed](assets/previews/LA04-cosine-retrieval.svg)
+
+Cosine divides dot alignment by both magnitudes. The left panel shows why a
+longer same-direction embedding still scores `1`; the right panel pins the
+deterministic retrieval order `[0,1,2]` for exact, diagonal, and opposed
+candidates.
+
+- [CLI lesson](demos/04-cosine-similarity/retrieval.mlpl)
+- [Standalone web lesson](demos/web/cosine_retrieval.mlpl)
+- [Native mlplunit coverage](tests/test_cosine_similarity.mlpl)

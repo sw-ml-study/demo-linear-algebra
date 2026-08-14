@@ -16,4 +16,9 @@ committed="$repo_root/assets/previews/LA03-norm-distance.svg"
 [ -f "$generated" ] || { echo "missing generated LA03 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA03 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA03 preview is stale; regenerate it from the demo" >&2; exit 1; }
+generated="$repo_root/out/LA04-cosine-retrieval.svg"
+committed="$repo_root/assets/previews/LA04-cosine-retrieval.svg"
+[ -f "$generated" ] || { echo "missing generated LA04 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA04 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA04 preview is stale; regenerate it from the demo" >&2; exit 1; }
 echo "assets: fresh"

@@ -1,0 +1,37 @@
+# LA04 cosine similarity and deterministic embedding retrieval.
+include "lib/numerics.mlpl";
+include "lib/vectors.mlpl";
+
+@test {name: "cosine scores canonical direction fixtures", tags: ["LA04", "cosine"]}
+def u:test_cosine_scores() { "Check same, right-angle, opposite, and diagonal directions.";
+  tolerance = 0.000000001;
+  u:assert_eq(u:approx_equal(u:cosine_similarity([1, 0], [2, 0])?, 1, tolerance)?, 1, "same direction")?;
+  u:assert_eq(u:approx_equal(u:cosine_similarity([1, 0], [0, 3])?, 0, tolerance)?, 1, "right angle")?;
+  u:assert_eq(u:approx_equal(u:cosine_similarity([1, 0], [-4, 0])?, -1, tolerance)?, 1, "opposite direction")?;
+  u:assert_eq(u:approx_equal(u:cosine_similarity([1, 0], [1, 1])?, 0.7071067811865475, tolerance)?, 1, "diagonal")
+}
+
+@test {name: "positive magnitude changes do not change cosine", tags: ["LA04", "invariance"]}
+def u:test_cosine_magnitude_invariance() { "Verify that positive rescaling changes length but preserves direction similarity.";
+  tolerance = 0.000000001; baseline = u:cosine_similarity([1, 2], [2, 1])?;
+  u:assert_eq(u:approx_equal(u:cosine_similarity([10, 20], [2, 1])?, baseline, tolerance)?, 1, "query scale changed cosine")?;
+  u:assert_eq(u:approx_equal(u:cosine_similarity([1, 2], [14, 7])?, baseline, tolerance)?, 1, "candidate scale changed cosine")
+}
+
+@test {name: "golden embedding retrieval order is deterministic", tags: ["LA04", "retrieval"]}
+def u:test_cosine_retrieval() { "Rank exact-direction, diagonal, and opposite embeddings with golden scores.";
+  tolerance = 0.000000001;
+  ranked = u:rank_three_by_cosine([1, 0], [2, 0], [1, 1], [-1, 0])?;
+  u:assert_eq(u:approx_equal(ranked.scores, [1, 0.7071067811865475, -1], tolerance)?, 1, "golden scores")?;
+  u:assert_eq(ranked.order, [0, 1, 2], "golden order")
+}
+
+@test {name: "cosine rejects undefined and incompatible directions", tags: ["LA04", "errors"]}
+def u:test_cosine_errors() { "Reject zero norms, empty directions, dimension mismatches, and non-vector ranks.";
+  u:assert_true(is_err(u:cosine_similarity([1, 0], [0, 0])), "zero candidate accepted")?;
+  u:assert_true(is_err(u:cosine_similarity([], [])), "empty directions accepted")?;
+  u:assert_true(is_err(u:cosine_similarity([1], [1, 2])), "dimension mismatch accepted")?;
+  u:assert_true(is_err(u:cosine_similarity([[1, 0]], [[1, 0]])), "matrix directions accepted")
+}
+
+u:run_registered_tests()

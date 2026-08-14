@@ -31,3 +31,13 @@ def u:vector_normalize(vector) { "Return a unit vector, rejecting the zero vecto
   length = u:vector_norm(vector)?;
   if eq(length, 0) { err({kind: "zero_norm", message: "the zero vector has no direction"}) } else { ok(vector / length) }
 }
+def u:cosine_similarity(left, right) { "Compare vector direction by dividing their dot product by both nonzero norms.";
+  if u:same_vector_shape(left, right) {
+    left_norm = u:vector_norm(left)?; right_norm = u:vector_norm(right)?;
+    if eq(left_norm * right_norm, 0) { err({kind: "zero_norm", message: "cosine similarity needs two defined directions"}) } else { ok((u:vector_dot(left, right)?) / (left_norm * right_norm)) }
+  } else { err({kind: "vector_shape", left: shape(left), right: shape(right)}) }
+}
+def u:rank_three_by_cosine(query, first, second, third) { "Score and rank three deterministic embedding candidates by descending cosine similarity.";
+  scores = [u:cosine_similarity(query, first)?, u:cosine_similarity(query, second)?, u:cosine_similarity(query, third)?];
+  ok({scores: scores, order: grade_down(scores)})
+}

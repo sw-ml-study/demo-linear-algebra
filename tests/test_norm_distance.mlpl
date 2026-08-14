@@ -1,0 +1,45 @@
+# LA03 numerical contract, norms, distance, normalization, and boundaries.
+include "lib/numerics.mlpl";
+include "lib/vectors.mlpl";
+
+@test {name: "approximate equality is inclusive and rejects just outside tolerance", tags: ["LA03", "numerics"]}
+def u:test_approx_contract() { "Pin the shared absolute-tolerance boundary on both sides.";
+  tolerance = 0.125;
+  u:assert_eq(u:approx_equal(1.125, 1, tolerance)?, 1, "positive boundary excluded")?;
+  u:assert_eq(u:approx_equal(0.875, 1, tolerance)?, 1, "negative boundary excluded")?;
+  u:assert_eq(u:approx_equal(1.125001, 1, tolerance)?, 0, "just-outside value accepted")?;
+  u:assert_true(is_err(u:approx_equal(1, 1, -0.1)), "negative tolerance accepted")
+}
+
+@test {name: "norm and distance match exact three-four-five fixtures", tags: ["LA03", "norm", "distance"]}
+def u:test_norm_distance() { "Check Euclidean definitions with exact integer-derived lengths.";
+  u:assert_eq(u:vector_norm([3, 4])?, 5, "3-4-5 norm")?;
+  u:assert_eq(u:vector_distance([3, 4], [6, 8])?, 5, "difference norm")?;
+  u:assert_eq(u:vector_distance([3, 4], [3, 4])?, 0, "self distance")
+}
+
+@test {name: "normalization returns unit length and preserves direction", tags: ["LA03", "normalize"]}
+def u:test_normalization() { "Use the shared tolerance for floating-point unit-length evidence.";
+  tolerance = 0.000000001; unit = u:vector_normalize([3, 4])?;
+  u:assert_eq(u:approx_equal(unit, [0.6, 0.8], tolerance)?, 1, "normalized components")?;
+  u:assert_eq(u:approx_equal(u:vector_norm(unit)?, 1, tolerance)?, 1, "unit norm")?;
+  u:assert_eq(u:approx_equal(u:vector_dot(unit, [3, 4])?, 5, tolerance)?, 1, "direction changed")
+}
+
+@test {name: "norm scale and triangle fixtures respect geometric bounds", tags: ["LA03", "laws"]}
+def u:test_norm_laws() { "Check absolute scaling and one triangle-inequality fixture.";
+  x = [3, 4]; y = [-1, 2];
+  u:assert_eq(u:vector_norm(u:vector_scale(-3, x)?)?, 3 * u:vector_norm(x)?, "absolute scale")?;
+  u:assert_true(1 - gt(u:vector_norm(u:vector_add(x, y)?)?, u:vector_norm(x)? + u:vector_norm(y)?), "triangle inequality fixture")
+}
+
+@test {name: "zero and shape policies are explicit", tags: ["LA03", "edges", "errors"]}
+def u:test_norm_errors() { "Keep zero length valid while rejecting its undefined direction and incompatible distance.";
+  u:assert_eq(u:vector_norm([])?, 0, "empty norm")?;
+  u:assert_eq(u:vector_norm([0, 0])?, 0, "zero norm")?;
+  u:assert_true(is_err(u:vector_normalize([0, 0])), "zero direction accepted")?;
+  u:assert_true(is_err(u:vector_normalize([])), "empty direction accepted")?;
+  u:assert_true(is_err(u:vector_distance([1], [1, 2])), "distance dimension mismatch accepted")
+}
+
+u:run_registered_tests()

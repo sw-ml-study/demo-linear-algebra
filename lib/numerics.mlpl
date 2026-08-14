@@ -1,0 +1,6 @@
+# Shared numerical comparison contract for approximate lessons.
+# loops: 0
+
+def u:approx_equal(actual, expected, tolerance) { "Compare same-shaped numeric values componentwise with an inclusive absolute tolerance.";
+  if lt(tolerance, 0) { err({kind: "negative_tolerance", tolerance: tolerance}) } else { if equal(shape(actual), shape(expected)) { ok(reduce_mul(1 - gt(abs(actual - expected), tolerance))) } else { err({kind: "comparison_shape", actual: shape(actual), expected: shape(expected)}) } }
+}

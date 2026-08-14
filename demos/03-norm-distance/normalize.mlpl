@@ -1,0 +1,25 @@
+# Lesson LA03 -- length, distance, and normalization.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/numerics.mlpl";
+include "../../lib/vectors.mlpl";
+include "../../lib/norm_render.mlpl";
+
+tolerance = 0.000000001
+print("WHAT THIS SHOWS -- Euclidean norm is sqrt(dot(v,v)); distance is norm(y-x); normalization divides a nonzero vector by its length.")
+print("PREREQUISITES -- LA01 vectors and LA02 dot products. SHAPES -- vectors:[2], norms/distances:scalar.")
+v = [3, 4]
+w = [6, 8]
+length = u:vector_norm(v)?
+distance = u:vector_distance(v, w)?
+unit = u:vector_normalize(v)?
+unit_length = u:vector_norm(unit)?
+disp([v, w, unit])
+written = write_text("out/LA03-norm-distance.svg", u:norm_distance_svg())
+print("NUMERICAL CONTRACT -- approximate equality uses inclusive absolute tolerance 1e-9; the 3-4-5 fixture itself is exact.")
+print("HOW TO READ THE RESULT -- The left triangle exposes sqrt(3^2+4^2)=5 and the point-to-point difference. Purple is v/5: shorter, same direction, unit length.")
+print("THE POINT -- Norm measures magnitude, distance measures separation, and normalization removes magnitude. The zero vector has no direction and returns Err(zero_norm).")
+if eq(length, 5) * eq(distance, 5) * (u:approx_equal(unit_length, 1, tolerance)?) * is_err(u:vector_normalize([0, 0])) * is_ok(written) {
+  ok({lesson: "LA03", tolerance: tolerance, artifact: "out/LA03-norm-distance.svg"})
+} else { err("LA03 norm invariant failed") }

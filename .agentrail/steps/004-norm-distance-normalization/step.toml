@@ -1,6 +1,6 @@
 number = 4
 slug = "norm-distance-normalization"
-status = "pending"
+status = "in-progress"
 description = "Implement LA03 with a shared approximate-equality contract, documented tolera..."
 role = "production"
 context_files = []

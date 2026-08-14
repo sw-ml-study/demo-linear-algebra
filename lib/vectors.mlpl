@@ -21,3 +21,13 @@ def u:alignment_kind(left, right) { "Classify the sign of a valid dot product as
   score = u:vector_dot(left, right)?;
   if gt(score, 0) { ok("aligned") } else { if lt(score, 0) { ok("opposed") } else { ok("orthogonal") } }
 }
+def u:vector_norm(vector) { "Compute Euclidean length as the square root of the vector's self-dot.";
+  if u:is_vector(vector) { ok(sqrt(u:vector_dot(vector, vector)?)) } else { err({kind: "vector_rank", actual: rank(vector), expected: 1}) }
+}
+def u:vector_distance(left, right) { "Compute Euclidean distance as the norm of the componentwise difference.";
+  if u:same_vector_shape(left, right) { u:vector_norm(left - right) } else { err({kind: "vector_shape", left: shape(left), right: shape(right)}) }
+}
+def u:vector_normalize(vector) { "Return a unit vector, rejecting the zero vector because its direction is undefined.";
+  length = u:vector_norm(vector)?;
+  if eq(length, 0) { err({kind: "zero_norm", message: "the zero vector has no direction"}) } else { ok(vector / length) }
+}

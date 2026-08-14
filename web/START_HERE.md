@@ -7,7 +7,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 |---|---|---|---|---|
 | LA01 | Vectors are feature arrays **(runnable)** | scalar arithmetic | shape, add, and scale rank-1 arrays | one example as a feature vector |
 | LA02 | Dot product measures alignment **(runnable)** | LA01 | element products reduce to one alignment score | logits and embedding scores |
-| LA03 | Length, distance, and normalization | LA02, square root | compute norms and verify unit length within tolerance | normalized representations |
+| LA03 | Length, distance, and normalization **(runnable)** | LA02, square root | compute norms and verify unit length within tolerance | normalized representations |
 | LA04 | Cosine similarity | LA03 | compare direction independently of magnitude, including zero-vector policy | semantic retrieval |
 | LA05 | Linear combinations and span | LA01 | generate combinations and distinguish inside/outside bounded examples | feature synthesis |
 | LA06 | Orthogonality and projection | LA02-LA03 | decompose a vector into projection plus orthogonal residual | dimensionality reduction |

@@ -44,3 +44,16 @@ component product—`4`, `10`, and `18`—before their reduction to `32`.
 - [CLI lesson](demos/02-dot-product/alignment.mlpl)
 - [Standalone web lesson](demos/web/dot_alignment.mlpl)
 - [Native mlplunit coverage](tests/test_dot_product.mlpl)
+
+## Lesson LA03 — length, distance, and normalization
+
+![A 3-4-5 norm triangle, point-to-point distance, and vectors before and after unit normalization](assets/previews/LA03-norm-distance.svg)
+
+The left panel derives length and distance from right-triangle geometry. The
+right panel separates direction from magnitude: `v` and `v/norm(v)` point the
+same way, while only the latter has unit length. Zero-vector normalization is
+explicitly rejected because zero has no direction.
+
+- [CLI lesson](demos/03-norm-distance/normalize.mlpl)
+- [Standalone web lesson](demos/web/norm_distance.mlpl)
+- [Native mlplunit coverage](tests/test_norm_distance.mlpl)

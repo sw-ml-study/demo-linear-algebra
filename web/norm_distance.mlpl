@@ -1,0 +1,41 @@
+# Web Lesson LA03 -- length, distance, and normalization.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES
+# * LA01 vectors and LA02 dot products.
+# * SHAPES
+# * v,w,unit:[2]; length,distance,unit_length:scalar.
+# * EXECUTABLE CLAIM
+# * norm(v)=sqrt(dot(v,v)); distance(v,w)=norm(w-v); norm(v/norm(v))≈1.
+# * NUMERICAL CONTRACT
+# * Approximate equality uses inclusive absolute tolerance 0.000000001.
+# * BOUNDARY
+# * Normalizing [0,0] is undefined; the library returns Err(zero_norm).
+# * WHAT THIS SHOWS
+# * Magnitude, separation, and unit direction are related but distinct.
+# **************************************************************************
+;
+tolerance = 0.000000001  # shared absolute comparison threshold
+v = [3, 4]  # the visible 3-4-5 vector
+w = [6, 8]  # another point in the same coordinate space
+length = sqrt(reduce_add(v * v))  # sqrt(9+16)=5
+distance = sqrt(reduce_add((w - v) * (w - v)))  # length of the difference
+unit = v / length  # same direction, magnitude removed
+unit_length = sqrt(reduce_add(unit * unit))  # approximately one
+disp([v, w, unit])  # exact inputs and approximate normalized output
+1 - gt(abs(unit_length - 1), tolerance)  # one means inside inclusive tolerance
+# **************************************************************************
+# * THE VISUAL
+# * Left: a 3-4-5 triangle and point separation. Right: v and v/5 share a
+# * direction while their lengths differ; the zero-vector policy is explicit.
+# **************************************************************************
+def u:norm_distance_visual() { "Render the LA03 length, distance, and unit-vector witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 900 440\" width=\"900\" height=\"440\" role=\"img\"><title>Norm distance and normalization</title><desc>A three-four-five triangle labels length five. Two points are joined by their difference. A vector and its normalized copy share direction.</desc><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" fill=\"#c0caf5\"/></marker></defs><style>text{font-family:monospace;fill:#c0caf5}.axis{stroke:#565f89;stroke-width:2}.v{fill:none;stroke-width:5;marker-end:url(\23 a)}.base{stroke:#7aa2f7}.height{stroke:#e0af68}.length{stroke:#9ece6a}.distance{stroke:#f7768e}.unit{stroke:#bb9af7}.point{fill:#c0caf5}.panel{fill:#24283b;stroke:#414868;stroke-width:2}</style><rect width=\"900\" height=\"440\" fill=\"#1a1b26\"/><rect class=\"panel\" x=\"20\" y=\"55\" width=\"410\" height=\"340\" rx=\"14\"/><rect class=\"panel\" x=\"450\" y=\"55\" width=\"430\" height=\"340\" rx=\"14\"/><text x=\"30\" y=\"30\" font-size=\"20\">LENGTH AND DISTANCE</text><path class=\"base\" stroke-width=\"4\" d=\"M80 320H320\"/><path class=\"height\" stroke-width=\"4\" d=\"M320 320V140\"/><path class=\"v length\" d=\"M80 320L320 140\"/><text x=\"185\" y=\"345\">3</text><text x=\"330\" y=\"235\">4</text><text x=\"185\" y=\"215\">norm([3,4]) = 5</text><circle class=\"point\" cx=\"95\" cy=\"110\" r=\"7\"/><circle class=\"point\" cx=\"335\" cy=\"170\" r=\"7\"/><path class=\"v distance\" d=\"M95 110L335 170\"/><text x=\"125\" y=\"92\">distance = norm(y-x)</text><text x=\"465\" y=\"30\" font-size=\"20\">NORMALIZATION KEEPS DIRECTION</text><path class=\"axis\" d=\"M500 330H840M520 370V90\"/><path class=\"v base\" d=\"M520 330L800 120\"/><path class=\"v unit\" d=\"M520 330L632 246\"/><text x=\"700\" y=\"175\">v=[4,3], norm=5</text><text x=\"590\" y=\"275\">v/5=[0.8,0.6], norm=1</text><text x=\"665\" y=\"410\" text-anchor=\"middle\">zero vector: normalization returns Err(zero_norm)</text></svg>" }  # infrastructure for checked fixtures
+norm_distance_visual = u:norm_distance_visual()  # bind named visual once
+norm_distance_visual  # display exactly once
+# **************************************************************************
+# * HOW TO READ THE RESULT
+# * Triangle, difference arrow, and shared direction separate three concepts.
+# * THE POINT
+# * Norm is magnitude; distance is difference magnitude; normalization is unit direction.
+# **************************************************************************

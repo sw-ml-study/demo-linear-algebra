@@ -11,6 +11,10 @@ Start with [the syllabus](docs/syllabus.md), read [the implementation
 plan](docs/plan.md), and inspect [the measured capability
 baseline](docs/capability-baseline.md).
 
+The first six-lesson unit is complete; see its [acceptance
+report](docs/foundation-acceptance.md). The next bounded program is [matrices as
+transformations](docs/matrices-saga.md).
+
 Once the foundation harness is available:
 
 ```sh

@@ -1,6 +1,6 @@
 # Implementation plan: linear algebra you can see and use
 
-Status: **planned; foundation saga initialized**.
+Status: **foundation curriculum LA01-LA06 accepted; matrices saga is next**.
 
 This plan turns the brief in `docs/research.txt` into executable teaching
 material and a focused sw-MLPL forcing function. The central question is:

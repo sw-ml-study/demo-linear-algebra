@@ -1,6 +1,6 @@
 number = 7
 slug = "foundation-curriculum-integration"
-status = "pending"
+status = "in-progress"
 description = "Run the complete repository gate; audit lesson names, comments, prologs and e..."
 role = "production"
 context_files = []

@@ -4,7 +4,7 @@ Only one saga is active at a time. Later sagas are deliberately revisable when
 runtime probes or completed lessons expose a smaller upstream requirement.
 No downstream saga modifies `../sw-mlpl`.
 
-## Active — `linear-algebra-foundations`
+## Completed — `linear-algebra-foundations`
 
 1. `repository-and-capability-baseline` — establish the repository harness,
    native mlplunit contract, binary selection, catalog/docs gates, and execute
@@ -30,11 +30,16 @@ the authoritative test runner; every approximate comparison names its
 tolerance; all visuals are demo-produced; and capability claims have executable
 evidence against a pinned interpreter.
 
+Acceptance report: `docs/foundation-acceptance.md`.
+
 ## Queued — `matrices-as-transformations`
 
 Implement LA07-LA10: matrix anatomy, row-column matmul, composition, transpose,
 labeled shapes, 2D determinant/area, and a dense-layer payoff. Measure, but do
 not assume, higher-rank matmul semantics.
+
+Reconciled executable plan: `docs/matrices-saga.md`. Foundation evidence shows
+rank-2 work is unblocked; B1 constrains only higher-rank follow-on lessons.
 
 ## Queued — `systems-rank-conditioning`
 

@@ -1,0 +1,45 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+tab=$(printf '\t')
+lesson_count=0
+while IFS="$tab" read -r id title status cli web; do
+  [ "$id" = id ] && continue
+  case "$id" in LA0[1-6]) ;; *) continue;; esac
+  lesson_count=$((lesson_count + 1))
+  [ "$status" = runnable ] || { echo "$id is not runnable" >&2; exit 1; }
+  [ -f "$repo_root/$cli" ] || { echo "$id missing CLI path: $cli" >&2; exit 1; }
+  [ -f "$repo_root/$web" ] || { echo "$id missing web path: $web" >&2; exit 1; }
+  for phrase in 'WHAT THIS SHOWS' 'PREREQUISITES' 'SHAPES' 'HOW TO READ THE RESULT' 'THE POINT'; do
+    grep -q "$phrase" "$repo_root/$cli" || { echo "$id CLI missing $phrase" >&2; exit 1; }
+  done
+  grep -q 'ok({' "$repo_root/$cli" || { echo "$id CLI is not self-checking" >&2; exit 1; }
+  grep -q 'err(' "$repo_root/$cli" || { echo "$id CLI has no failing invariant" >&2; exit 1; }
+  for phrase in 'WHAT THIS SHOWS' 'PREREQUISITES' 'SHAPES' 'EXECUTABLE CLAIM' 'NUMERICAL CONTRACT' 'BOUNDARY' 'HOW TO READ THE RESULT' 'THE POINT'; do
+    grep -q "$phrase" "$repo_root/$web" || { echo "$id web lesson missing $phrase" >&2; exit 1; }
+  done
+  grep -q 'visual = u:' "$repo_root/$web" || { echo "$id web lesson does not bind its visual" >&2; exit 1; }
+  generated="$repo_root/web/$(basename "$web")"
+  [ -f "$generated" ] || { echo "$id generated web copy missing" >&2; exit 1; }
+  cmp "$repo_root/$web" "$generated" || { echo "$id generated web copy is stale" >&2; exit 1; }
+done < "$repo_root/catalog/lessons.tsv"
+[ "$lesson_count" -eq 6 ] || { echo "expected six runnable foundation lessons, found $lesson_count" >&2; exit 1; }
+
+if find "$repo_root/demos/web" -type f -name '*.mlpl' -exec grep -lE 'include "|write_text\(|read_text\(' {} \; | grep .; then
+  echo "authored web lessons must be standalone and effect-free" >&2
+  exit 1
+fi
+
+for preview in "$repo_root"/assets/previews/LA0[1-6]-*.svg; do
+  grep -q '<title>' "$preview" || { echo "preview lacks title: $preview" >&2; exit 1; }
+  grep -q '<desc>' "$preview" || { echo "preview lacks description: $preview" >&2; exit 1; }
+  if grep -qE '<animate|@keyframes' "$preview"; then
+    grep -q 'prefers-reduced-motion' "$preview" || { echo "animated preview lacks reduced-motion fallback: $preview" >&2; exit 1; }
+  fi
+done
+
+grep -q 'just-outside value accepted' "$repo_root/tests/test_norm_distance.mlpl"
+grep -q 'MLPL v0.20.0' "$repo_root/docs/capability-baseline.md"
+grep -q 'index has 3 components but array has rank 2' "$repo_root/docs/sw-mlpl-blockers.md"
+grep -q '^LA06.*runnable' "$repo_root/catalog/lessons.tsv"
+echo "curriculum: six lessons integrated"

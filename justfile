@@ -18,5 +18,6 @@ web:
 audit:
     ./scripts/check-structure
     ./scripts/check-assets
+    ./scripts/check-curriculum
 
 check: probes demos tests web audit

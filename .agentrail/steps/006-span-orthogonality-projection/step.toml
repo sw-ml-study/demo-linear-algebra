@@ -1,8 +1,9 @@
 number = 6
 slug = "span-orthogonality-projection"
-status = "in-progress"
+status = "completed"
 description = "Implement LA05 and LA06 with linear combinations, dependent-basis and zero-de..."
 role = "production"
 context_files = []
 created_at = "2026-08-14T12:30:42"
-commits = []
+completed_at = "2026-08-14T13:20:43"
+commits = ["99bed8fba60047d27d584227694be6bbdfc65009"]

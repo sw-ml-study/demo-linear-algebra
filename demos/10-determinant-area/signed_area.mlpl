@@ -1,0 +1,24 @@
+# Lesson LA10 -- bounded 2D determinant is signed area scale.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/matrices.mlpl";
+include "../../lib/determinant_render.mlpl";
+
+print("WHAT THIS SHOWS -- For exactly a 2x2 matrix [[a,b],[c,d]], ad-bc is the signed area scale of its transformed basis parallelogram.")
+print("PREREQUISITES -- LA07 transformed basis grids. SHAPES -- each transform:[output=2,input=2], basis/input/output vectors:[2], determinant:scalar.")
+positive = [[2, 1], [0, 1]]
+negative = [[0, 2], [1, 0]]
+singular = [[1, 2], [2, 4]]
+positive_det = u:matrix_determinant2(positive)?
+negative_det = u:matrix_determinant2(negative)?
+singular_det = u:matrix_determinant2(singular)?
+first_collision = u:matrix_transform(singular, [2, 0])?
+second_collision = u:matrix_transform(singular, [0, 1])?
+disp([positive_det, negative_det, singular_det])
+disp([first_collision, second_collision])
+written = write_text("out/LA10-signed-area.svg", u:determinant_svg())
+print("NUMERICAL CONTRACT -- Exact arithmetic checks determinants +2, -2, and 0; distinct [2,0] and [0,1] both map to [2,4] under the singular matrix.")
+print("HOW TO READ THE RESULT -- Blue doubles area without flipping orientation, pink doubles area and flips it, and the gold singular grid collapses the plane onto one line.")
+print("THE POINT -- |det| scales 2D area, its sign records orientation, and zero witnesses lost direction. BOUNDARY -- matrix_determinant2 rejects every shape except [2,2]; it is curriculum code, not a general determinant primitive or invertibility algorithm.")
+if eq(positive_det, 2) * eq(negative_det, -2) * eq(singular_det, 0) * equal(first_collision, second_collision) * is_err(u:matrix_determinant2(reshape(range(9), [3, 3]))) * is_ok(written) { ok({lesson: "LA10", determinants: [positive_det, negative_det, singular_det], artifact: "out/LA10-signed-area.svg"}) } else { err("LA10 signed-area invariant failed") }

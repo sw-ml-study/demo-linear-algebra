@@ -1,0 +1,30 @@
+# Web Lesson LA10 -- bounded 2D determinant as signed area.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA07 transformed basis grids.
+# * SHAPES -- transforms:[output=2,input=2], input/output vectors:[2], determinant:scalar.
+# * EXECUTABLE CLAIM -- exact ad-bc values are +2,-2,0; singular distinct inputs collide at [2,4].
+# * NUMERICAL CONTRACT -- all fixtures use exact integer arithmetic.
+# * BOUNDARY -- the formula is only for [2,2]; it is not a general determinant primitive or inverse test implementation.
+# * WHAT THIS SHOWS -- magnitude scales area, sign records orientation, and zero collapses a 2D grid.
+# **************************************************************************
+;
+positive = [[2, 1], [0, 1]]  # area doubles, orientation preserved
+negative = [[0, 2], [1, 0]]  # area doubles, orientation reversed
+singular = [[1, 2], [2, 4]]  # dependent columns collapse the plane
+positive_det = 2 * 1 - 1 * 0  # ad-bc=+2
+negative_det = 0 * 0 - 2 * 1  # ad-bc=-2
+singular_det = 1 * 4 - 2 * 2  # ad-bc=0
+first_collision = matmul(singular, [2, 0])  # [2,4]
+second_collision = matmul(singular, [0, 1])  # [2,4] from a distinct input
+disp([[positive_det, negative_det, singular_det], first_collision, second_collision])  # signed areas and collapse evidence
+eq(positive_det, 2) * eq(negative_det, -2) * eq(singular_det, 0) * equal(first_collision, second_collision)  # exact claims
+# THE VISUAL -- positive, negative, and zero panels show area scale, orientation flip, and line collapse.
+def u:signed_area_visual() { "Render the LA10 signed-area and singular-collapse witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 960 450\" role=\"img\"><title>Two-dimensional determinant measures signed area change</title><desc>A positive determinant spans a blue area, a negative determinant spans a pink reversed area, and determinant zero collapses the grid onto one gold line.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.axis{stroke:#565f89}.pos{fill:#7aa2f755;stroke:#7aa2f7;stroke-width:3}.neg{fill:#f7768e55;stroke:#f7768e;stroke-width:3}.zero{stroke:#e0af68;stroke-width:5}</style><rect width=\"960\" height=\"450\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">det([[a,b],[c,d]])=ad-bc: signed area scale in 2D</text><rect class=\"p\" x=\"20\" y=\"60\" width=\"290\" height=\"330\"/><text x=\"40\" y=\"92\">det=+2: preserve</text><path class=\"axis\" d=\"M55 340H280M80 370V115\"/><path class=\"pos\" d=\"M80 340L230 290L270 170L120 220Z\"/><text x=\"165\" y=\"375\">area x2, sign +</text><rect class=\"p\" x=\"335\" y=\"60\" width=\"290\" height=\"330\"/><text x=\"355\" y=\"92\">det=-2: reverse</text><path class=\"axis\" d=\"M370 340H595M395 370V115\"/><path class=\"neg\" d=\"M395 340L435 220L585 270L545 390Z\"/><text x=\"480\" y=\"375\">area x2, sign -</text><rect class=\"p\" x=\"650\" y=\"60\" width=\"290\" height=\"330\"/><text x=\"670\" y=\"92\">det=0: singular</text><path class=\"axis\" d=\"M685 340H910M710 370V115\"/><path class=\"zero\" d=\"M680 370L910 140\"/><text x=\"795\" y=\"375\">plane collapses to line</text><text x=\"480\" y=\"425\" text-anchor=\"middle\">|det| scales area; sign records orientation; zero loses a direction</text></svg>" }  # fixed checked fixture
+visual = u:signed_area_visual()  # bind once
+visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- compare parallelogram area and winding; the gold panel has no 2D area left.
+# * THE POINT -- determinant zero gives a concrete collision and information loss in this bounded 2D setting.
+# **************************************************************************

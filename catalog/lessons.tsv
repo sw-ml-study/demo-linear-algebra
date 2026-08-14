@@ -8,3 +8,4 @@ LA06	Orthogonality and projection	runnable	demos/06-projection/shadow.mlpl	demos
 LA07	Matrices store transformations	runnable	demos/07-matrix-transform/basis_grid.mlpl	demos/web/matrix_basis.mlpl
 LA08	Matrix multiplication is composed dot products	runnable	demos/08-matrix-multiplication/row_column.mlpl	demos/web/row_column_matmul.mlpl
 LA09	Composition and transpose	runnable	demos/09-composition-transpose/successive.mlpl	demos/web/composition_transpose.mlpl
+LA10	Determinant as signed area	runnable	demos/10-determinant-area/signed_area.mlpl	demos/web/signed_area.mlpl

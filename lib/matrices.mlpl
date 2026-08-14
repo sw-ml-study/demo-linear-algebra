@@ -38,3 +38,11 @@ def u:matrix_multiply_derived(left, right) { "Derive every rank-two product cell
   while lt(row, dimensions.rows) { column = 0; while lt(column, dimensions.columns) { trace = u:matrix_product_cell(left, right, row, column)?; cells = scatter(cells, row * dimensions.columns + column, trace.sum); column = column + 1 }; row = row + 1 };
   ok(reshape(cells, [dimensions.rows, dimensions.columns]))
 }
+def u:matrix_determinant2(matrix) { "Compute ad-bc for exactly one 2-by-2 matrix; this is bounded curriculum code, not a general determinant.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  if eq(dimensions.rows, 2) * eq(dimensions.columns, 2) { a = u:matrix_cell(matrix, 0, 0)?; b = u:matrix_cell(matrix, 0, 1)?; c = u:matrix_cell(matrix, 1, 0)?; d = u:matrix_cell(matrix, 1, 1)?; ok(a * d - b * c) } else { err({kind: "determinant2_shape", actual: shape(matrix), expected: [2, 2]}) }
+}
+def u:matrix_area_kind2(matrix) { "Classify a 2D transform as preserving or reversing orientation, or collapsing area.";
+  determinant = u:matrix_determinant2(matrix)?;
+  if gt(determinant, 0) { ok("orientation_preserved") } else { if lt(determinant, 0) { ok("orientation_reversed") } else { ok("singular_collapsed") } }
+}

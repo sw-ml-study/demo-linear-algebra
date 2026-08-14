@@ -1,0 +1,34 @@
+# LA10 bounded 2D signed area and singularity.
+include "lib/matrices.mlpl";
+
+@test {name: "bounded determinant computes exact signed area fixtures", tags: ["LA10", "determinant"]}
+def u:test_determinant2_exact() { "Check positive, negative, identity, and scale values.";
+  u:assert_eq(u:matrix_determinant2([[2, 1], [0, 1]])?, 2, "positive determinant")?;
+  u:assert_eq(u:matrix_determinant2([[0, 2], [1, 0]])?, -2, "negative determinant")?;
+  u:assert_eq(u:matrix_determinant2([[1, 0], [0, 1]])?, 1, "identity determinant")?;
+  u:assert_eq(u:matrix_determinant2([[3, 0], [0, 4]])?, 12, "axis scale determinant")
+}
+
+@test {name: "determinant sign classifies orientation", tags: ["LA10", "orientation"]}
+def u:test_determinant_orientation() { "Classify preserved, reversed, and collapsed basis orientation.";
+  u:assert_eq(u:matrix_area_kind2([[2, 1], [0, 1]])?, "orientation_preserved", "positive sign")?;
+  u:assert_eq(u:matrix_area_kind2([[0, 2], [1, 0]])?, "orientation_reversed", "negative sign")?;
+  u:assert_eq(u:matrix_area_kind2([[1, 2], [2, 4]])?, "singular_collapsed", "zero sign")
+}
+
+@test {name: "zero determinant has dependent columns and a collision", tags: ["LA10", "singular", "counterexample"]}
+def u:test_singular_collapse() { "Show distinct inputs mapping to the same point under a collapsed transform.";
+  singular = [[1, 2], [2, 4]];
+  u:assert_eq(u:matrix_determinant2(singular)?, 0, "singular determinant")?;
+  u:assert_eq(u:matrix_transform(singular, [2, 0])?, u:matrix_transform(singular, [0, 1])?, "distinct input collision")?;
+  u:assert_true(1 - equal([2, 0], [0, 1]), "collision inputs were not distinct")
+}
+
+@test {name: "bounded determinant rejects non-two-by-two inputs", tags: ["LA10", "errors"]}
+def u:test_determinant2_boundary() { "Keep the helper honest about its deliberately narrow domain.";
+  u:assert_true(is_err(u:matrix_determinant2([[1, 2, 3], [4, 5, 6]])), "2x3 accepted")?;
+  u:assert_true(is_err(u:matrix_determinant2([1, 2])), "vector accepted")?;
+  u:assert_true(is_err(u:matrix_determinant2(reshape(range(9), [3, 3]))), "3x3 accepted")
+}
+
+u:run_registered_tests()

@@ -29,4 +29,5 @@ done
 grep -q '^LA07.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA08.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA09.*runnable' "$repo_root/catalog/lessons.tsv"
+grep -q '^LA10.*runnable' "$repo_root/catalog/lessons.tsv"
 echo "structure: ok"

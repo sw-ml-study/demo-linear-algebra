@@ -129,3 +129,16 @@ counterexample. It also checks double transpose,
 - [CLI lesson](demos/09-composition-transpose/successive.mlpl)
 - [Standalone web lesson](demos/web/composition_transpose.mlpl)
 - [Native mlplunit coverage](tests/test_composition_transpose.mlpl)
+
+## Lesson LA10 — signed area and singularity
+
+![Positive and negative determinant parallelograms beside a singular grid collapsed onto a line](assets/previews/LA10-signed-area.svg)
+
+The bounded `[2,2]` formula `ad-bc` distinguishes preserved orientation,
+reversed orientation, and zero-area collapse. The singular fixture maps two
+distinct inputs to `[2,4]`, making lost direction visible without pretending
+the repository has a general determinant or inverse primitive.
+
+- [CLI lesson](demos/10-determinant-area/signed_area.mlpl)
+- [Standalone web lesson](demos/web/signed_area.mlpl)
+- [Native mlplunit coverage](tests/test_determinant2.mlpl)

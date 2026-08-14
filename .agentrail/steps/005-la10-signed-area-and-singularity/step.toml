@@ -1,6 +1,6 @@
 number = 5
 slug = "la10-signed-area-and-singularity"
-status = "pending"
+status = "in-progress"
 description = "Implement LA10 using bounded 2D determinant lesson code. Visualize signed ori..."
 role = "production"
 context_files = []

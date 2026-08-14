@@ -5,7 +5,7 @@ tab=$(printf '\t')
 lesson_count=0
 while IFS="$tab" read -r id title status cli web; do
   [ "$id" = id ] && continue
-  case "$id" in LA0[1-9]) ;; *) continue;; esac
+  case "$id" in LA0[1-9]|LA10) ;; *) continue;; esac
   lesson_count=$((lesson_count + 1))
   [ "$status" = runnable ] || { echo "$id is not runnable" >&2; exit 1; }
   [ -f "$repo_root/$cli" ] || { echo "$id missing CLI path: $cli" >&2; exit 1; }
@@ -23,14 +23,14 @@ while IFS="$tab" read -r id title status cli web; do
   [ -f "$generated" ] || { echo "$id generated web copy missing" >&2; exit 1; }
   cmp "$repo_root/$web" "$generated" || { echo "$id generated web copy is stale" >&2; exit 1; }
 done < "$repo_root/catalog/lessons.tsv"
-[ "$lesson_count" -eq 9 ] || { echo "expected nine runnable lessons through LA09, found $lesson_count" >&2; exit 1; }
+[ "$lesson_count" -eq 10 ] || { echo "expected ten runnable lessons through LA10, found $lesson_count" >&2; exit 1; }
 
 if find "$repo_root/demos/web" -type f -name '*.mlpl' -exec grep -lE 'include "|write_text\(|read_text\(' {} \; | grep .; then
   echo "authored web lessons must be standalone and effect-free" >&2
   exit 1
 fi
 
-for preview in "$repo_root"/assets/previews/LA0[1-9]-*.svg; do
+for preview in "$repo_root"/assets/previews/LA*.svg; do
   grep -q '<title>' "$preview" || { echo "preview lacks title: $preview" >&2; exit 1; }
   grep -q '<desc>' "$preview" || { echo "preview lacks description: $preview" >&2; exit 1; }
   if grep -qE '<animate|@keyframes' "$preview"; then
@@ -45,7 +45,9 @@ grep -q '^LA06.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA07.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA08.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA09.*runnable' "$repo_root/catalog/lessons.tsv"
+grep -q '^LA10.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q 'W\*0=0' "$repo_root/docs/syllabus.md"
 grep -q 'shared `inner` dimension is consumed' "$repo_root/docs/syllabus.md"
 grep -q '(AB)^T=B^T A^T' "$repo_root/docs/syllabus.md"
-echo "curriculum: nine lessons integrated through LA09"
+grep -q 'does not claim a general determinant' "$repo_root/docs/syllabus.md"
+echo "curriculum: ten lessons integrated through LA10"

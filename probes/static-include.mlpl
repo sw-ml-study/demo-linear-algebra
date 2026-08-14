@@ -1,0 +1,3 @@
+# Probe: tests and demos can include shared production definitions.
+include "../lib/probe_include.mlpl";
+if eq(u:probe_square(5), 25) { ok({probe: "static-include", value: 25}) } else { err("static include resolution changed") }

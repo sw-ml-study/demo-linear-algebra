@@ -1,0 +1,4 @@
+# Probe expected to fail on the pinned baseline: rank-3 batched matmul.
+a = reshape(range(12) + 1, [2, 2, 3])
+b = reshape(range(12) + 1, [2, 3, 2])
+ok({probe: "higher-rank-matmul", product: matmul(a, b)})

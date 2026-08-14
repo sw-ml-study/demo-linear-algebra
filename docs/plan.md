@@ -80,11 +80,14 @@ The first visual grammar is intentionally small:
 
 ## Capability baseline and blocker boundary
 
-Source inspection on 2026-08-14 finds public support for scalar broadcasting,
+Runtime probes against the pinned 2026-08-14 development binary verify scalar broadcasting,
 `dot`, rank-2 `matmul`, `reshape`, `transpose`, `transpose_axes`, axis
-reductions, axis labels, seeded random arrays, `argmax`, and stable `softmax`.
-The foundation step must execute probes against the configured binary and pin
-its version before promoting any source-inspection result to runtime evidence.
+reductions, axis labels, and static include. The public catalog additionally
+lists seeded random arrays, `argmax`, and stable `softmax`; those become runtime
+claims only when their lesson-level probes execute.
+The exact binary identity and executed results are in
+`docs/capability-baseline.md`; future capability claims must retain that
+source-inspection-versus-runtime distinction.
 
 The public catalog does not expose general solve/inverse/determinant,
 LU/QR/SVD/eigendecomposition/least-squares, or batched matrix multiplication.
@@ -98,8 +101,9 @@ builtins. `docs/sw-mlpl-blockers.md` defines the decision rule:
 - keep affected lessons constrained while recording an executable acceptance
   probe. Never present an unstable toy algorithm as a production-grade solve.
 
-Likely first-class blockers are batched/higher-rank matmul for attention and a
-stable general decomposition/solve boundary for later numerical lessons.
+The first verified blocker is batched/higher-rank matmul for attention. Stable
+general solve and decomposition boundaries remain candidates for later
+numerical lessons.
 Convenience functions such as `outer`, `norm`, or `trace` are not blockers when
 they compose clearly from reshape, elementwise operations, and reductions.
 

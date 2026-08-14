@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+dest=${1:-"$repo_root/web"}
+mkdir -p "$dest"
+for source in "$repo_root"/demos/web/*.mlpl; do
+  [ -f "$source" ] || continue
+  cp "$source" "$dest/$(basename "$source")"
+done
+cp "$repo_root/docs/syllabus.md" "$dest/START_HERE.md"
+echo "web entries written"

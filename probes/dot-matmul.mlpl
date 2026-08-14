@@ -1,0 +1,10 @@
+# Probe: rank-1 dot and rank-2 matrix multiplication.
+x = [1, 2, 3]
+y = [4, 5, 6]
+a = reshape(range(6) + 1, [2, 3])
+b = reshape(range(6) + 1, [3, 2])
+d = dot(x, y)
+m = matmul(a, b)
+if eq(d, 32) * equal(m, [[22, 28], [49, 64]]) {
+  ok({probe: "dot-matmul", dot: d, product: m})
+} else { err("dot or rank-2 matmul behavior changed") }

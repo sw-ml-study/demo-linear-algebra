@@ -1,7 +1,7 @@
 # sw-MLPL linear-algebra capability ledger
 
-Status: **candidate baseline from source inspection; runtime probes pending in
-the foundation saga**.
+Status: **B1 verified; B2 and B3 remain catalog-verified candidates whose
+lesson-level runtime acceptance probes belong to their later sagas**.
 
 A missing convenience builtin is not automatically a blocker. This repository
 calls something blocking only when a planned lesson cannot be expressed
@@ -12,15 +12,19 @@ lesson IDs.
 
 ## Supported baseline to verify
 
-The current public builtin catalog includes `dot`, rank-2 `matmul`, scalar
+Runtime probes now confirm `dot`, rank-2 `matmul`, scalar
 broadcasting, `reshape`, `transpose`, `transpose_axes`, axis reductions, axis
-labels, seeded random arrays, `argmax`, and stable `softmax`. Foundation probes
-must check success cases, shape errors, label propagation, and higher-rank
-rejection/behavior rather than inferring semantics from names.
+labels, and static include on MLPL v0.20.0 build `f77e8041`. Seeded random
+arrays, `argmax`, and stable `softmax` remain public-catalog evidence until a
+lesson needs them. See `docs/capability-baseline.md` for the executed surface.
 
-## B1 — batched and higher-rank matrix multiplication (candidate blocker)
+## B1 — batched and higher-rank matrix multiplication (verified blocker)
 
-Affected: LA20 attention and realistic multi-example/head tensor work.
+Affected: LA20 attention and realistic multi-example/head tensor work. The
+probe `probes/higher-rank-matmul.mlpl` passes compatible `[2,2,3]` and
+`[2,3,2]` operands to `matmul`; v0.20.0 build `f77e8041` exits nonzero with
+`index has 3 components but array has rank 2`. `catalog/probes.tsv` pins that
+failure so an upstream implementation announces itself by changing the gate.
 
 Required behavior, if current `matmul` rejects it:
 

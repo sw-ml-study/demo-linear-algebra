@@ -1,0 +1,8 @@
+# Probe: array shape operations and axis reductions.
+a = reshape(range(6), [2, 3])
+t = transpose(a)
+p = transpose_axes(a, [1, 0])
+rows = reduce_add(a, 1)
+if equal(shape(a), [2, 3]) * equal(shape(t), [3, 2]) * equal(t, p) * equal(rows, [3, 12]) {
+  ok({probe: "array-shape", reshape: shape(a), transpose: shape(t), row_sums: rows})
+} else { err("array shape or reduction behavior changed") }

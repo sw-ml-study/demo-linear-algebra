@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+test -f "$repo_root/mlplunit.conf"
+test -f "$repo_root/catalog/probes.tsv"
+test -f "$repo_root/catalog/lessons.tsv"
+test -f "$repo_root/docs/plan.md"
+test -f "$repo_root/docs/syllabus.md"
+test -f "$repo_root/docs/sw-mlpl-blockers.md"
+test -f "$repo_root/docs/capability-baseline.md"
+test -f "$repo_root/docs/web-lesson-template.mlpl"
+test -f "$repo_root/web/START_HERE.md"
+cmp "$repo_root/docs/syllabus.md" "$repo_root/web/START_HERE.md"
+grep -q 'WHAT THIS SHOWS' "$repo_root/docs/web-lesson-template.mlpl"
+grep -q 'HOW TO READ THE RESULT' "$repo_root/docs/web-lesson-template.mlpl"
+grep -q 'THE POINT' "$repo_root/docs/web-lesson-template.mlpl"
+if find "$repo_root/web" -type f -name '*.mlpl' -exec grep -l 'include "' {} \; | grep .; then
+  echo "web demos must be standalone" >&2
+  exit 1
+fi
+echo "structure: ok"

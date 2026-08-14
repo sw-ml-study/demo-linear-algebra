@@ -1,0 +1,27 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+mlpl=$($repo_root/scripts/select-mlpl)
+while IFS="$(printf '\t')" read -r probe expected diagnostic; do
+  case "$probe" in id|'#'*) continue;; esac
+  path="$repo_root/probes/$probe.mlpl"
+  printf 'probe: %s (expect %s)\n' "$probe" "$expected"
+  if [ "$expected" = success ]; then
+    "$mlpl" --source-dir "$repo_root" "$path"
+  else
+    output_file=$(mktemp "${TMPDIR:-/tmp}/linear-algebra-probe.XXXXXX")
+    if "$mlpl" --source-dir "$repo_root" "$path" >"$output_file" 2>&1; then
+      echo "expected probe failure but command succeeded: $probe" >&2
+      rm -f "$output_file"
+      exit 1
+    fi
+    if ! grep -F "$diagnostic" "$output_file" >/dev/null; then
+      echo "probe failed for the wrong reason: $probe" >&2
+      sed -n '1,12p' "$output_file" >&2
+      rm -f "$output_file"
+      exit 1
+    fi
+    sed -n '1,8p' "$output_file"
+    rm -f "$output_file"
+  fi
+done < "$repo_root/catalog/probes.tsv"

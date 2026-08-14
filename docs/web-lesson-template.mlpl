@@ -1,0 +1,30 @@
+# Web Lesson NN -- concept name.
+# visual: describe the evidence, not the decoration
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES
+# * Name only concepts the learner must already know.
+# * SHAPES
+# * Name every input and output shape, including labeled axes when relevant.
+# * EXECUTABLE CLAIM
+# * State the exact equality, reconstruction, residual, or ordering checked.
+# * NUMERICAL CONTRACT
+# * State exact arithmetic or the tolerance and conditioning assumptions.
+# * BOUNDARY
+# * State what this finite execution does not prove.
+# * WHAT THIS SHOWS
+# * Say what the learner will make observable and why ML uses it.
+# **************************************************************************
+;
+# Define small, concept-named values and functions here. Every statement gets
+# a useful trailing comment. Rendering plumbing is marked as infrastructure.
+
+# Explain what moves or changes, what colors mean, and which claim the visual
+# makes easier to inspect. Assign the visual once and evaluate it exactly once.
+
+# **************************************************************************
+# * HOW TO READ THE RESULT
+# * Name the concrete marks, axes, colors, residual, or equality on screen.
+# * THE POINT
+# * Restate the mathematical relationship and its ML payoff in plain language.
+# **************************************************************************

@@ -1,0 +1,1 @@
+def u:probe_square(x) { "Square a value to prove static include resolution."; x * x }

@@ -1,0 +1,23 @@
+# Native mlplunit smoke contract for the repository harness.
+include "lib/probe_include.mlpl";
+
+@test {name: "shared definitions load once through static include", tags: ["foundation", "include"]}
+def u:test_static_include() { "Verify tests execute the same reusable MLPL definitions as demos.";
+  u:assert_eq(u:probe_square(5), 25, "included function returned the wrong value")
+}
+
+@test {name: "rank-2 linear algebra baseline", tags: ["foundation", "linear-algebra"]}
+def u:test_rank_two_baseline() { "Pin dot, matmul, shape, transpose, reductions, and labels.";
+  a : [sample, feature] = reshape(range(6) + 1, [2, 3]);
+  b : [feature, output] = reshape(range(6) + 1, [3, 2]);
+  product = matmul(a, b);
+  expected : [sample, output] = [[22, 28], [49, 64]];
+  row_sums_expected : [sample] = [6, 15];
+  u:assert_eq(dot([1, 2, 3], [4, 5, 6]), 32, "dot product")?;
+  u:assert_eq(product, expected, "matrix product")?;
+  u:assert_eq(shape(transpose(a)), [3, 2], "transpose shape")?;
+  u:assert_eq(reduce_add(a, 1), row_sums_expected, "row reductions")?;
+  u:assert_eq(labels(product), "sample,output", "matmul labels")
+}
+
+u:run_registered_tests()

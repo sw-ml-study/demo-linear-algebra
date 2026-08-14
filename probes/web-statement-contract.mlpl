@@ -1,0 +1,13 @@
+# **************************************************************************
+# * WHAT THIS SHOWS
+# * Comment narration and a bare semicolon form a browser transcript prolog.
+# **************************************************************************
+;
+visible_value = [1, 2, 3] # The eventual web lesson will visualize this array.
+# **************************************************************************
+# * HOW TO READ THE RESULT
+# * The array is static evidence that the standalone statement executed.
+# * THE POINT
+# * Web lessons need no include or filesystem effects.
+# **************************************************************************
+ok({probe: "web-statement-contract", visible_value: visible_value})

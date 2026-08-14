@@ -1,6 +1,6 @@
 number = 1
 slug = "repository-and-capability-baseline"
-status = "pending"
+status = "in-progress"
 description = "Establish thin just/script entry points, native mlplunit discovery and shared..."
 role = "production"
 context_files = []

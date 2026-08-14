@@ -1,0 +1,1 @@
+Verify current row, column, and cell extraction; empty dimensions; label retention; and mismatch diagnostics against the configured MLPL binary. Establish LA07 library, test, and catalog contracts from executed evidence before choosing helper APIs. Do not modify ../sw-mlpl.

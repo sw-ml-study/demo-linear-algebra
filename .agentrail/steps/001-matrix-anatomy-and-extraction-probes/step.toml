@@ -1,0 +1,8 @@
+number = 1
+slug = "matrix-anatomy-and-extraction-probes"
+status = "pending"
+description = "Verify current row, column, and cell extraction; empty dimensions; label rete..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T14:43:14"
+commits = []

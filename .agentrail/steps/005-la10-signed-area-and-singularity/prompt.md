@@ -1,0 +1,1 @@
+Implement LA10 using bounded 2D determinant lesson code. Visualize signed orientation/area change and a collapsed singular grid; test exact fixtures and avoid claiming a general determinant primitive.

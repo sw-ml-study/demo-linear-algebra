@@ -1,0 +1,8 @@
+number = 5
+slug = "la10-signed-area-and-singularity"
+status = "pending"
+description = "Implement LA10 using bounded 2D determinant lesson code. Visualize signed ori..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T14:43:14"
+commits = []

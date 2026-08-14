@@ -1,0 +1,8 @@
+number = 6
+slug = "matrix-payoff-and-integration"
+status = "pending"
+description = "Connect XW+b to LA07-LA10 in a dense-layer payoff; run the complete gate; aud..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T14:43:14"
+commits = []

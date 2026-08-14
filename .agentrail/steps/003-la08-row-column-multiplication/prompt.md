@@ -1,0 +1,1 @@
+Implement LA08 by deriving every output cell from one row dot one column, cross-check rank-2 matmul, visualize the active row/column accumulator, and reject incompatible inner dimensions with tested diagnostics.

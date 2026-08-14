@@ -1,6 +1,6 @@
-name = "linear-algebra-foundations"
-status = "completed"
-current_step = 7
-created_at = "2026-08-14T12:30:31"
+name = "matrices-as-transformations"
+status = "active"
+current_step = 1
+created_at = "2026-08-14T14:43:03"
 plan_file = ".agentrail/plan.md"
 retroactive = false

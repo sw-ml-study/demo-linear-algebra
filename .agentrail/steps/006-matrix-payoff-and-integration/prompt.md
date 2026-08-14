@@ -1,0 +1,1 @@
+Connect XW+b to LA07-LA10 in a dense-layer payoff; run the complete gate; audit all matrix lessons and previews; publish matrix acceptance; reconcile the systems/rank/conditioning saga from measured indexing and diagnostic behavior.

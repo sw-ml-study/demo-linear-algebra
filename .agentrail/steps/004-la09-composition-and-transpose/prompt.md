@@ -1,0 +1,1 @@
+Implement LA09 with A(Bx)=(AB)x, transpose identities, and named-axis behavior. Add finite counterexamples for invalid reorderings and visualize successive grid transforms versus one composed transform.

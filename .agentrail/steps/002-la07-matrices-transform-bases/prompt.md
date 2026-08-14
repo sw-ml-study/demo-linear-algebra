@@ -1,0 +1,1 @@
+Implement LA07 showing a matrix as stored rows/columns and as a transformation of vectors and basis directions. Add tests, CLI/web lessons, a transformed-basis-grid visual, catalog/syllabus updates, and precise shape/boundary narration.

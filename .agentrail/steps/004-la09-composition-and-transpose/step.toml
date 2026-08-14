@@ -1,0 +1,8 @@
+number = 4
+slug = "la09-composition-and-transpose"
+status = "pending"
+description = "Implement LA09 with A(Bx)=(AB)x, transpose identities, and named-axis behavio..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T14:43:14"
+commits = []

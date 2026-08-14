@@ -6,4 +6,9 @@ committed="$repo_root/assets/previews/LA01-vector-laws.svg"
 [ -f "$generated" ] || { echo "missing generated LA01 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA01 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA01 preview is stale; regenerate it from the demo" >&2; exit 1; }
+generated="$repo_root/out/LA02-dot-alignment.svg"
+committed="$repo_root/assets/previews/LA02-dot-alignment.svg"
+[ -f "$generated" ] || { echo "missing generated LA02 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA02 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA02 preview is stale; regenerate it from the demo" >&2; exit 1; }
 echo "assets: fresh"

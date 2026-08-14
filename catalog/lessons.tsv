@@ -1,6 +1,6 @@
 id	title	status	cli	web
 LA01	Vectors are feature arrays	runnable	demos/01-vectors/vector_laws.mlpl	demos/web/vector_laws.mlpl
-LA02	Dot product measures alignment	planned	-	-
+LA02	Dot product measures alignment	runnable	demos/02-dot-product/alignment.mlpl	demos/web/dot_alignment.mlpl
 LA03	Length distance and normalization	planned	-	-
 LA04	Cosine similarity	planned	-	-
 LA05	Linear combinations and span	planned	-	-

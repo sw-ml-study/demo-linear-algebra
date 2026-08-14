@@ -1,6 +1,6 @@
 number = 3
 slug = "dot-product-and-alignment"
-status = "pending"
+status = "in-progress"
 description = "Implement LA02 from elementwise products and reduction, use the dot builtin a..."
 role = "production"
 context_files = []

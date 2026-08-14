@@ -32,3 +32,15 @@ lands at `x+y`, while `2*x` preserves direction and doubles each component.
 - [CLI lesson](demos/01-vectors/vector_laws.mlpl)
 - [Standalone web lesson](demos/web/vector_laws.mlpl)
 - [Native mlplunit coverage](tests/test_vectors.mlpl)
+
+## Lesson LA02 — dot product measures alignment
+
+![Aligned, orthogonal, and opposed vector pairs above a row-column dot-product accumulation](assets/previews/LA02-dot-alignment.svg)
+
+The upper panel turns the score's sign into visible direction relationships.
+The lower panel keeps matrix multiplication honest by exposing each matching
+component product—`4`, `10`, and `18`—before their reduction to `32`.
+
+- [CLI lesson](demos/02-dot-product/alignment.mlpl)
+- [Standalone web lesson](demos/web/dot_alignment.mlpl)
+- [Native mlplunit coverage](tests/test_dot_product.mlpl)

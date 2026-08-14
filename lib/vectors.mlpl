@@ -14,3 +14,10 @@ def u:vector_scale(scalar, vector) { "Scale every component of a rank-one vector
 def u:zero_vector_like(vector) { "Construct the additive identity with the vector's shape.";
   if u:is_vector(vector) { ok(fill(shape(vector), 0)) } else { err({kind: "vector_rank", actual: rank(vector), expected: 1}) }
 }
+def u:vector_dot(left, right) { "Derive the dot product by multiplying matching components and reducing their sum.";
+  if u:same_vector_shape(left, right) { ok(reduce_add(left * right)) } else { err({kind: "vector_shape", left: shape(left), right: shape(right)}) }
+}
+def u:alignment_kind(left, right) { "Classify the sign of a valid dot product as aligned, orthogonal, or opposed.";
+  score = u:vector_dot(left, right)?;
+  if gt(score, 0) { ok("aligned") } else { if lt(score, 0) { ok("opposed") } else { ok("orthogonal") } }
+}

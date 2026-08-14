@@ -1,0 +1,39 @@
+# Web Lesson LA02 -- the dot product measures alignment.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES
+# * LA01 vector addition and scaling.
+# * SHAPES
+# * row:[3], column:[3], component_products:[3], score:scalar.
+# * EXECUTABLE CLAIM
+# * dot(row,column) equals reduce_add(row*column), here 32.
+# * NUMERICAL CONTRACT
+# * Integer fixtures use exact equality.
+# * BOUNDARY
+# * The sign classifies these non-normalized pairs; it is not cosine similarity.
+# * WHAT THIS SHOWS
+# * A dot product exposes multiply-then-add and turns alignment into one score.
+# **************************************************************************
+;
+row = [1, 2, 3]  # one matrix-like row or feature vector
+column = [4, 5, 6]  # one matching column or comparison vector
+component_products = row * column  # pair coordinates: [4,10,18]
+derived_score = reduce_add(component_products)  # accumulate the three products
+builtin_score = dot(row, column)  # independent language primitive oracle
+disp([row, column, component_products])  # see inputs and every contribution
+equal(derived_score, builtin_score) * eq(derived_score, 32)  # one means derivation and oracle agree
+# **************************************************************************
+# * THE VISUAL
+# * Top: positive, zero, and negative scores for aligned, right-angle, and
+# * opposed fixtures. Bottom: every row-column multiply flows into the sum 32.
+# **************************************************************************
+def u:dot_alignment_visual() { "Render the LA02 alignment and accumulation witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 900 430\" width=\"900\" height=\"430\" role=\"img\"><title>Dot product measures alignment</title><desc>Three vector pairs show positive aligned, zero orthogonal, and negative opposed dot products. A second panel expands one row-column dot product into three products and their sum.</desc><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" fill=\"#c0caf5\"/></marker></defs><style>text{font-family:monospace;fill:#c0caf5}.axis{stroke:#565f89;stroke-width:2}.v{fill:none;stroke-width:5;marker-end:url(\23 a)}.x{stroke:#7aa2f7}.positive{stroke:#9ece6a}.zero{stroke:#e0af68}.negative{stroke:#f7768e}.box{fill:#24283b;stroke:#7aa2f7;stroke-width:2}.plus{fill:#9ece6a;font-size:22px}</style><rect width=\"900\" height=\"430\" fill=\"#1a1b26\"/><text x=\"30\" y=\"30\" font-size=\"20\">DOT SIGN: same direction +, right angle 0, opposite direction -</text><path class=\"axis\" d=\"M30 145H870\"/><g transform=\"translate(130 145)\"><path class=\"v x\" d=\"M0 0L95 -70\"/><path class=\"v positive\" d=\"M0 0L145 -45\"/><text x=\"-35\" y=\"38\">aligned: +5</text></g><g transform=\"translate(445 145)\"><path class=\"v x\" d=\"M0 0L100 0\"/><path class=\"v zero\" d=\"M0 0L0 -95\"/><text x=\"-55\" y=\"38\">orthogonal: 0</text></g><g transform=\"translate(750 145)\"><path class=\"v x\" d=\"M0 0L90 -55\"/><path class=\"v negative\" d=\"M0 0L-90 55\"/><text x=\"-55\" y=\"38\">opposed: -5</text></g><text x=\"30\" y=\"225\" font-size=\"20\">ROW-COLUMN DOT: [1,2,3] dot [4,5,6]</text><rect class=\"box\" x=\"45\" y=\"260\" width=\"180\" height=\"75\" rx=\"12\"/><rect class=\"box\" x=\"285\" y=\"260\" width=\"180\" height=\"75\" rx=\"12\"/><rect class=\"box\" x=\"525\" y=\"260\" width=\"180\" height=\"75\" rx=\"12\"/><text x=\"135\" y=\"292\" text-anchor=\"middle\">1 * 4</text><text x=\"135\" y=\"318\" text-anchor=\"middle\">= 4</text><text x=\"375\" y=\"292\" text-anchor=\"middle\">2 * 5</text><text x=\"375\" y=\"318\" text-anchor=\"middle\">= 10</text><text x=\"615\" y=\"292\" text-anchor=\"middle\">3 * 6</text><text x=\"615\" y=\"318\" text-anchor=\"middle\">= 18</text><text class=\"plus\" x=\"250\" y=\"305\">+</text><text class=\"plus\" x=\"490\" y=\"305\">+</text><path class=\"v positive\" d=\"M705 298H805\"/><text x=\"840\" y=\"305\" text-anchor=\"middle\" font-size=\"24\">32</text><text x=\"450\" y=\"390\" text-anchor=\"middle\">multiply matching components, then reduce_add([4,10,18])</text></svg>" }  # infrastructure for these exact fixtures
+dot_alignment_visual = u:dot_alignment_visual()  # bind the named visual once
+dot_alignment_visual  # display it exactly once
+# **************************************************************************
+# * HOW TO READ THE RESULT
+# * Arrow-pair sign is above; component products and their reduction are below.
+# * THE POINT
+# * Dot converts two matching feature vectors into one alignment score.
+# **************************************************************************

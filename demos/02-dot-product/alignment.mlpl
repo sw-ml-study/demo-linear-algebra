@@ -1,0 +1,23 @@
+# Lesson LA02 -- the dot product measures alignment.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/vectors.mlpl";
+include "../../lib/dot_render.mlpl";
+
+print("WHAT THIS SHOWS -- Multiply matching vector components, then add them. The dot-product sign distinguishes aligned, right-angle, and opposed fixtures.")
+print("PREREQUISITES -- LA01 vector addition/scaling. SHAPES -- left,right:[3], products:[3], dot:scalar.")
+row = [1, 2, 3]
+column = [4, 5, 6]
+products = row * column
+derived = u:vector_dot(row, column)?
+oracle = dot(row, column)
+alignment_labels = [u:alignment_kind([2, 1], [2, 1])?, u:alignment_kind([1, 0], [0, 3])?, u:alignment_kind([2, 1], [-2, -1])?]
+disp([row, column, products])
+print("The component products [4,10,18] reduce to 32; builtin dot independently returns the same scalar.")
+written = write_text("out/LA02-dot-alignment.svg", u:dot_alignment_svg())
+print("HOW TO READ THE RESULT -- Green arrows have a positive score, the right-angle gold pair scores zero, and opposed pink/blue arrows score negative. The lower boxes expose every multiply and add.")
+print("THE POINT -- Dot products turn two same-shaped feature vectors into one alignment score. These examples classify their pairs; sign alone does not measure normalized angle or prove a theorem for all vectors.")
+if eq(derived, 32) * eq(derived, oracle) * equal(alignment_labels, ["aligned", "orthogonal", "opposed"]) * is_ok(written) {
+  ok({lesson: "LA02", checks: 4, artifact: "out/LA02-dot-alignment.svg"})
+} else { err("LA02 dot-product invariant failed") }

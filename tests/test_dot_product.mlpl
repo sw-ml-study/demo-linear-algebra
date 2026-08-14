@@ -1,0 +1,44 @@
+# LA02 dot-product derivation, laws, classification, and boundaries.
+include "lib/vectors.mlpl";
+
+@test {name: "derived dot matches component products and builtin oracle", tags: ["LA02", "dot"]}
+def u:test_dot_derivation() { "Cross-check multiply-then-reduce against the independent builtin.";
+  left = [1, 2, 3]; right = [4, 5, 6];
+  u:assert_eq(left * right, [4, 10, 18], "component products")?;
+  u:assert_eq(u:vector_dot(left, right)?, 32, "derived score")?;
+  u:assert_eq(u:vector_dot(left, right)?, dot(left, right), "builtin oracle")
+}
+
+@test {name: "finite dot fixtures obey symmetry and linearity", tags: ["LA02", "laws"]}
+def u:test_dot_laws() { "Check symmetry, scalar compatibility, and additivity on explicit vectors.";
+  x = [2, 1, -1]; y = [1, 2, 4]; z = [-3, 5, 2];
+  u:assert_eq(u:vector_dot(x, y)?, u:vector_dot(y, x)?, "symmetry")?;
+  u:assert_eq(u:vector_dot(u:vector_scale(3, x)?, y)?, 3 * u:vector_dot(x, y)?, "scalar compatibility")?;
+  u:assert_eq(u:vector_dot(u:vector_add(x, z)?, y)?, u:vector_dot(x, y)? + u:vector_dot(z, y)?, "additivity")
+}
+
+@test {name: "dot sign distinguishes three visible alignment fixtures", tags: ["LA02", "alignment"]}
+def u:test_alignment_signs() { "Pin positive, zero, and negative scores to readable classifications.";
+  u:assert_eq(u:alignment_kind([2, 1], [2, 1])?, "aligned", "positive score")?;
+  u:assert_eq(u:alignment_kind([1, 0], [0, 3])?, "orthogonal", "zero score")?;
+  u:assert_eq(u:alignment_kind([2, 1], [-2, -1])?, "opposed", "negative score")
+}
+
+@test {name: "a wrong component contribution breaks the accumulated score", tags: ["LA02", "counterexample"]}
+def u:test_dot_counterexample() { "Expose one altered product rather than accepting the wrong reduction.";
+  u:assert_true(1 - eq(reduce_add([4, 10, 19]), u:vector_dot([1, 2, 3], [4, 5, 6])?), "perturbed contribution was accepted")
+}
+
+@test {name: "dot handles empty and singleton vectors", tags: ["LA02", "edges"]}
+def u:test_dot_edges() { "Pin the additive identity reduction and one-component case.";
+  u:assert_eq(u:vector_dot([], [])?, 0, "empty dot identity")?;
+  u:assert_eq(u:vector_dot([-3], [4])?, -12, "singleton dot")
+}
+
+@test {name: "dot rejects mismatched dimensions and non-vector ranks", tags: ["LA02", "errors"]}
+def u:test_dot_errors() { "Reject incompatible feature counts and matrix inputs before multiplication.";
+  u:assert_true(is_err(u:vector_dot([1, 2], [1, 2, 3])), "dimension mismatch accepted")?;
+  u:assert_true(is_err(u:vector_dot([[1, 2]], [[3, 4]])), "matrix dot accepted as vector dot")
+}
+
+u:run_registered_tests()

@@ -1,0 +1,34 @@
+# LA07 matrices as transformations of vectors and basis directions.
+include "lib/matrices.mlpl";
+
+@test {name: "matrix columns equal transformed standard basis vectors", tags: ["LA07", "basis"]}
+def u:test_matrix_basis_images() { "Pin the column interpretation of a 2D transformation.";
+  weights = [[2, 1], [1, 2]];
+  u:assert_eq(u:matrix_transform(weights, [1, 0])?, u:matrix_column(weights, 0)?, "first basis image")?;
+  u:assert_eq(u:matrix_transform(weights, [0, 1])?, u:matrix_column(weights, 1)?, "second basis image")
+}
+
+@test {name: "matrix transformation preserves a bounded linear combination", tags: ["LA07", "linearity"]}
+def u:test_matrix_linear_combination() { "Check additivity and scaling on explicit integer fixtures.";
+  weights = [[2, 1], [1, 2]]; x = [1, -1]; y = [2, 3]; scalar = -2;
+  u:assert_eq(u:matrix_transform(weights, x + y)?, u:matrix_transform(weights, x)? + u:matrix_transform(weights, y)?, "additivity")?;
+  u:assert_eq(u:matrix_transform(weights, scalar * x)?, scalar * u:matrix_transform(weights, x)?, "homogeneity")?;
+  u:assert_eq(u:matrix_transform(weights, [0, 0])?, [0, 0], "origin must remain fixed")
+}
+
+@test {name: "rectangular matrix maps input dimension to output dimension", tags: ["LA07", "shapes"]}
+def u:test_rectangular_transform_shape() { "Name the [output,input] convention on a non-square example.";
+  weights : [output, input] = [[1, 2, 3], [4, 5, 6]]; result = u:matrix_transform(weights, [1, 0, -1])?; expected : [output] = [-2, -2];
+  u:assert_eq(shape(result), [2], "output vector shape")?;
+  u:assert_eq(result, expected, "rectangular transform value")?;
+  u:assert_eq(labels(result), "output", "output axis label")
+}
+
+@test {name: "matrix transformation rejects rank and inner-dimension errors", tags: ["LA07", "errors"]}
+def u:test_matrix_transform_errors() { "Reject wrong-rank weights, wrong-rank inputs, and incompatible input width.";
+  u:assert_true(is_err(u:matrix_transform([1, 2], [1, 2])), "vector accepted as matrix")?;
+  u:assert_true(is_err(u:matrix_transform([[1, 2], [3, 4]], [[1, 2]])), "matrix accepted as vector")?;
+  u:assert_true(is_err(u:matrix_transform([[1, 2], [3, 4]], [1, 2, 3])), "wrong input width accepted")
+}
+
+u:run_registered_tests()

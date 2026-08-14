@@ -89,3 +89,16 @@ orthogonal to `b`, and the two reconstruct the original vector.
 - [LA05 CLI](demos/05-span/combinations.mlpl) and [web](demos/web/span.mlpl)
 - [LA06 CLI](demos/06-projection/shadow.mlpl) and [web](demos/web/projection.mlpl)
 - [Native mlplunit coverage](tests/test_span_projection.mlpl)
+
+## Lesson LA07 — matrices transform basis directions
+
+![A square basis grid transformed into a slanted grid whose colored basis arrows are the matrix columns](assets/previews/LA07-matrix-basis.svg)
+
+For `W:[output,input]`, each column is where one input basis direction lands,
+and each row computes one output coordinate. The checked 2D fixture maps
+`e1` to `[2,1]` and `e2` to `[1,2]`, so their combinations form the slanted
+grid while the origin remains fixed.
+
+- [CLI lesson](demos/07-matrix-transform/basis_grid.mlpl)
+- [Standalone web lesson](demos/web/matrix_basis.mlpl)
+- [Native mlplunit coverage](tests/test_matrix_transform.mlpl)

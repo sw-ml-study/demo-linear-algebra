@@ -11,7 +11,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA04 | Cosine similarity **(runnable)** | LA03 | compare direction independently of magnitude, including zero-vector policy | semantic retrieval |
 | LA05 | Linear combinations and span **(runnable)** | LA01 | generate combinations and distinguish independent/dependent bounded examples | feature synthesis |
 | LA06 | Orthogonality and projection **(runnable)** | LA02-LA03 | decompose a vector into projection plus orthogonal residual | dimensionality reduction |
-| LA07 | Matrices store transformations | LA01 | read rows/columns and map basis vectors | weights as transformations |
+| LA07 | Matrices store transformations **(runnable)** | LA01, LA05 | read rows/columns, map basis vectors, and inspect a transformed grid | weights as transformations |
 | LA08 | Matrix multiplication is composed dot products | LA02, LA07 | trace row-column products and validate shapes | dense layers |
 | LA09 | Composition and transpose | LA08 | verify `A(Bx)=(AB)x` and transpose identities | chained layers and Q/K scores |
 | LA10 | Determinant as signed area (2D first) | LA07 | relate a bounded formula to a transformed basis grid | volume change and singularity |
@@ -30,6 +30,12 @@ Every lesson names what it does **not** establish. Finite fixtures demonstrate
 a law on those values; they do not prove the general theorem. Iterative demos
 report tolerance, iteration limit, and residual; they do not claim convergence
 for arbitrary input.
+
+LA07 uses the `[output,input]` convention: multiplying `W:[2,2]` by `x:[2]`
+returns `W*x:[2]`. Its two columns are `W*e1` and `W*e2`; their integer
+combinations create the transformed grid. The exact fixture checks additivity,
+scaling, and `W*0=0`, but does not prove those laws for every matrix or add a
+translation term.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

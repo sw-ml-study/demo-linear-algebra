@@ -1,0 +1,28 @@
+# Web Lesson LA07 -- matrix columns are transformed basis directions.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA01 vectors and LA05 linear combinations.
+# * SHAPES -- W:[output=2,input=2], e1,e2,x:[input=2], W*x:[output=2].
+# * EXECUTABLE CLAIM -- W*e1=column 0, W*e2=column 1, and W*(e1+e2)=W*e1+W*e2.
+# * NUMERICAL CONTRACT -- all checks use exact integer arithmetic.
+# * BOUNDARY -- one finite 2D fixture does not prove linearity; W*0=0 shows a matrix alone cannot translate.
+# * WHAT THIS SHOWS -- columns store transformed basis directions; rows compute output coordinates.
+# **************************************************************************
+;
+weights : [output, input] = [[2, 1], [1, 2]]  # two outputs from two input features
+e1 : [input] = [1, 0]  # first input basis direction
+e2 : [input] = [0, 1]  # second input basis direction
+first_image = matmul(weights, e1)  # [2,1], equal to column zero
+second_image = matmul(weights, e2)  # [1,2], equal to column one
+combined_image = matmul(weights, e1 + e2)  # [3,3]
+disp([weights, first_image, second_image, combined_image])  # numeric transformation evidence
+reduce_mul(eq(first_image, [2, 1])) * reduce_mul(eq(second_image, [1, 2])) * equal(combined_image, first_image + second_image) * reduce_mul(eq(matmul(weights, [0, 0]), [0, 0]))  # numeric claims; labels remain semantic metadata
+# THE VISUAL -- blue and green basis arrows become the two matrix columns; their combinations form the gold slanted grid.
+def u:matrix_basis_visual() { "Render the LA07 basis-grid transformation witness."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 920 460\" role=\"img\"><title>A matrix transforms basis directions and their grid</title><desc>The identity square grid becomes a slanted grid. Blue e1 maps to [2,1], green e2 maps to [1,2], and their sum reaches [3,3].</desc><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" fill=\"#c0caf5\"/></marker></defs><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.g{fill:none;stroke:#565f89;stroke-width:2}.m{stroke:#e0af68}.v{fill:none;stroke-width:5;marker-end:url(#a)}.a{stroke:#7aa2f7}.b{stroke:#9ece6a}.s{fill:#f7768e}</style><rect width=\"920\" height=\"460\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">W=[[2,1],[1,2]]: columns are W e1 and W e2</text><rect class=\"p\" x=\"25\" y=\"55\" width=\"410\" height=\"350\"/><rect class=\"p\" x=\"485\" y=\"55\" width=\"410\" height=\"350\"/><text x=\"45\" y=\"88\">INPUT BASIS GRID</text><path class=\"g\" d=\"M85 355H385M85 295H385M85 235H385M85 175H385M85 115H385M115 385V85M175 385V85M235 385V85M295 385V85M355 385V85\"/><path class=\"v a\" d=\"M175 295L295 295\"/><path class=\"v b\" d=\"M175 295L175 175\"/><text x=\"505\" y=\"88\">TRANSFORMED GRID</text><path class=\"g m\" d=\"M515 355L815 205M545 385L845 235M575 415L875 265M515 295L665 370M575 175L875 325M515 235L815 385\"/><path class=\"v a\" d=\"M575 325L755 235\"/><path class=\"v b\" d=\"M575 325L665 145\"/><circle class=\"s\" cx=\"845\" cy=\"55\" r=\"8\"/><text x=\"620\" y=\"435\">W(e1+e2)=[3,3]=W e1+W e2</text></svg>" }  # fixed checked fixture
+visual = u:matrix_basis_visual()  # bind once
+visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- each colored input axis maps to the same-colored column; the gold grid follows their combinations.
+# * THE POINT -- a weight matrix is a function on features, completely determined by where it sends the basis directions.
+# **************************************************************************

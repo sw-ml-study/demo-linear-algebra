@@ -26,4 +26,5 @@ for lesson in "$repo_root"/web/*.mlpl; do
   grep -q 'HOW TO READ THE RESULT' "$lesson"
   grep -q 'THE POINT' "$lesson"
 done
+grep -q '^LA07.*runnable' "$repo_root/catalog/lessons.tsv"
 echo "structure: ok"

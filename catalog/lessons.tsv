@@ -5,3 +5,4 @@ LA03	Length distance and normalization	runnable	demos/03-norm-distance/normalize
 LA04	Cosine similarity	runnable	demos/04-cosine-similarity/retrieval.mlpl	demos/web/cosine_retrieval.mlpl
 LA05	Linear combinations and span	runnable	demos/05-span/combinations.mlpl	demos/web/span.mlpl
 LA06	Orthogonality and projection	runnable	demos/06-projection/shadow.mlpl	demos/web/projection.mlpl
+LA07	Matrices store transformations	runnable	demos/07-matrix-transform/basis_grid.mlpl	demos/web/matrix_basis.mlpl

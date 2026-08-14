@@ -1,6 +1,6 @@
 number = 2
 slug = "la07-matrices-transform-bases"
-status = "pending"
+status = "in-progress"
 description = "Implement LA07 showing a matrix as stored rows/columns and as a transformatio..."
 role = "production"
 context_files = []

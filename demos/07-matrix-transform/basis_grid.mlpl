@@ -1,0 +1,24 @@
+# Lesson LA07 -- matrix columns are transformed basis directions.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/matrices.mlpl";
+include "../../lib/matrix_render.mlpl";
+
+print("WHAT THIS SHOWS -- A matrix stores a linear transformation: column j is where input basis direction e_j lands, while each row computes one output coordinate.")
+print("PREREQUISITES -- LA01 vectors and LA05 linear combinations. SHAPES -- W:[output=2,input=2], e1,e2,x:[input=2], W*x:[output=2].")
+weights : [output, input] = [[2, 1], [1, 2]]
+e1 : [input] = [1, 0]
+e2 : [input] = [0, 1]
+first_image = u:matrix_transform(weights, e1)?
+second_image = u:matrix_transform(weights, e2)?
+combined_image = u:matrix_transform(weights, e1 + e2)?
+disp(weights)
+disp([u:matrix_row(weights, 0)?, u:matrix_column(weights, 0)?, u:matrix_column(weights, 1)?, first_image, second_image, combined_image])
+written = write_text("out/LA07-matrix-basis.svg", u:matrix_basis_svg())
+print("NUMERICAL CONTRACT -- Exact integer arithmetic checks W*e1=column 0, W*e2=column 1, and W*(e1+e2)=W*e1+W*e2.")
+print("HOW TO READ THE RESULT -- Blue and green input axes become the blue [2,1] and green [1,2] matrix columns; every integer combination becomes the slanted gold grid.")
+print("THE POINT -- Weight columns say where input features go and rows say how output features are scored. BOUNDARY -- this finite 2D fixture does not prove linearity generally, and a matrix alone cannot translate because W*0=0.")
+bad_shape = u:matrix_transform(weights, [1, 0, 1])
+zero_image = u:matrix_transform(weights, [0, 0])?
+if reduce_mul(eq(first_image, [2, 1])) * reduce_mul(eq(second_image, [1, 2])) * equal(combined_image, first_image + second_image) * reduce_mul(eq(zero_image, [0, 0])) * is_err(bad_shape) * is_ok(written) { ok({lesson: "LA07", matrix_shape: shape(weights), input_shape: shape(e1), output_shape: shape(first_image), artifact: "out/LA07-matrix-basis.svg"}) } else { err("LA07 matrix transformation invariant failed") }

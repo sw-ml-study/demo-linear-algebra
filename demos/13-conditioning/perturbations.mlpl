@@ -1,0 +1,25 @@
+# Lesson LA13 -- conditioning separates residual from solution accuracy.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/systems.mlpl";
+include "../../lib/conditioning_render.mlpl";
+
+print("WHAT THIS SHOWS -- Conditioning asks how strongly a system's solution reacts to a small input change; a small residual alone does not guarantee an accurate solution.")
+print("PREREQUISITES -- LA11 solutions/residuals and LA12 near-zero pivots. SHAPES -- A:[equation=2,unknown=2], b,delta-b,x,delta-x:[2], norms/amplification:scalars.")
+tolerance = 0.000000000001
+well = u:conditioning_report2([[1, 0], [0, 1]], [1, 1], [1, 1.000001], tolerance)?
+near_a = [[1, 1], [1, 1.000001]]
+near = u:conditioning_report2(near_a, [2, 2.000001], [2, 2.000002], tolerance)?
+true_solution = [1, 1]
+wrong_candidate = [2, 0]
+small_residual = u:system_residual(near_a, wrong_candidate, matmul(near_a, true_solution))?
+solution_error = u:vector_delta_norm(wrong_candidate, true_solution)?
+disp([well.target_delta, well.solution_delta, well.absolute_amplification])
+disp([near.target_delta, near.solution_delta, near.absolute_amplification])
+disp([small_residual.norm, solution_error])
+written = write_text("out/LA13-conditioning.svg", u:conditioning_svg())
+print("NUMERICAL CONTRACT -- Solver threshold is |det|<=1e-12; absolute amplification is ||delta-x||/||delta-b||. Identity gives 1; the near-singular fixture exceeds 1e6.")
+print("HOW TO READ THE RESULT -- Equal blue target changes produce a tiny green solution response for identity but a long pink response near singularity; below, residual ~1e-6 sits beside solution error sqrt(2).")
+print("THE POINT -- Residual measures equation fit, while conditioning controls how that fit relates to parameter accuracy. BOUNDARY -- this absolute fixture ratio is not a scale-invariant general condition number or stable condition estimator.")
+if eq(well.absolute_amplification, 1) * gt(near.absolute_amplification, 1000000) * lt(small_residual.norm, 0.00001) * gt(solution_error, 1) * is_err(u:conditioning_report2([[1, 1], [2, 2]], [2, 4], [2, 5], tolerance)) * is_ok(written) { ok({lesson: "LA13", well_amplification: well.absolute_amplification, near_amplification: near.absolute_amplification, residual: small_residual.norm, solution_error: solution_error, artifact: "out/LA13-conditioning.svg"}) } else { err("LA13 conditioning invariant failed") }

@@ -179,3 +179,16 @@ unique, inconsistent, and underdetermined systems without presenting this
 - [CLI lesson](demos/12-elimination/row_reduction.mlpl)
 - [Standalone web lesson](demos/web/elimination.mlpl)
 - [Native mlplunit coverage](tests/test_elimination2.mlpl)
+
+## Lesson LA13 — conditioning and reliability
+
+![Equal tiny target perturbations produce tiny and huge solution changes, above a tiny-residual large-error comparison](assets/previews/LA13-conditioning.svg)
+
+An identity control has perturbation amplification one. An almost singular
+system amplifies the same `10⁻⁶` target change by more than one million, and
+a separate wrong candidate demonstrates why a tiny residual does not certify
+an accurate parameter vector.
+
+- [CLI lesson](demos/13-conditioning/perturbations.mlpl)
+- [Standalone web lesson](demos/web/conditioning.mlpl)
+- [Native mlplunit coverage](tests/test_conditioning2.mlpl)

@@ -5,7 +5,7 @@ tab=$(printf '\t')
 lesson_count=0
 while IFS="$tab" read -r id title status cli web; do
   [ "$id" = id ] && continue
-  case "$id" in LA0[1-9]|LA1[0-2]) ;; *) continue;; esac
+  case "$id" in LA0[1-9]|LA1[0-3]) ;; *) continue;; esac
   lesson_count=$((lesson_count + 1))
   [ "$status" = runnable ] || { echo "$id is not runnable" >&2; exit 1; }
   [ -f "$repo_root/$cli" ] || { echo "$id missing CLI path: $cli" >&2; exit 1; }
@@ -23,7 +23,7 @@ while IFS="$tab" read -r id title status cli web; do
   [ -f "$generated" ] || { echo "$id generated web copy missing" >&2; exit 1; }
   cmp "$repo_root/$web" "$generated" || { echo "$id generated web copy is stale" >&2; exit 1; }
 done < "$repo_root/catalog/lessons.tsv"
-[ "$lesson_count" -eq 12 ] || { echo "expected twelve runnable lessons through LA12, found $lesson_count" >&2; exit 1; }
+[ "$lesson_count" -eq 13 ] || { echo "expected thirteen runnable lessons through LA13, found $lesson_count" >&2; exit 1; }
 
 if find "$repo_root/demos/web" -type f -name '*.mlpl' -exec grep -lE 'include "|write_text\(|read_text\(' {} \; | grep .; then
   echo "authored web lessons must be standalone and effect-free" >&2
@@ -48,6 +48,7 @@ grep -q '^LA09.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA10.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA11.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA12.*runnable' "$repo_root/catalog/lessons.tsv"
+grep -q '^LA13.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q 'W\*0=0' "$repo_root/docs/syllabus.md"
 grep -q 'shared `inner` dimension is consumed' "$repo_root/docs/syllabus.md"
 grep -q '(AB)^T=B^T A^T' "$repo_root/docs/syllabus.md"
@@ -57,4 +58,5 @@ grep -q 'B1 remains verified' "$repo_root/docs/matrix-acceptance.md"
 grep -q 'Reconciled executable plan: `docs/systems-saga.md`' "$repo_root/docs/sagas.md"
 grep -q '|det|<=1e-9' "$repo_root/docs/syllabus.md"
 grep -q 'production-grade general elimination' "$repo_root/docs/syllabus.md"
-echo "curriculum: twelve lessons integrated through LA12"
+grep -q 'does not certify accurate parameters' "$repo_root/docs/syllabus.md"
+echo "curriculum: thirteen lessons integrated through LA13"

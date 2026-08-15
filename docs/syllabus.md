@@ -17,7 +17,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA10 | Determinant as signed area (2D first) **(runnable)** | LA07 | classify exact positive, negative, and zero area fixtures | volume change and singularity |
 | LA11 | Linear systems and residuals **(runnable)** | LA08, LA10 | classify bounded unique, inconsistent, and underdetermined fixtures with independent residuals | fitting parameters |
 | LA12 | Elimination and rank **(runnable)** | LA11 | trace guarded row swaps/elimination and compare coefficient/augmented ranks | identifiability |
-| LA13 | Conditioning | LA03, LA11 | show small input changes causing large solution changes | numerical reliability |
+| LA13 | Conditioning **(runnable)** | LA03, LA11-LA12 | compare perturbation amplification and separate residual from solution error | numerical reliability |
 | LA14 | Gram-Schmidt and QR | LA06-LA08 | construct an orthogonal basis and measure reconstruction error | stable feature bases |
 | LA15 | Eigenvectors by bounded iteration | LA08, LA13 | inspect convergence and a non-convergent/ambiguous case | repeated dynamics |
 | LA16 | SVD and low-rank approximation | LA14-LA15 | reconstruct at several ranks and plot error | compression |
@@ -69,6 +69,13 @@ echelon state, and unique RREF. Every division follows `|pivot|>1e-9`.
 Coefficient and augmented ranks distinguish unique `2=2`, inconsistent `1<2`,
 and underdetermined `1=1<2` fixtures. This transparent trace is not a
 production-grade general elimination routine.
+
+LA13 compares the absolute fixture ratio `||delta-x||/||delta-b||`. Identity
+has amplification one, while the near-singular pair exceeds one million under
+a `1e-12` solver threshold. A separate wrong candidate has residual about
+`1e-6` but solution error `sqrt(2)`, proving on this fixture that small residual
+does not certify accurate parameters. The ratio is not claimed to be a
+scale-invariant general condition number or estimator.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

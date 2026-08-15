@@ -1,6 +1,6 @@
 number = 4
 slug = "la13-conditioning"
-status = "pending"
+status = "in-progress"
 description = "Implement LA13 conditioning with paired nearby systems, perturbation ratios, ..."
 role = "production"
 context_files = []

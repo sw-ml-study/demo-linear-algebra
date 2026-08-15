@@ -40,3 +40,10 @@ def u:eliminate_system2(coefficients, targets, tolerance) { "Trace Gaussian elim
     }
   }
 }
+def u:vector_delta_norm(left, right) { "Compute Euclidean separation for two same-shaped finite vectors.";
+  if eq(rank(left), 1) * equal(shape(left), shape(right)) * u:is_finite_numeric(left) * u:is_finite_numeric(right) { delta = left - right; ok(sqrt(reduce_add(delta * delta))) } else { err({kind: "vector_delta_contract", left: shape(left), right: shape(right)}) }
+}
+def u:conditioning_report2(coefficients, base_targets, perturbed_targets, tolerance) { "Measure absolute target-to-solution perturbation amplification for one finite unique 2-by-2 system.";
+  base = u:solve_system2(coefficients, base_targets, tolerance)?; perturbed = u:solve_system2(coefficients, perturbed_targets, tolerance)?;
+  if (1 - equal(base.kind, "unique")) + (1 - equal(perturbed.kind, "unique")) { err({kind: "conditioning_requires_unique", base: base.kind, perturbed: perturbed.kind}) } else { target_delta = u:vector_delta_norm(base_targets, perturbed_targets)?; if eq(target_delta, 0) { err({kind: "zero_target_perturbation"}) } else { solution_delta = u:vector_delta_norm(base.candidate, perturbed.candidate)?; ok({base_solution: base.candidate, perturbed_solution: perturbed.candidate, target_delta: target_delta, solution_delta: solution_delta, absolute_amplification: solution_delta / target_delta, base_residual: base.residual_norm, perturbed_residual: perturbed.residual_norm, tolerance: tolerance}) } }
+}

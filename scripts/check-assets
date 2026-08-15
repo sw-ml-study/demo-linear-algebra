@@ -61,4 +61,9 @@ committed="$repo_root/assets/previews/LA12-elimination.svg"
 [ -f "$generated" ] || { echo "missing generated LA12 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA12 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA12 preview is stale" >&2; exit 1; }
+generated="$repo_root/out/LA13-conditioning.svg"
+committed="$repo_root/assets/previews/LA13-conditioning.svg"
+[ -f "$generated" ] || { echo "missing generated LA13 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA13 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA13 preview is stale" >&2; exit 1; }
 echo "assets: fresh"

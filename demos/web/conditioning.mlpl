@@ -1,0 +1,34 @@
+# Web Lesson LA13 -- perturbation amplification and residual accuracy.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA11 solutions/residuals and LA12 near-zero pivots.
+# * SHAPES -- A:[equation=2,unknown=2], b,delta-b,x,delta-x:[2], norms/ratio:scalars.
+# * EXECUTABLE CLAIM -- identity amplification is 1; near-singular amplification exceeds 1e6; tiny residual coexists with error sqrt(2).
+# * NUMERICAL CONTRACT -- exact formulas with CLI singular tolerance 1e-12; ratio is absolute ||delta-x||/||delta-b||.
+# * BOUNDARY -- fixture-specific absolute amplification is not a general scale-invariant condition number.
+# * WHAT THIS SHOWS -- nearby equations can have distant solutions, and residual size alone cannot certify parameter accuracy.
+# **************************************************************************
+;
+target_delta = 0.000001  # same perturbation magnitude in both panels
+well_solution_delta = 0.000001  # identity copies target change
+well_amplification = well_solution_delta / target_delta  # 1
+near_solution_delta = sqrt(2)  # [1,1] changes to approximately [0,2]
+near_amplification = near_solution_delta / target_delta  # about 1.414e6
+near_a = [[1, 1], [1, 1.000001]]  # almost parallel equation rows
+true_solution = [1, 1]  # reference parameters
+wrong_candidate = [2, 0]  # far from reference
+targets = matmul(near_a, true_solution)  # exact right-hand side
+residual_vector = matmul(near_a, wrong_candidate) - targets  # about [0,-1e-6]
+residual_norm = sqrt(reduce_add(residual_vector * residual_vector))  # tiny equation error
+solution_error = sqrt(reduce_add((wrong_candidate - true_solution) * (wrong_candidate - true_solution)))  # sqrt(2)
+disp([[well_amplification, near_amplification], [residual_norm, solution_error]])  # conditioning evidence
+eq(well_amplification, 1) * gt(near_amplification, 1000000) * lt(residual_norm, 0.00001) * gt(solution_error, 1)  # executable claims
+# THE VISUAL -- equal target changes lead to equal versus huge solution changes; residual and parameter error separate below.
+def u:conditioning_visual() { "Render the LA13 conditioning and residual counterexample."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 980 470\" role=\"img\"><title>Conditioning separates residual size from solution accuracy</title><desc>Identity preserves a tiny perturbation, while a near-singular system amplifies it into a large solution change. Tiny residual coexists with large solution error.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.i{fill:#7aa2f7}.good{fill:#9ece6a}.bad{fill:#f7768e}.gold{fill:#e0af68}</style><rect width=\"980\" height=\"470\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">same target delta 1e-6; different solution response</text><rect class=\"p\" x=\"20\" y=\"60\" width=\"450\" height=\"245\"/><text x=\"40\" y=\"92\">WELL-CONDITIONED IDENTITY</text><text x=\"50\" y=\"140\">target</text><rect class=\"i\" x=\"170\" y=\"122\" width=\"35\" height=\"22\"/><text x=\"220\" y=\"140\">1e-6</text><text x=\"50\" y=\"190\">solution</text><rect class=\"good\" x=\"170\" y=\"172\" width=\"35\" height=\"22\"/><text x=\"220\" y=\"190\">1e-6</text><text class=\"good\" x=\"245\" y=\"255\" text-anchor=\"middle\">amplification=1</text><rect class=\"p\" x=\"510\" y=\"60\" width=\"450\" height=\"245\"/><text x=\"530\" y=\"92\">NEAR-SINGULAR</text><text x=\"540\" y=\"140\">target</text><rect class=\"i\" x=\"660\" y=\"122\" width=\"2\" height=\"22\"/><text x=\"675\" y=\"140\">1e-6</text><text x=\"540\" y=\"190\">solution</text><rect class=\"bad\" x=\"660\" y=\"172\" width=\"210\" height=\"22\"/><text x=\"880\" y=\"190\">sqrt(2)</text><text class=\"bad\" x=\"735\" y=\"255\" text-anchor=\"middle\">amplification ≈ 1.414e6</text><rect class=\"p\" x=\"20\" y=\"335\" width=\"940\" height=\"95\"/><text x=\"45\" y=\"375\">wrong x=[2,0]:</text><text class=\"gold\" x=\"260\" y=\"375\">residual ≈ 1e-6</text><text class=\"bad\" x=\"600\" y=\"375\">solution error=sqrt(2)</text><text x=\"490\" y=\"415\" text-anchor=\"middle\">small residual does not certify accurate parameters</text><text x=\"490\" y=\"458\" text-anchor=\"middle\">fixture ratio, not a general condition-number implementation</text></svg>" }  # fixed checked fixture
+visual = u:conditioning_visual()  # bind once
+visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- compare equal blue inputs to green/pink responses, then tiny residual to large parameter error.
+# * THE POINT -- conditioning links data perturbation to solution reliability; residual alone only measures fit.
+# **************************************************************************

@@ -1,0 +1,27 @@
+# LA13 bounded conditioning and residual-versus-accuracy evidence.
+include "lib/systems.mlpl";
+
+@test {name: "identity system has unit absolute perturbation amplification", tags: ["LA13", "conditioning", "control"]}
+def u:test_well_conditioned_control() { "Use identity as the exact no-amplification control.";
+  report = u:conditioning_report2([[1, 0], [0, 1]], [1, 1], [1, 1.000001], 0.000000000001)?;
+  u:assert_true(gt(report.target_delta, 0) * lt(report.target_delta, 0.00001), "target delta")?; u:assert_eq(report.solution_delta, report.target_delta, "identity solution delta")?; u:assert_eq(report.absolute_amplification, 1, "identity amplification")?; u:assert_eq(report.perturbed_residual, 0, "identity residual")
+}
+
+@test {name: "near-singular system amplifies a tiny target perturbation", tags: ["LA13", "conditioning"]}
+def u:test_near_singular_amplification() { "Measure a million-fold fixture-specific response.";
+  coefficients = [[1, 1], [1, 1.000001]]; report = u:conditioning_report2(coefficients, [2, 2.000001], [2, 2.000002], 0.000000000001)?;
+  u:assert_true(lt(report.target_delta, 0.00001), "target perturbation not tiny")?; u:assert_true(gt(report.solution_delta, 1), "solution response not order-one")?; u:assert_true(gt(report.absolute_amplification, 1000000), "amplification too small")?; u:assert_true(lt(report.base_residual, 0.000000001) * lt(report.perturbed_residual, 0.000000001), "solve residual too large")
+}
+
+@test {name: "small residual does not certify solution accuracy", tags: ["LA13", "residual", "counterexample"]}
+def u:test_residual_accuracy_counterexample() { "Compare a wrong candidate to the known solution on near-parallel rows.";
+  coefficients = [[1, 1], [1, 1.000001]]; true_solution = [1, 1]; candidate = [2, 0]; targets = matmul(coefficients, true_solution); measured = u:system_residual(coefficients, candidate, targets)?; solution_error = u:vector_delta_norm(candidate, true_solution)?;
+  u:assert_true(gt(measured.norm, 0) * lt(measured.norm, 0.00001), "residual not tiny")?; u:assert_true(gt(solution_error, 1), "solution error not large")?; u:assert_true(gt(solution_error / measured.norm, 1000000), "residual/error contrast too small")
+}
+
+@test {name: "conditioning report requires unique systems and nonzero perturbation", tags: ["LA13", "errors"]}
+def u:test_conditioning_contract() { "Reject singular systems, identical targets, invalid shapes, and non-finite values.";
+  u:assert_true(is_err(u:conditioning_report2([[1, 1], [2, 2]], [2, 4], [2, 5], 0.000000001)), "singular system accepted")?; u:assert_true(is_err(u:conditioning_report2([[1, 0], [0, 1]], [1, 1], [1, 1], 0)), "zero perturbation accepted")?; u:assert_true(is_err(u:conditioning_report2([[1, 0], [0, 1]], [1], [1], 0)), "bad targets accepted")?; u:assert_true(is_err(u:conditioning_report2([[1, 0], [0, 1]], [1, 1], [1, 1 / 0], 0)), "infinite target accepted")
+}
+
+u:run_registered_tests()

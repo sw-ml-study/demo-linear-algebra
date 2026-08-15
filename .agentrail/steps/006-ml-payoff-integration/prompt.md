@@ -1,0 +1,1 @@
+Integrate runnable and constrained LA17-LA20 leaves, cross-link every ML payoff to prerequisite lessons, and test blocker probes for capability changes that require reconciliation.

@@ -1,0 +1,1 @@
+Gate LA18 PCA on B3. Implement only if stable ordered components, degeneracy, centering, explained variance, and reconstruction can be represented honestly; otherwise publish the constrained leaf.

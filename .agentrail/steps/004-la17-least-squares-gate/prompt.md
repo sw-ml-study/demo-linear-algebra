@@ -1,0 +1,1 @@
+Publish LA17 as constrained behind B2 unless a stable general least-squares path with diagnostics has appeared; do not use normal equations or the 2x2 teaching solver as production regression.

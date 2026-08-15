@@ -1,0 +1,8 @@
+number = 4
+slug = "la17-least-squares-gate"
+status = "pending"
+description = "Publish LA17 as constrained behind B2 unless a stable general least-squares p..."
+role = "validation"
+context_files = []
+created_at = "2026-08-15T14:38:54"
+commits = []

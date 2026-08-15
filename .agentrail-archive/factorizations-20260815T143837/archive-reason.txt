@@ -1,0 +1,1 @@
+Factorization LA14-LA15 accepted and LA16 constrained by SVD-specific B3 in docs/factorization-acceptance.md

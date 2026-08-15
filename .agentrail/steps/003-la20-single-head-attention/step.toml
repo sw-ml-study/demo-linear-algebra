@@ -1,0 +1,8 @@
+number = 3
+slug = "la20-single-head-attention"
+status = "pending"
+description = "Implement the capability-supported LA20 single-head attention path with visib..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T14:38:54"
+commits = []

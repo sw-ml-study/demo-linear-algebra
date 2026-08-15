@@ -1,0 +1,8 @@
+number = 5
+slug = "la18-pca-gate"
+status = "pending"
+description = "Gate LA18 PCA on B3. Implement only if stable ordered components, degeneracy,..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T14:38:54"
+commits = []

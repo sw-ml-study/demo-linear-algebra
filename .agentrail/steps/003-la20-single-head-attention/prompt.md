@@ -1,0 +1,1 @@
+Implement the capability-supported LA20 single-head attention path with visible QK^T/sqrt(d), stable row weights, and value mixing; keep batched and multi-head execution constrained by B1.

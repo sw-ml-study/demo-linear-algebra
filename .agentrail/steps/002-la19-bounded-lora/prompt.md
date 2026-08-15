@@ -1,0 +1,1 @@
+Implement LA19 bounded LoRA: compare W with W+A@B, expose shapes and parameter counts, verify output deltas, and visualize the low-rank update.

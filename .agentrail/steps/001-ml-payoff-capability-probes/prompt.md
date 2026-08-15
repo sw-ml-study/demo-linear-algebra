@@ -1,0 +1,1 @@
+Probe low-rank A@B updates, parameter-count arithmetic, stable softmax at extreme logits, row-wise attention normalization, and the exact rank-2 to higher-rank boundary against the configured runtime.

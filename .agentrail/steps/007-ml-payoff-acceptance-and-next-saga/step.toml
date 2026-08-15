@@ -1,0 +1,8 @@
+number = 7
+slug = "ml-payoff-acceptance-and-next-saga"
+status = "pending"
+description = "Run and audit the complete gate, publish ML-payoff acceptance, and reconcile ..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T14:38:55"
+commits = []

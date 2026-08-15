@@ -1,0 +1,1 @@
+Integrated LA17-LA20 with a machine-readable contract linking each leaf to prerequisites, evidence, tests or decisions, and blocker probes. Added a full-gate audit that pins B1, B2, and B3 diagnostics and learner routes distinguishing runnable LA19-LA20 from constrained LA17-LA18. Full gate passed with 23 probes, 18 CLI programs, 94 tests, and all integration checks.

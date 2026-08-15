@@ -21,7 +21,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA14 | Gram-Schmidt and QR **(runnable)** | LA06-LA08, LA13 | subtract projections and measure orthogonality/reconstruction separately | stable feature bases |
 | LA15 | Eigenvectors by bounded iteration **(runnable)** | LA08, LA13 | inspect a residual trace and distinguish convergence, limit, and ambiguity | repeated dynamics |
 | LA16 | SVD and low-rank approximation **(blocked by B3)** | LA14-LA15 | reconstruct at several ordered ranks and plot monotone error once stable SVD exists | compression |
-| LA17 | Least squares | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry | linear regression |
+| LA17 | Least squares **(blocked by B2)** | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry once stable general solve/least-squares diagnostics exist | linear regression |
 | LA18 | PCA | LA16-LA17 | center, project, and explain variance captured | dimensionality reduction |
 | LA19 | LoRA **(runnable)** | LA08-LA09; LA16 motivation only | show `W + AB`, parameter counts, and output delta | efficient fine-tuning mechanism |
 | LA20 | Attention math **(runnable, single head)** | LA02-LA03, LA08-LA09 | trace `softmax(QK^T/sqrt(d))V` with explicit axes | transformer mechanism |
@@ -104,6 +104,15 @@ degeneracy policy, independent reconstruction/orthogonality checks, and
 monotone rank-k error. Until that contract is executable, LA16 has no CLI/web
 artifact and does not pretend fixed factors were computed.
 
+LA17 is also a constrained leaf. The configured runtime still reports
+`unknown function: solve` for the B2 multi-right-hand-side probe. LA11's fixed
+2x2 teaching solver cannot handle an overdetermined design or provide general
+rank and condition diagnostics. Normal equations are not used as a workaround:
+they square the condition number and still require a stable solve. LA17 gains
+CLI, web, and test artifacts only after the B2 acceptance contract supports an
+honest regression fit with independently checked residuals and reliability
+diagnostics.
+
 LA19 constructs a LoRA-style update without depending on the blocked SVD
 lesson: `W:[input,output]` remains fixed while `A:[input,rank]` and
 `B:[rank,output]` produce `delta W=A@B`. The checked 4x3 rank-one fixture uses
@@ -122,6 +131,7 @@ approximately `[6.0167,3.9833]` and `[3.9833,6.0167]`. This is not masking,
 learned Q/K/V projections, training, or a complete transformer. B1 remains the
 verified blocker when batch or head axes require rank-3-or-higher matmul.
 
-Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
-LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,
-and numerical caveats.
+Suggested runnable browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 →
+LA19 → LA20. LA16-LA18 remain visible constrained branches until B3, B2, and
+B3 respectively are accepted. The remaining leaves deepen definitions,
+failure modes, and numerical caveats.

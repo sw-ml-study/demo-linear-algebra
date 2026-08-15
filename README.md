@@ -233,6 +233,13 @@ power-iteration deflation would not honestly define ordering, paired signs,
 rectangular shapes, or repeated/zero singular values. See the
 [executable blocker decision](docs/svd-blocker-decision.md).
 
+## Lesson LA17 — least-squares regression (constrained)
+
+LA17 remains behind verified blocker B2. The runtime still has no stable
+general `solve(A,B)` path, and neither normal equations nor the bounded LA11
+2x2 teaching solver provides an honest production regression foundation. See
+the [executed LA17 gate](docs/la17-least-squares-gate.md).
+
 ## Lesson LA19 — bounded LoRA low-rank update
 
 ![A four-by-three base matrix plus narrow rank-one factors producing a full-shaped update and checked output delta](assets/previews/LA19-lora.svg)

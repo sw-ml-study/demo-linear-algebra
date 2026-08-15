@@ -1,6 +1,6 @@
 number = 6
 slug = "systems-integration-and-next-saga"
-status = "pending"
+status = "in-progress"
 description = "Integrate LA11-LA13, run and audit the complete gate, publish systems/rank/co..."
 role = "production"
 context_files = []

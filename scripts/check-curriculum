@@ -62,4 +62,7 @@ grep -q 'Reconciled executable plan: `docs/systems-saga.md`' "$repo_root/docs/sa
 grep -q '|det|<=1e-9' "$repo_root/docs/syllabus.md"
 grep -q 'production-grade general elimination' "$repo_root/docs/syllabus.md"
 grep -q 'does not certify accurate parameters' "$repo_root/docs/syllabus.md"
+grep -q '15 capability probes' "$repo_root/docs/systems-acceptance.md"
+grep -q 'B2 is verified' "$repo_root/docs/systems-acceptance.md"
+grep -q 'Reconciled executable plan: `docs/factorizations-saga.md`' "$repo_root/docs/sagas.md"
 echo "curriculum: thirteen lessons integrated through LA13"

@@ -1,7 +1,7 @@
 # Implementation plan: linear algebra you can see and use
 
-Status: **foundation LA01-LA06 and matrix curriculum LA07-LA10 accepted;
-systems, rank, and conditioning is next**.
+Status: **LA01-LA13 accepted through systems, rank, and conditioning;
+orthogonality and factorizations is next**.
 
 This plan turns the brief in `docs/research.txt` into executable teaching
 material and a focused sw-MLPL forcing function. The central question is:
@@ -102,9 +102,10 @@ builtins. `docs/sw-mlpl-blockers.md` defines the decision rule:
 - keep affected lessons constrained while recording an executable acceptance
   probe. Never present an unstable toy algorithm as a production-grade solve.
 
-The first verified blocker is batched/higher-rank matmul for attention. Stable
-general solve and decomposition boundaries remain candidates for later
-numerical lessons.
+The verified blockers are batched/higher-rank matmul for attention (B1) and a
+stable general solve with diagnostics for production-quality least squares
+(B2). The decomposition boundary B3 remains a candidate for later numerical
+lessons.
 Convenience functions such as `outer`, `norm`, or `trace` are not blockers when
 they compose clearly from reshape, elementwise operations, and reductions.
 
@@ -134,11 +135,15 @@ systems. Measure whether a stable general solve is blocked upstream.
 
 Reconciled next plan: `docs/systems-saga.md`.
 
+Status: complete; see `docs/systems-acceptance.md`.
+
 ### Saga 4 — orthogonality and factorizations
 
 Build Gram-Schmidt and bounded QR as teaching algorithms, with dependent-column
 counterexamples. Gate robust QR/eigen/SVD work on measured capabilities and do
 not disguise fixed-iteration power methods as a general eigensolver.
+
+Reconciled next plan: `docs/factorizations-saga.md`.
 
 ### Saga 5 — ML payoff
 

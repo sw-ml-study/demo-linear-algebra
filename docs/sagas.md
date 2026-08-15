@@ -43,7 +43,7 @@ rank-2 work is unblocked; B1 constrains only higher-rank follow-on lessons.
 
 Acceptance report: `docs/matrix-acceptance.md`.
 
-## Next — `systems-rank-conditioning`
+## Completed — `systems-rank-conditioning`
 
 Implement LA11-LA13 with pedagogical elimination, residuals, singular and
 inconsistent witnesses, and a conditioning visual. Promote B2 only when the
@@ -52,11 +52,16 @@ contract.
 
 Reconciled executable plan: `docs/systems-saga.md`.
 
-## Queued — `factorizations`
+Acceptance report: `docs/systems-acceptance.md`. B2 is verified for the
+production-quality LA17 boundary; it does not invalidate bounded LA11-LA13.
+
+## Next — `factorizations`
 
 Implement capability-supported parts of LA14-LA16. Separate educational
 algorithms from production-grade decompositions, and leave constrained leaves
 honestly queued behind B3.
+
+Reconciled executable plan: `docs/factorizations-saga.md`.
 
 ## Queued — `linear-algebra-for-ml`
 

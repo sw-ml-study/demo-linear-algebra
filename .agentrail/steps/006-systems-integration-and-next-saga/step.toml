@@ -1,8 +1,9 @@
 number = 6
 slug = "systems-integration-and-next-saga"
-status = "in-progress"
+status = "completed"
 description = "Integrate LA11-LA13, run and audit the complete gate, publish systems/rank/co..."
 role = "production"
 context_files = []
 created_at = "2026-08-14T17:17:14"
-commits = []
+completed_at = "2026-08-14T18:55:52"
+commits = ["81067f4d80542adb947331dbb0ce261cfb04aa8e"]

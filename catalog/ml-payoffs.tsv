@@ -1,0 +1,5 @@
+id	status	prerequisites	primary_evidence	test_or_decision	blocker_probe
+LA17	blocked	LA06,LA11,LA14	docs/la17-least-squares-gate.md	docs/stable-solve-blocker-decision.md	stable-general-solve
+LA18	blocked	LA16,LA17	docs/la18-pca-gate.md	docs/svd-blocker-decision.md	svd-decomposition
+LA19	runnable	LA08,LA09	demos/19-lora/low_rank_update.mlpl	tests/test_lora.mlpl	-
+LA20	runnable	LA02,LA03,LA08,LA09	demos/20-attention/single_head.mlpl	tests/test_attention.mlpl	higher-rank-matmul

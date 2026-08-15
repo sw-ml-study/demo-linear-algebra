@@ -1,0 +1,31 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+tab=$(printf '\t')
+count=0
+while IFS="$tab" read -r id status prerequisites primary secondary blocker; do
+  [ "$id" = id ] && continue
+  count=$((count + 1))
+  grep -q "^$id.*$status" "$repo_root/catalog/lessons.tsv"
+  [ -f "$repo_root/$primary" ]
+  [ -f "$repo_root/$secondary" ]
+  old_ifs=$IFS
+  IFS=,
+  for prerequisite in $prerequisites; do
+    grep -q "| $prerequisite |" "$repo_root/docs/syllabus.md"
+  done
+  IFS=$old_ifs
+  case "$blocker" in
+    -) ;;
+    stable-general-solve) grep -q "^$blocker${tab}error${tab}unknown function: solve" "$repo_root/catalog/probes.tsv" ;;
+    svd-decomposition) grep -q "^$blocker${tab}error${tab}unknown function: svd" "$repo_root/catalog/probes.tsv" ;;
+    higher-rank-matmul) grep -q "^$blocker${tab}error${tab}index has 3 components but array has rank 2" "$repo_root/catalog/probes.tsv" ;;
+    *) echo "unknown ML payoff blocker probe: $blocker" >&2; exit 1 ;;
+  esac
+done < "$repo_root/catalog/ml-payoffs.tsv"
+[ "$count" -eq 4 ] || { echo "expected four LA17-LA20 payoff records, found $count" >&2; exit 1; }
+grep -q 'LA17.*B2' "$repo_root/docs/ml-payoff-integration.md"
+grep -q 'LA18.*B3' "$repo_root/docs/ml-payoff-integration.md"
+grep -q 'LA19.*runnable' "$repo_root/docs/ml-payoff-integration.md"
+grep -q 'LA20.*B1' "$repo_root/docs/ml-payoff-integration.md"
+echo "ml payoffs: four leaves linked; blocker diagnostics pinned"

@@ -144,3 +144,6 @@ Suggested runnable browser route: LA01 → LA02 → LA03 → LA06 → LA07 → L
 LA19 → LA20. LA16-LA18 remain visible constrained branches until B3, B2, and
 B3 respectively are accepted. The remaining leaves deepen definitions,
 failure modes, and numerical caveats.
+
+For the machine-checked LA17-LA20 prerequisite, evidence, and blocker mapping,
+see `docs/ml-payoff-integration.md` and `catalog/ml-payoffs.tsv`.

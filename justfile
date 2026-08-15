@@ -19,5 +19,6 @@ audit:
     ./scripts/check-structure
     ./scripts/check-assets
     ./scripts/check-curriculum
+    ./scripts/check-ml-payoffs
 
 check: probes demos tests web audit

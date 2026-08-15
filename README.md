@@ -20,6 +20,10 @@ with LA16 constrained by B3. The measured
 [linear-algebra-for-ML saga](docs/ml-payoff-saga.md) is active, and LA19 is
 the first runnable payoff.
 
+The [ML-payoff integration map](docs/ml-payoff-integration.md) links LA17-LA20
+to executable prerequisites, lesson evidence, and the exact B1-B3 probes that
+must trigger reconciliation when upstream capabilities change.
+
 Once the foundation harness is available:
 
 ```sh

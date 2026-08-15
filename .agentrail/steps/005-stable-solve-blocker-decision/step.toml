@@ -1,6 +1,6 @@
 number = 5
 slug = "stable-solve-blocker-decision"
-status = "pending"
+status = "in-progress"
 description = "Decide B2 from executed LA11-LA13 evidence. Promote it only if ordinary MLPL ..."
 role = "validation"
 context_files = []

@@ -1,0 +1,4 @@
+# B2: the smallest production solve needed beyond the bounded LA11-LA13 lessons.
+# Two right-hand sides force a matrix result instead of a one-vector teaching API.
+result = solve([[2, 0], [0, 4]], [[2, 4], [8, 12]])
+disp(result)

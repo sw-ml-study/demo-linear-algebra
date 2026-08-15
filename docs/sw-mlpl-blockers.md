@@ -1,7 +1,7 @@
 # sw-MLPL linear-algebra capability ledger
 
-Status: **B1 verified; B2 and B3 remain catalog-verified candidates whose
-lesson-level runtime acceptance probes belong to their later sagas**.
+Status: **B1 and B2 verified; B3 remains a catalog-verified candidate whose
+lesson-level runtime acceptance probe belongs to its later saga**.
 
 A missing convenience builtin is not automatically a blocker. This repository
 calls something blocking only when a planned lesson cannot be expressed
@@ -40,17 +40,24 @@ prefixes, rank-2 compatibility, and attention-shaped rank-4 arrays. Repeated
 explicit loops are acceptable only as a small teaching bridge, not as evidence
 that general tensor matmul exists.
 
-## B2 — stable general linear solve with diagnostics (candidate blocker)
+## B2 — stable general linear solve with diagnostics (verified blocker)
 
-Affected: LA11-LA13 and production-quality least squares in LA17.
+Affected: production-quality least squares in LA17. LA11-LA13 remain runnable
+because they intentionally use checked, finite, exactly 2-by-2 teaching code.
 
 Pedagogical Gaussian elimination for tiny matrices is part of the curriculum,
-but it does not replace a numerically stable solve. A general primitive should
-return a `Result` and distinguish non-square input, dimension mismatch,
-singularity/rank deficiency, and non-finite input. The upstream design should
-decide whether factorization metadata (pivoting, rank, condition estimate) is a
-record or separate API; this repo must not guess the signature before probes
-show the smallest lesson-blocking need.
+but it does not replace a numerically stable solve. The minimal probe
+`probes/stable-general-solve.mlpl` requests `solve(A, B)` with two right-hand
+sides. MLPL v0.20.0 build `f77e8041` exits nonzero with
+`unknown function: solve`. This promotes B2: ordinary MLPL has no callable public solve primitive,
+while extending the lesson routine would require inventing production
+pivoting, rank/condition diagnostics, multi-RHS policy, and non-finite behavior.
+
+A general primitive should return a `Result` and distinguish non-square input,
+dimension mismatch, singularity/rank deficiency, and non-finite input. The
+upstream design may return factorization metadata (pivoting, rank, condition
+estimate) in the solve record or through a separate documented API; the probe
+fixes the smallest call shape, not that metadata representation.
 
 Acceptance must cover exact small systems, multiple right-hand sides, a
 singular matrix, an ill-conditioned fixture with residual tolerance, and shape
@@ -61,8 +68,8 @@ Pre-LA11 probes confirm bounded row updates/swaps and independent residuals are
 expressible. They also show division by zero returns infinity and invalid
 square root returns NaN rather than a Result, so lesson algorithms must guard
 pivots and intermediates explicitly. See `docs/systems-capability-baseline.md`.
-B2 remains a candidate; these findings neither prove nor replace a stable
-general solve.
+The executed decision and exact boundary are recorded in
+`docs/stable-solve-blocker-decision.md`.
 
 ## B3 — decomposition boundary: QR/eigen/SVD (candidate blocker)
 

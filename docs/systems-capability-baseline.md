@@ -18,8 +18,10 @@ semantic coefficient/target shapes at its checked API boundary. This is
 acceptable for transparent bounded elimination, not a claim of a label-aware
 general solver.
 
-The runtime's non-finite behavior is a numerical safety requirement, not a new
-blocker: ordinary MLPL can detect the observed NaN/infinity values using
-`eq(value-value,0)`. B2 remains a candidate until LA11-LA13 establish whether
-stable general pivoting, diagnostics, multiple right-hand sides, and condition
-estimation are truly required upstream.
+The runtime's non-finite behavior is a numerical safety requirement: ordinary
+MLPL can detect the observed NaN/infinity values using `eq(value-value,0)`.
+LA11-LA13 therefore remain honest bounded lessons. The subsequent executed
+decision promotes B2 only for stable general solve use: the configured runtime
+has no public `solve(A,B)` and teaching code cannot substitute for robust
+pivoting, diagnostics, and multiple right-hand sides. See
+`docs/stable-solve-blocker-decision.md`.

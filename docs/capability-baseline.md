@@ -32,9 +32,10 @@ zero-sized dimensions, surviving labels, and diagnostic evidence—is recorded
 in `docs/matrix-capability-baseline.md`.
 
 The executable probes live under `probes/`; `scripts/run-probes` reads expected
-status from `catalog/probes.tsv`. Expected failure is intentional only for the
-verified rank-3 matmul blocker. If it begins succeeding, the gate fails until
-the blocker ledger and downstream acceptance tests are updated.
+status from `catalog/probes.tsv`. Expected failures intentionally pin the
+verified rank-3 matmul and stable general solve blockers. If either begins
+succeeding, the gate fails until the blocker ledger and downstream acceptance
+tests are updated.
 
 Native test execution uses `mlplunit.conf` discovery and the external
 `mlplunit` runner selected by `scripts/select-mlplunit`. The repository neither

@@ -13,3 +13,4 @@ systems-row-operations	success	-
 systems-zero-division	success	-
 systems-nonfinite	success	-
 systems-residual	success	-
+stable-general-solve	error	unknown function: solve

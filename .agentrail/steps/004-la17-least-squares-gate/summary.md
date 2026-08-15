@@ -1,0 +1,1 @@
+Confirmed the configured general solve probe still fails, so B2 remains verified. Published LA17 as a visible constrained leaf with stable least-squares acceptance requirements and rejected normal equations and the bounded teaching solver as substitutes. Full gate passed with 23 probes, 18 CLI programs, and 94 tests.

@@ -1,8 +1,9 @@
 number = 4
 slug = "la17-least-squares-gate"
-status = "pending"
+status = "completed"
 description = "Publish LA17 as constrained behind B2 unless a stable general least-squares p..."
 role = "validation"
 context_files = []
 created_at = "2026-08-15T14:38:54"
-commits = []
+completed_at = "2026-08-15T16:16:49"
+commits = ["bc5a96e87e87a08c351bf2553dea7c5f86122b29"]

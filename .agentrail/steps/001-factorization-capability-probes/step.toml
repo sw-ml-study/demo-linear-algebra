@@ -1,6 +1,6 @@
 number = 1
 slug = "factorization-capability-probes"
-status = "pending"
+status = "in-progress"
 description = "Probe column assembly/extraction, nested iteration, orthogonality and reconst..."
 role = "validation"
 context_files = []

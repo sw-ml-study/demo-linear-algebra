@@ -1,0 +1,9 @@
+# Probe: columns can be assembled by transposing a row collection and revisited in nested loops.
+include "../lib/matrices.mlpl";
+columns_as_rows = [[1, 0, 1], [0, 1, 1]]
+matrix = transpose(columns_as_rows)
+gram_cells = fill([4], 0)
+row = 0
+while lt(row, 2) { column = 0; while lt(column, 2) { left = u:matrix_column(matrix, row)?; right = u:matrix_column(matrix, column)?; gram_cells = scatter(gram_cells, row * 2 + column, dot(left, right)); column = column + 1 }; row = row + 1 }
+gram = reshape(gram_cells, [2, 2])
+if equal(matrix, [[1, 0], [0, 1], [1, 1]]) * equal(gram, [[2, 1], [1, 2]]) { ok({probe: "factorization-column-assembly", matrix: matrix, gram: gram}) } else { err("column assembly or nested traversal changed") }

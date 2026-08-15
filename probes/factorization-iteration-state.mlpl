@@ -1,0 +1,5 @@
+# Probe: a bounded iterative algorithm can expose state and a residual without hidden convergence.
+matrix = [[2, 0], [0, 1]]
+state = {iteration: 0, vector: [1, 1] / sqrt(2), residual: 1}
+while lt(state.iteration, 4) { candidate = matmul(matrix, state.vector); next_vector = candidate / sqrt(dot(candidate, candidate)); eigenvalue = dot(next_vector, matmul(matrix, next_vector)); difference = matmul(matrix, next_vector) - eigenvalue * next_vector; state = {iteration: state.iteration + 1, vector: next_vector, residual: sqrt(dot(difference, difference))} }
+if eq(state.iteration, 4) * lt(state.residual, 0.1) * gt(take(state.vector, 0, 0), 0.99) { ok({probe: "factorization-iteration-state", state: state}) } else { err("bounded iteration state changed") }

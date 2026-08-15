@@ -1,0 +1,9 @@
+# Probe: projection residual norms distinguish dependent from near-dependent columns.
+basis = [1, 2, 3]
+dependent = [2, 4, 6]
+near = [2, 4, 6.000001]
+dependent_residual = dependent - (dot(basis, dependent) / dot(basis, basis)) * basis
+near_residual = near - (dot(basis, near) / dot(basis, basis)) * basis
+dependent_norm = sqrt(dot(dependent_residual, dependent_residual))
+near_norm = sqrt(dot(near_residual, near_residual))
+if eq(dependent_norm, 0) * gt(near_norm, 0) * lt(near_norm, 0.00001) { ok({probe: "factorization-dependence", dependent_norm: dependent_norm, near_norm: near_norm}) } else { err("dependence residual behavior changed") }

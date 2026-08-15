@@ -1,0 +1,9 @@
+# Probe: orthogonality and reconstruction residuals are independently expressible.
+q = [[1, 0], [0, 1], [0, 0]]
+r = [[2, 1], [0, 3]]
+a = [[2, 1], [0, 3], [0, 0]]
+orthogonality_delta = matmul(transpose(q), q) - [[1, 0], [0, 1]]
+reconstruction_delta = matmul(q, r) - a
+orthogonality_error = sqrt(reduce_add(flatten(orthogonality_delta * orthogonality_delta)))
+reconstruction_error = sqrt(reduce_add(flatten(reconstruction_delta * reconstruction_delta)))
+if eq(orthogonality_error, 0) * eq(reconstruction_error, 0) { ok({probe: "factorization-residuals", orthogonality_error: orthogonality_error, reconstruction_error: reconstruction_error}) } else { err("factorization residual fixture changed") }

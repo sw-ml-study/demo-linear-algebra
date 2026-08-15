@@ -1,0 +1,29 @@
+# Executable contracts established before LA14-LA16.
+include "lib/matrices.mlpl";
+
+@test {name: "columns assemble and nested loops construct a Gram matrix", tags: ["factorization", "capability", "columns"]}
+def u:test_factorization_column_plumbing() { "Pin transpose-based column assembly and bounded nested traversal.";
+  matrix = transpose([[1, 0, 1], [0, 1, 1]]); cells = fill([4], 0); row = 0;
+  while lt(row, 2) { column = 0; while lt(column, 2) { left = u:matrix_column(matrix, row)?; right = u:matrix_column(matrix, column)?; cells = scatter(cells, row * 2 + column, dot(left, right)); column = column + 1 }; row = row + 1 };
+  u:assert_eq(matrix, [[1, 0], [0, 1], [1, 1]], "assembled columns")?; u:assert_eq(reshape(cells, [2, 2]), [[2, 1], [1, 2]], "Gram matrix")
+}
+
+@test {name: "orthogonality and reconstruction residuals are independent", tags: ["factorization", "capability", "residual"]}
+def u:test_factorization_residuals() { "Compute Q^TQ-I and QR-A on a known thin factorization.";
+  q = [[1, 0], [0, 1], [0, 0]]; r = [[2, 1], [0, 3]]; a = [[2, 1], [0, 3], [0, 0]]; orthogonal = matmul(transpose(q), q) - [[1, 0], [0, 1]]; reconstructed = matmul(q, r) - a;
+  u:assert_eq(sqrt(reduce_add(flatten(orthogonal * orthogonal))), 0, "orthogonality error")?; u:assert_eq(sqrt(reduce_add(flatten(reconstructed * reconstructed))), 0, "reconstruction error")
+}
+
+@test {name: "projection residual separates dependent and near-dependent columns", tags: ["factorization", "capability", "dependence"]}
+def u:test_factorization_dependence() { "Require tolerance policy to classify a small nonzero residual.";
+  basis = [1, 2, 3]; dependent = [2, 4, 6]; near = [2, 4, 6.000001]; exact_residual = dependent - (dot(basis, dependent) / dot(basis, basis)) * basis; near_residual = near - (dot(basis, near) / dot(basis, basis)) * basis; exact_norm = sqrt(dot(exact_residual, exact_residual)); near_norm = sqrt(dot(near_residual, near_residual));
+  u:assert_eq(exact_norm, 0, "dependent residual")?; u:assert_true(gt(near_norm, 0) * lt(near_norm, 0.00001), "near-dependent residual")
+}
+
+@test {name: "bounded iteration exposes count vector and residual", tags: ["factorization", "capability", "iteration"]}
+def u:test_factorization_iteration_state() { "Pin an explicit four-step state record without claiming convergence.";
+  matrix = [[2, 0], [0, 1]]; state = {iteration: 0, vector: [1, 1] / sqrt(2), residual: 1}; while lt(state.iteration, 4) { candidate = matmul(matrix, state.vector); next_vector = candidate / sqrt(dot(candidate, candidate)); eigenvalue = dot(next_vector, matmul(matrix, next_vector)); difference = matmul(matrix, next_vector) - eigenvalue * next_vector; state = {iteration: state.iteration + 1, vector: next_vector, residual: sqrt(dot(difference, difference))} };
+  u:assert_eq(state.iteration, 4, "iteration count")?; u:assert_true(gt(take(state.vector, 0, 0), 0.99), "dominant direction")?; u:assert_true(lt(state.residual, 0.1), "reported residual")
+}
+
+u:run_registered_tests()

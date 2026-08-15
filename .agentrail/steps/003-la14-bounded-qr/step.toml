@@ -1,8 +1,9 @@
 number = 3
 slug = "la14-bounded-qr"
-status = "in-progress"
+status = "completed"
 description = "Extend LA14 to bounded QR teaching fixtures, compare independently computed r..."
 role = "production"
 context_files = []
 created_at = "2026-08-15T09:49:09"
-commits = []
+completed_at = "2026-08-15T13:28:29"
+commits = ["d370351b847fbf5ccd21751dc5fda37db110f182"]

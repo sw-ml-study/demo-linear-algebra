@@ -1,8 +1,9 @@
 number = 2
 slug = "la14-classical-gram-schmidt"
-status = "in-progress"
+status = "completed"
 description = "Implement LA14 classical Gram-Schmidt with visible projection subtraction, Q^..."
 role = "production"
 context_files = []
 created_at = "2026-08-15T09:49:09"
-commits = []
+completed_at = "2026-08-15T12:51:19"
+commits = ["d0aef37b5ee82c77946977568bbeb5f5d6ba97ab"]

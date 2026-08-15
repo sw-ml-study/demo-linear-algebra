@@ -1,0 +1,32 @@
+# LA11 bounded two-equation systems and independent residuals.
+include "lib/systems.mlpl";
+
+@test {name: "unique 2x2 system returns exact solution and residual", tags: ["LA11", "systems", "unique"]}
+def u:test_system2_unique() { "Solve an exact crossing-lines fixture.";
+  solved = u:solve_system2([[1, 1], [1, -1]], [2, 0], 0.000000001)?; independent = u:system_residual([[1, 1], [1, -1]], solved.candidate, [2, 0])?;
+  u:assert_eq(solved.kind, "unique", "classification")?; u:assert_eq(solved.candidate, [1, 1], "solution")?; u:assert_eq(solved.residual_norm, 0, "reported residual")?; u:assert_eq(independent.norm, solved.residual_norm, "independent residual")
+}
+
+@test {name: "parallel equations are inconsistent when targets disagree", tags: ["LA11", "systems", "inconsistent"]}
+def u:test_system2_inconsistent() { "Distinguish parallel lines with no common point.";
+  solved = u:solve_system2([[1, 1], [2, 2]], [2, 5], 0.000000001)?;
+  u:assert_eq(solved.kind, "parallel_inconsistent", "classification")?; u:assert_eq(solved.determinant, 0, "coefficient determinant")?; u:assert_true(gt(abs(solved.first_augmented) + abs(solved.second_augmented), 0), "missing augmented witness")
+}
+
+@test {name: "coincident equations return one zero-residual witness", tags: ["LA11", "systems", "underdetermined"]}
+def u:test_system2_coincident() { "Distinguish one repeated constraint with infinitely many solutions.";
+  solved = u:solve_system2([[1, 1], [2, 2]], [2, 4], 0.000000001)?;
+  u:assert_eq(solved.kind, "coincident_underdetermined", "classification")?; u:assert_eq(solved.residual_norm, 0, "witness residual")?; u:assert_eq(u:system_residual([[1, 1], [2, 2]], [0, 2], [2, 4])?.norm, 0, "second solution witness")?; u:assert_true(1 - equal(solved.witness, [0, 2]), "witnesses not distinct")
+}
+
+@test {name: "zero equations classify consistent and inconsistent targets", tags: ["LA11", "systems", "degenerate"]}
+def u:test_system2_zero_rows() { "Handle the all-zero coefficient boundary without division.";
+  u:assert_eq(u:solve_system2([[0, 0], [0, 0]], [0, 0], 0)?.kind, "coincident_underdetermined", "zero system")?; u:assert_eq(u:solve_system2([[0, 0], [0, 0]], [0, 1], 0)?.kind, "parallel_inconsistent", "zero contradiction")
+}
+
+@test {name: "bounded solver rejects shapes tolerances and non-finite inputs", tags: ["LA11", "systems", "errors"]}
+def u:test_system2_contract_errors() { "Enforce finite exact-size inputs and nonnegative tolerance.";
+  u:assert_true(is_err(u:solve_system2([[1, 0, 0], [0, 1, 0]], [1, 2], 0)), "2x3 accepted")?; u:assert_true(is_err(u:solve_system2([[1, 0], [0, 1]], [1], 0)), "short target accepted")?; u:assert_true(is_err(u:solve_system2([[1, 0], [0, 1]], [1, 2], -1)), "negative tolerance accepted")?; u:assert_true(is_err(u:solve_system2([[1 / 0, 0], [0, 1]], [1, 2], 0)), "infinite coefficient accepted")
+}
+
+u:run_registered_tests()

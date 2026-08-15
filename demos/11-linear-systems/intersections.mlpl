@@ -1,0 +1,22 @@
+# Lesson LA11 -- two equations classify as crossing, parallel, or coincident lines.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/systems.mlpl";
+include "../../lib/systems_render.mlpl";
+
+print("WHAT THIS SHOWS -- A bounded 2x2 system is two lines: they cross once, never meet, or coincide with infinitely many solutions.")
+print("PREREQUISITES -- LA08 matrix-vector multiplication and LA10 2D determinant. SHAPES -- A:[equation=2,unknown=2], x:[unknown=2], b:[equation=2].")
+tolerance = 0.000000001
+unique = u:solve_system2([[1, 1], [1, -1]], [2, 0], tolerance)?
+inconsistent = u:solve_system2([[1, 1], [2, 2]], [2, 5], tolerance)?
+coincident = u:solve_system2([[1, 1], [2, 2]], [2, 4], tolerance)?
+independent = u:system_residual([[1, 1], [1, -1]], unique.candidate, [2, 0])?
+disp(unique)
+disp(inconsistent)
+disp(coincident)
+written = write_text("out/LA11-linear-systems.svg", u:systems2_svg())
+print("NUMERICAL CONTRACT -- Inclusive singular threshold is |det|<=1e-9; the exact unique candidate [1,1] has independently recomputed residual norm 0.")
+print("HOW TO READ THE RESULT -- Pink crossing marks one solution; separated parallel lines have no solution; dashed overlap shows one constraint and many points, with one returned witness.")
+print("THE POINT -- Coefficient determinant separates unique from singular geometry; augmented target cross-products separate inconsistent from coincident. BOUNDARY -- solve_system2 accepts only finite [2,2] and [2] inputs and is not a stable general solver.")
+if equal(unique.kind, "unique") * equal(unique.candidate, [1, 1]) * eq(independent.norm, 0) * equal(inconsistent.kind, "parallel_inconsistent") * equal(coincident.kind, "coincident_underdetermined") * is_err(u:solve_system2([[1, 0, 0], [0, 1, 0]], [1, 2], tolerance)) * is_ok(written) { ok({lesson: "LA11", unique: unique.candidate, inconsistent: inconsistent.kind, coincident: coincident.kind, artifact: "out/LA11-linear-systems.svg"}) } else { err("LA11 system classification failed") }

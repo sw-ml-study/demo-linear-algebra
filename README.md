@@ -153,3 +153,16 @@ the bias, connecting the matrix unit directly to learned feature transforms.
 
 - [CLI payoff](demos/00-matrix-payoff/dense_layer.mlpl)
 - [Native mlplunit coverage](tests/test_dense_layer.mlpl)
+
+## Lesson LA11 — bounded linear systems
+
+![Crossing, parallel, and coincident pairs of lines show one, zero, or infinitely many solutions](assets/previews/LA11-linear-systems.svg)
+
+For exactly two equations in two unknowns, determinant and augmented-target
+cross-products classify a unique intersection, parallel inconsistency, or
+coincident underdetermination. Candidates are verified through an independent
+`Ax-b` residual calculation.
+
+- [CLI lesson](demos/11-linear-systems/intersections.mlpl)
+- [Standalone web lesson](demos/web/linear_systems.mlpl)
+- [Native mlplunit coverage](tests/test_systems2.mlpl)

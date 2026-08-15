@@ -51,4 +51,9 @@ committed="$repo_root/assets/previews/LA10-signed-area.svg"
 [ -f "$generated" ] || { echo "missing generated LA10 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA10 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA10 preview is stale" >&2; exit 1; }
+generated="$repo_root/out/LA11-linear-systems.svg"
+committed="$repo_root/assets/previews/LA11-linear-systems.svg"
+[ -f "$generated" ] || { echo "missing generated LA11 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA11 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA11 preview is stale" >&2; exit 1; }
 echo "assets: fresh"

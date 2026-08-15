@@ -1,0 +1,31 @@
+# Web Lesson LA11 -- bounded two-equation systems as line geometry.
+# visual: svg
+# loops: 0
+# **************************************************************************
+# * PREREQUISITES -- LA08 matrix-vector multiplication and LA10 2D determinant.
+# * SHAPES -- A:[equation=2,unknown=2], x:[unknown=2], b:[equation=2].
+# * EXECUTABLE CLAIM -- one fixture solves to [1,1]; singular fixtures distinguish inconsistent and coincident targets.
+# * NUMERICAL CONTRACT -- exact arithmetic here; the CLI classifier uses inclusive |det|<=1e-9.
+# * BOUNDARY -- this fixed 2D witness is not a stable general solver or proof for arbitrary systems.
+# * WHAT THIS SHOWS -- two lines cross once, remain parallel, or overlap with infinitely many solutions.
+# **************************************************************************
+;
+unique_a = [[1, 1], [1, -1]]  # crossing coefficient rows
+unique_b = [2, 0]  # crossing targets
+unique_x = [1, 1]  # exact intersection
+unique_residual = matmul(unique_a, unique_x) - unique_b  # [0,0]
+singular_a = [[1, 1], [2, 2]]  # dependent rows, determinant zero
+inconsistent_b = [2, 5]  # parallel shifted target
+coincident_b = [2, 4]  # exact repeated equation
+inconsistent_augmented = 1 * 5 - 2 * 2  # nonzero augmented cross-product
+coincident_augmented = 1 * 4 - 2 * 2  # zero augmented cross-product
+disp([unique_residual, inconsistent_augmented, coincident_augmented])  # classification evidence
+equal(unique_residual, [0, 0]) * gt(abs(inconsistent_augmented), 0) * eq(coincident_augmented, 0)  # exact claims
+# THE VISUAL -- crossing, separated parallel, and overlapping line pairs encode the three classifications.
+def u:linear_systems_visual() { "Render the LA11 line-system classification."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 960 440\" role=\"img\"><title>Three outcomes for two linear equations in two unknowns</title><desc>Blue and green lines cross at one pink point, remain parallel with no solution, or overlap with infinitely many solutions.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.axis{stroke:#565f89}.a{stroke:#7aa2f7;stroke-width:4}.b{stroke:#9ece6a;stroke-width:4}.d{stroke-dasharray:10 7}.h{fill:#f7768e}.g{fill:#e0af68}</style><rect width=\"960\" height=\"440\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">A:[equation=2,unknown=2] x = b:[equation=2]</text><rect class=\"p\" x=\"20\" y=\"60\" width=\"290\" height=\"320\"/><text x=\"40\" y=\"92\">UNIQUE</text><path class=\"axis\" d=\"M45 330H285M80 355V110\"/><path class=\"a\" d=\"M45 310L275 125\"/><path class=\"b\" d=\"M50 130L280 325\"/><circle class=\"h\" cx=\"163\" cy=\"215\" r=\"8\"/><text x=\"163\" y=\"355\" text-anchor=\"middle\">[1,1], residual 0</text><rect class=\"p\" x=\"335\" y=\"60\" width=\"290\" height=\"320\"/><text x=\"355\" y=\"92\">INCONSISTENT</text><path class=\"a\" d=\"M365 300L590 145\"/><path class=\"b\" d=\"M365 245L590 90\"/><text class=\"g\" x=\"480\" y=\"355\" text-anchor=\"middle\">parallel: no point</text><rect class=\"p\" x=\"650\" y=\"60\" width=\"290\" height=\"320\"/><text x=\"670\" y=\"92\">UNDERDETERMINED</text><path class=\"a\" d=\"M680 300L905 145\"/><path class=\"b d\" d=\"M680 300L905 145\"/><circle class=\"h\" cx=\"790\" cy=\"224\" r=\"7\"/><text x=\"795\" y=\"355\" text-anchor=\"middle\">same line: many points</text><text x=\"480\" y=\"415\" text-anchor=\"middle\">det=0 needs augmented targets to distinguish no solution from many</text></svg>" }  # fixed checked fixture
+visual = u:linear_systems_visual()  # bind once
+visual  # display once
+# **************************************************************************
+# * HOW TO READ THE RESULT -- a crossing is one solution, separation is none, and overlap is infinitely many.
+# * THE POINT -- residual verifies a candidate; determinant and augmented targets classify the geometry.
+# **************************************************************************

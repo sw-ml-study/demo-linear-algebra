@@ -1,6 +1,6 @@
 number = 2
 slug = "la11-bounded-linear-systems"
-status = "pending"
+status = "in-progress"
 description = "Implement LA11 bounded 2x2 systems with geometric unique, parallel, coinciden..."
 role = "production"
 context_files = []

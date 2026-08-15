@@ -16,3 +16,17 @@ def u:system_residual(coefficients, candidate, targets) { "Compute Ax-b and its 
   dimensions = u:matrix_dimensions(coefficients)?;
   if eq(rank(candidate), 1) * eq(rank(targets), 1) * eq(tally(candidate), dimensions.columns) * eq(tally(targets), dimensions.rows) { predicted = matmul(coefficients, candidate); residual = predicted - targets; ok({predicted: predicted, residual: residual, norm: sqrt(reduce_add(residual * residual))}) } else { err({kind: "system_shape", coefficients: shape(coefficients), candidate: shape(candidate), targets: shape(targets)}) }
 }
+def u:valid_system2(coefficients, targets, tolerance) { "Check the exact bounded 2-by-2 system shape, finite values, and finite nonnegative tolerance.";
+  equal(shape(coefficients), [2, 2]) * equal(shape(targets), [2]) * u:is_finite_numeric(coefficients) * u:is_finite_numeric(targets) * u:is_finite_numeric(tolerance) * (1 - lt(tolerance, 0))
+}
+def u:solve_system2(coefficients, targets, tolerance) { "Classify and solve only a finite 2-by-2 system using determinant cross-products and an explicit tolerance.";
+  if 1 - u:valid_system2(coefficients, targets, tolerance) { err({kind: "system2_contract", coefficients: shape(coefficients), targets: shape(targets), tolerance: tolerance}) } else {
+    a = u:matrix_cell(coefficients, 0, 0)?; b = u:matrix_cell(coefficients, 0, 1)?; c = u:matrix_cell(coefficients, 1, 0)?; d = u:matrix_cell(coefficients, 1, 1)?; e = take(targets, 0, 0); f = take(targets, 0, 1); determinant = a * d - b * c;
+    if gt(abs(determinant), tolerance) { candidate = [(e * d - b * f) / determinant, (a * f - e * c) / determinant]; measured = u:system_residual(coefficients, candidate, targets)?; ok({kind: "unique", determinant: determinant, candidate: candidate, residual: measured.residual, residual_norm: measured.norm}) } else {
+      first_augmented = a * f - c * e; second_augmented = b * f - d * e; zero_coefficients = (1 - gt(abs(a), tolerance)) * (1 - gt(abs(b), tolerance)) * (1 - gt(abs(c), tolerance)) * (1 - gt(abs(d), tolerance)); nonzero_target = gt(abs(e), tolerance) + gt(abs(f), tolerance);
+      if gt(abs(first_augmented), tolerance) + gt(abs(second_augmented), tolerance) + zero_coefficients * nonzero_target { ok({kind: "parallel_inconsistent", determinant: determinant, first_augmented: first_augmented, second_augmented: second_augmented}) } else {
+        witness = if gt(abs(a), tolerance) { [e / a, 0] } else { if gt(abs(b), tolerance) { [0, e / b] } else { if gt(abs(c), tolerance) { [f / c, 0] } else { if gt(abs(d), tolerance) { [0, f / d] } else { [0, 0] } } } }; measured = u:system_residual(coefficients, witness, targets)?; ok({kind: "coincident_underdetermined", determinant: determinant, witness: witness, residual: measured.residual, residual_norm: measured.norm})
+      }
+    }
+  }
+}

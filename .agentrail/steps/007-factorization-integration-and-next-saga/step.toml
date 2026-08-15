@@ -1,6 +1,6 @@
 number = 7
 slug = "factorization-integration-and-next-saga"
-status = "pending"
+status = "in-progress"
 description = "Integrate all accepted LA14-LA16 work, visuals, syllabus, tests, and previews..."
 role = "production"
 context_files = []

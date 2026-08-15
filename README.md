@@ -15,7 +15,9 @@ The first six-lesson unit is complete; see its [acceptance
 report](docs/foundation-acceptance.md). The matrix unit is also complete; see
 its [acceptance report](docs/matrix-acceptance.md). Systems, rank, and
 conditioning are accepted in [the systems report](docs/systems-acceptance.md).
-The next bounded program is [orthogonality and factorizations](docs/factorizations-saga.md).
+Factorizations are accepted in [the factorization report](docs/factorization-acceptance.md),
+with LA16 constrained by B3. The next program is the measured
+[linear-algebra-for-ML saga](docs/ml-payoff-saga.md).
 
 Once the foundation harness is available:
 

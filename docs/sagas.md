@@ -55,7 +55,7 @@ Reconciled executable plan: `docs/systems-saga.md`.
 Acceptance report: `docs/systems-acceptance.md`. B2 is verified for the
 production-quality LA17 boundary; it does not invalidate bounded LA11-LA13.
 
-## Next — `factorizations`
+## Completed — `factorizations`
 
 Implement capability-supported parts of LA14-LA16. Separate educational
 algorithms from production-grade decompositions, and leave constrained leaves
@@ -63,11 +63,16 @@ honestly queued behind B3.
 
 Reconciled executable plan: `docs/factorizations-saga.md`.
 
-## Queued — `linear-algebra-for-ml`
+Acceptance report: `docs/factorization-acceptance.md`. LA14-LA15 are runnable;
+LA16 remains a visible constrained leaf behind SVD-specific B3.
+
+## Next — `linear-algebra-for-ml`
 
 Implement LA17-LA20: least squares, PCA, low-rank reconstruction, LoRA, and
 attention. Reuse earlier APIs and visual grammar. Promote B1 or decomposition
 asks only with executable evidence.
+
+Reconciled executable plan: `docs/ml-payoff-saga.md`.
 
 ## Queued — `curriculum-and-capability-closeout`
 

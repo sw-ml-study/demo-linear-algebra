@@ -1,7 +1,7 @@
 # Implementation plan: linear algebra you can see and use
 
-Status: **LA01-LA13 accepted through systems, rank, and conditioning;
-orthogonality and factorizations is next**.
+Status: **LA01-LA15 accepted; LA16 is constrained by verified SVD blocker B3;
+the linear-algebra-for-ML payoff is next**.
 
 This plan turns the brief in `docs/research.txt` into executable teaching
 material and a focused sw-MLPL forcing function. The central question is:
@@ -104,8 +104,8 @@ builtins. `docs/sw-mlpl-blockers.md` defines the decision rule:
 
 The verified blockers are batched/higher-rank matmul for attention (B1) and a
 stable general solve with diagnostics for production-quality least squares
-(B2). The decomposition boundary B3 remains a candidate for later numerical
-lessons.
+(B2). Stable ordered SVD for LA16/LA18 is verified as the narrow B3 scope;
+bounded Gram-Schmidt and power iteration do not request general QR/eigen APIs.
 Convenience functions such as `outer`, `norm`, or `trace` are not blockers when
 they compose clearly from reshape, elementwise operations, and reductions.
 
@@ -145,11 +145,15 @@ not disguise fixed-iteration power methods as a general eigensolver.
 
 Reconciled next plan: `docs/factorizations-saga.md`.
 
+Status: complete; see `docs/factorization-acceptance.md`.
+
 ### Saga 5 — ML payoff
 
 Connect least squares, PCA, low-rank approximation, LoRA, and attention. Each
 application reuses earlier concepts and exposes shapes at every stage. Batched
 attention remains constrained until its rank/axis semantics are executable.
+
+Reconciled next plan: `docs/ml-payoff-saga.md`.
 
 ### Saga 6 — curriculum integration
 

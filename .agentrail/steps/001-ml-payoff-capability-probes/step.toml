@@ -1,8 +1,9 @@
 number = 1
 slug = "ml-payoff-capability-probes"
-status = "pending"
+status = "completed"
 description = "Probe low-rank A@B updates, parameter-count arithmetic, stable softmax at ext..."
 role = "validation"
 context_files = []
 created_at = "2026-08-15T14:38:54"
-commits = []
+completed_at = "2026-08-15T14:46:22"
+commits = ["be661432c7753e97e0f83f42d7af4a6ae7e674ff"]

@@ -1,0 +1,22 @@
+# Executable contracts established before LA17-LA20.
+
+@test {name: "rank-one factors produce a checked rank-2 update", tags: ["ml-payoff", "lora", "capability"]}
+def u:test_low_rank_update() { "Pin factor shapes, golden delta, merge, and parameter counts.";
+  a = [[1], [2], [3]]; b = [[2, -1]]; base = [[1, 0], [0, 1], [1, 1]]; delta = matmul(a, b); merged = base + delta;
+  u:assert_eq(shape(a), [3, 1], "left factor shape")?; u:assert_eq(shape(b), [1, 2], "right factor shape")?; u:assert_eq(delta, [[2, -1], [4, -2], [6, -3]], "golden low-rank delta")?; u:assert_eq(merged, [[3, -1], [4, -1], [7, -2]], "golden merged weights")?; u:assert_eq([reduce_mul(shape(base)), reduce_mul(shape(a)) + reduce_mul(shape(b))], [6, 5], "base and adapter parameter counts")
+}
+
+@test {name: "extreme logits have stable normalized softmax rows", tags: ["ml-payoff", "softmax", "capability"]}
+def u:test_stable_softmax() { "Verify large translated logits remain finite, ordered, and row-normalized.";
+  probabilities = softmax([[1000, 1001], [-1000, -999]], 1); row_sums = reduce_add(probabilities, 1); flat = flatten(probabilities);
+  first = take(flat, 0, 0); second = take(flat, 0, 1);
+  u:assert_eq(row_sums, [1, 1], "softmax row sums")?; u:assert_true(gt(first, 0) * lt(first, 1) * gt(second, 0) * lt(second, 1), "probabilities should be finite and bounded")?; u:assert_true(lt(first, second), "larger logit should have larger probability")?; u:assert_eq(first, take(flat, 0, 2), "translation invariance fixture")
+}
+
+@test {name: "single-head attention composes through rank-2 matrices", tags: ["ml-payoff", "attention", "capability"]}
+def u:test_rank_two_attention() { "Pin score, normalization, and value-mixing shapes without claiming batching.";
+  queries = [[1, 0], [0, 1]]; keys = [[1, 0], [0, 1], [1, 1]]; values = [[10, 0], [0, 10], [5, 5]]; scores = matmul(queries, transpose(keys)) / sqrt(2); weights = softmax(scores, 1); mixed = matmul(weights, values); flat_weights = flatten(weights);
+  u:assert_eq(shape(scores), [2, 3], "query-key score shape")?; u:assert_eq(reduce_add(weights, 1), [1, 1], "attention row sums")?; u:assert_eq(shape(mixed), [2, 2], "mixed value shape")?; u:assert_true(gt(take(flat_weights, 0, 0), take(flat_weights, 0, 1)), "first query favors first key")?; u:assert_true(gt(take(flat_weights, 0, 4), take(flat_weights, 0, 3)), "second query favors second key")
+}
+
+u:run_registered_tests()

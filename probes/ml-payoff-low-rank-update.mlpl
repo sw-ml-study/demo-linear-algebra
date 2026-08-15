@@ -1,0 +1,9 @@
+# Probe: rank-2 matmul expresses a bounded low-rank update and its parameter accounting.
+a = [[1], [2], [3]]
+b = [[2, -1]]
+base = [[1, 0], [0, 1], [1, 1]]
+delta = matmul(a, b)
+merged = base + delta
+base_parameters = reduce_mul(shape(base))
+adapter_parameters = reduce_mul(shape(a)) + reduce_mul(shape(b))
+if equal(delta, [[2, -1], [4, -2], [6, -3]]) * equal(merged, [[3, -1], [4, -1], [7, -2]]) * eq(base_parameters, 6) * eq(adapter_parameters, 5) { ok({probe: "ml-payoff-low-rank-update", rank: 1, base_parameters: base_parameters, adapter_parameters: adapter_parameters, delta: delta}) } else { err("low-rank update or parameter accounting changed") }

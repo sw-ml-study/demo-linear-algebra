@@ -1,0 +1,9 @@
+# Probe: one unbatched attention head is expressible entirely with rank-2 operations.
+queries = [[1, 0], [0, 1]]
+keys = [[1, 0], [0, 1], [1, 1]]
+values = [[10, 0], [0, 10], [5, 5]]
+scores = matmul(queries, transpose(keys)) / sqrt(2)
+weights = softmax(scores, 1)
+mixed = matmul(weights, values)
+row_sums = reduce_add(weights, 1)
+if equal(shape(scores), [2, 3]) * equal(shape(weights), [2, 3]) * equal(shape(mixed), [2, 2]) * equal(row_sums, [1, 1]) { ok({probe: "ml-payoff-rank2-attention", score_shape: shape(scores), weight_row_sums: row_sums, output_shape: shape(mixed)}) } else { err("rank-2 attention plumbing changed") }

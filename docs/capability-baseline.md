@@ -26,10 +26,16 @@ configured binary, not timeless language claims.
 | static include | supported | a probe and native mlplunit test load `lib/probe_include.mlpl` |
 | rank-3 batched matmul | blocked | compatible operands fail with `index has 3 components but array has rank 2` |
 | browser narration syntax | supported in script execution | framed comments, bare `;`, trailing comments, and standalone statements execute |
+| stable row-wise softmax | supported for bounded extreme-logit fixtures | `[1000,1001]` and its translated row remain finite and sum to one |
+| rank-2 low-rank update and attention | supported | exact `A@B` update accounting and unbatched score/weight/value shapes pass |
 
 The matrix-specific continuation—including row/column/cell extraction,
 zero-sized dimensions, surviving labels, and diagnostic evidence—is recorded
 in `docs/matrix-capability-baseline.md`.
+
+The ML-payoff continuation—including low-rank parameter accounting, extreme
+softmax, attention row normalization, and the rank-2/B1 boundary—is recorded
+in `docs/ml-payoff-capability-baseline.md`.
 
 The executable probes live under `probes/`; `scripts/run-probes` reads expected
 status from `catalog/probes.tsv`. Expected failures intentionally pin the
@@ -43,8 +49,8 @@ installs nor overwrites either tool.
 
 ## Source-catalog observations not yet runtime claims
 
-The public catalog names seeded `random`/`randn`, `argmax`, and stable
-`softmax`. It does not name solve, inverse, determinant, LU, QR, eigen, SVD, or
+The public catalog names seeded `random`/`randn` and `argmax`; stable `softmax`
+is now also exercised by the ML-payoff probes. It does not name solve, inverse, determinant, LU, QR, eigen, SVD, or
 least-squares primitives. The latter remain candidates for later lesson-level
 probes; absence from the catalog proves no callable public builtin, but does
 not by itself prove which smallest upstream API the curriculum needs.

@@ -13,13 +13,15 @@ lesson IDs.
 
 Runtime probes now confirm `dot`, rank-2 `matmul`, scalar
 broadcasting, `reshape`, `transpose`, `transpose_axes`, axis reductions, axis
-labels, and static include on MLPL v0.20.0 build `f77e8041`. Seeded random
-arrays, `argmax`, and stable `softmax` remain public-catalog evidence until a
-lesson needs them. See `docs/capability-baseline.md` for the executed surface.
+labels, static include, and stable row-wise `softmax` on MLPL v0.20.0 build
+`f77e8041`. Seeded random arrays and `argmax` remain public-catalog evidence
+until a lesson needs them. See `docs/capability-baseline.md` and
+`docs/ml-payoff-capability-baseline.md` for the executed surface.
 
 ## B1 — batched and higher-rank matrix multiplication (verified blocker)
 
-Affected: LA20 attention and realistic multi-example/head tensor work. The
+Affected: batched and multi-head LA20 extensions and realistic
+multi-example/head tensor work. The
 probe `probes/higher-rank-matmul.mlpl` passes compatible `[2,2,3]` and
 `[2,3,2]` operands to `matmul`; v0.20.0 build `f77e8041` exits nonzero with
 `index has 3 components but array has rank 2`. `catalog/probes.tsv` pins that
@@ -38,6 +40,11 @@ fixtures include batch size one, unequal compatible batch prefixes, incompatible
 prefixes, rank-2 compatibility, and attention-shaped rank-4 arrays. Repeated
 explicit loops are acceptable only as a small teaching bridge, not as evidence
 that general tensor matmul exists.
+
+The ML-payoff probe confirms the bounded LA20 derivation itself is not blocked:
+rank-2 query-key multiplication, stable row-wise softmax, and rank-2 value
+mixing all execute. B1 begins when batch or head axes make the operands rank 3
+or higher.
 
 ## B2 — stable general linear solve with diagnostics (verified blocker)
 

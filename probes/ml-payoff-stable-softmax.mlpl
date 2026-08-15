@@ -1,0 +1,8 @@
+# Probe: native softmax remains finite and normalized after a large common logit shift.
+probabilities = softmax([[1000, 1001], [-1000, -999]], 1)
+row_sums = reduce_add(probabilities, 1)
+flat = flatten(probabilities)
+first = take(flat, 0, 0)
+second = take(flat, 0, 1)
+translated_first = take(flat, 0, 2)
+if equal(row_sums, [1, 1]) * gt(first, 0) * lt(first, 1) * gt(second, 0) * lt(second, 1) * lt(first, second) * equal(first, translated_first) { ok({probe: "ml-payoff-stable-softmax", probabilities: probabilities, row_sums: row_sums}) } else { err("stable row-wise softmax contract changed") }

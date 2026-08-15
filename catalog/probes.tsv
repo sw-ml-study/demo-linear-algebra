@@ -19,3 +19,6 @@ factorization-residuals	success	-
 factorization-dependence	success	-
 factorization-iteration-state	success	-
 svd-decomposition	error	unknown function: svd
+ml-payoff-low-rank-update	success	-
+ml-payoff-stable-softmax	success	-
+ml-payoff-rank2-attention	success	-

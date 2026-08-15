@@ -18,3 +18,4 @@ factorization-column-assembly	success	-
 factorization-residuals	success	-
 factorization-dependence	success	-
 factorization-iteration-state	success	-
+svd-decomposition	error	unknown function: svd

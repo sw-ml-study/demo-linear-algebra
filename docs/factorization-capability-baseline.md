@@ -20,4 +20,5 @@ visible power-iteration trace in ordinary MLPL. They do not establish numerical
 stability, convergence for arbitrary matrices, eigenvalue ordering, or a
 general QR/eigen/SVD API. The executed LA14-LA15 decision keeps B3 a candidate:
 both lessons meet their bounded outcomes, so a missing `qr` or `eigen` name is
-not a blocker. LA16 will test the narrower SVD requirement.
+not a blocker. The subsequent LA16 gate verifies only the narrower stable,
+ordered SVD requirement as B3; it does not broaden the ask to QR or eigen.

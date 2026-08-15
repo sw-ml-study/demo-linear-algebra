@@ -1,7 +1,6 @@
 # sw-MLPL linear-algebra capability ledger
 
-Status: **B1 and B2 verified; B3 remains a catalog-verified candidate whose
-lesson-level runtime acceptance probe belongs to its later saga**.
+Status: **B1, B2, and the SVD-specific scope of B3 are verified**.
 
 A missing convenience builtin is not automatically a blocker. This repository
 calls something blocking only when a planned lesson cannot be expressed
@@ -71,9 +70,11 @@ pivots and intermediates explicitly. See `docs/systems-capability-baseline.md`.
 The executed decision and exact boundary are recorded in
 `docs/stable-solve-blocker-decision.md`.
 
-## B3 — decomposition boundary: QR/eigen/SVD (candidate blocker)
+## B3 — stable ordered SVD for low-rank reconstruction (verified blocker)
 
-Affected: robust LA14-LA18.
+Affected: LA16 low-rank reconstruction, LA18 PCA, and LA19 compression/LoRA
+analysis. LA14 bounded Gram-Schmidt and LA15 bounded power iteration remain
+runnable and do not request general QR or eigen primitives.
 
 Classical Gram-Schmidt and fixed-iteration power methods are valuable teaching
 algorithms and can be written from basic operations. They are not robust,
@@ -86,14 +87,17 @@ Likely priority is stable QR or least-squares before a broad eigensolver; SVD
 becomes justified by PCA and low-rank reconstruction. Do not request all three
 merely to resemble NumPy.
 
-The executed LA14-LA15 decision does **not** promote B3. Bounded classical
+The executed LA14-LA15 decision did **not** promote B3. Bounded classical
 Gram-Schmidt exposes projection subtraction, dependence, reconstruction, and
 orthogonality loss; bounded power iteration exposes convergence, iteration-
 limit cycling, and spectral ambiguity. Those lessons are complete without a
 missing primitive. Therefore no speculative `qr` or `eigen` failure probe is
 added. LA16 must separately decide whether its ordered, degenerate-aware SVD
 semantics create the first lesson-blocking decomposition need. See
-`docs/decomposition-blocker-decision.md`.
+`docs/decomposition-blocker-decision.md`. The subsequent LA16 gate does promote
+the narrower SVD need: `probes/svd-decomposition.mlpl` calls `svd(A)` on an
+exact 2x2 matrix, and MLPL v0.20.0 build `f77e8041` exits nonzero with
+`unknown function: svd`. See `docs/svd-blocker-decision.md`.
 
 ## Expressible conveniences, not blockers initially
 

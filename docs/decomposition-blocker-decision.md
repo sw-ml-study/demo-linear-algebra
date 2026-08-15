@@ -44,3 +44,9 @@ reconstruction error can be represented honestly in a bounded lesson. If not,
 LA16 must promote the smallest SVD-specific blocker with a minimal executable
 probe and upstream acceptance contract. It must not retroactively promote QR,
 eigen, and SVD as one bundle.
+
+## Subsequent LA16 outcome
+
+LA16 later verified the narrower SVD-specific scope of B3. That later result
+does not alter this LA14-LA15 non-promotion decision and does not promote QR or
+eigen APIs. See `docs/svd-blocker-decision.md`.

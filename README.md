@@ -221,3 +221,11 @@ direction.
 - [CLI lesson](demos/15-power-iteration/dominant_direction.mlpl)
 - [Standalone web lesson](demos/web/power_iteration.mlpl)
 - [Native mlplunit coverage](tests/test_power_iteration2.mlpl)
+
+## Lesson LA16 — SVD and low-rank reconstruction (constrained)
+
+LA16 is intentionally blocked by the verified SVD-specific B3 contract. The
+configured runtime reports `unknown function: svd`; hand-authored factors or
+power-iteration deflation would not honestly define ordering, paired signs,
+rectangular shapes, or repeated/zero singular values. See the
+[executable blocker decision](docs/svd-blocker-decision.md).

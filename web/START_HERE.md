@@ -20,7 +20,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA13 | Conditioning **(runnable)** | LA03, LA11-LA12 | compare perturbation amplification and separate residual from solution error | numerical reliability |
 | LA14 | Gram-Schmidt and QR **(runnable)** | LA06-LA08, LA13 | subtract projections and measure orthogonality/reconstruction separately | stable feature bases |
 | LA15 | Eigenvectors by bounded iteration **(runnable)** | LA08, LA13 | inspect a residual trace and distinguish convergence, limit, and ambiguity | repeated dynamics |
-| LA16 | SVD and low-rank approximation | LA14-LA15 | reconstruct at several ranks and plot error | compression |
+| LA16 | SVD and low-rank approximation **(blocked by B3)** | LA14-LA15 | reconstruct at several ordered ranks and plot monotone error once stable SVD exists | compression |
 | LA17 | Least squares | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry | linear regression |
 | LA18 | PCA | LA16-LA17 | center, project, and explain variance captured | dimensionality reduction |
 | LA19 | LoRA | LA08, LA16 | show `W + AB`, parameter counts, and output delta | efficient fine-tuning |
@@ -95,6 +95,14 @@ is made nonnegative to fix sign. `diag(2,1)` converges on the checked policy;
 a 90-degree rotation reaches its limit with residual one, while identity stops
 with a tiny residual but has no unique dominant direction. The lesson neither
 guarantees convergence nor computes a general ordered eigensystem.
+
+LA16 is a constrained leaf, not a hand-authored-factor demo. The configured
+runtime has no `svd(A)` operation, and bounded power iteration cannot honestly
+provide a full ordered decomposition with rectangular, repeated, and zero
+singular-value behavior. B3 specifies stable thin SVD, paired signs,
+degeneracy policy, independent reconstruction/orthogonality checks, and
+monotone rank-k error. Until that contract is executable, LA16 has no CLI/web
+artifact and does not pretend fixed factors were computed.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

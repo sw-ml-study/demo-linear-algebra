@@ -14,3 +14,4 @@ LA12	Pedagogical elimination and rank	runnable	demos/12-elimination/row_reductio
 LA13	Conditioning and numerical reliability	runnable	demos/13-conditioning/perturbations.mlpl	demos/web/conditioning.mlpl
 LA14	Classical Gram-Schmidt projection subtraction	runnable	demos/14-gram-schmidt/projection_subtraction.mlpl	demos/web/gram_schmidt.mlpl
 LA15	Bounded power iteration and eigenpair residuals	runnable	demos/15-power-iteration/dominant_direction.mlpl	demos/web/power_iteration.mlpl
+LA16	SVD and low-rank reconstruction	blocked	-	-

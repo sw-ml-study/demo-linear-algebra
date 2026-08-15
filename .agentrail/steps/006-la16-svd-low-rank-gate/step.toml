@@ -1,6 +1,6 @@
 number = 6
 slug = "la16-svd-low-rank-gate"
-status = "pending"
+status = "in-progress"
 description = "Gate LA16 SVD and low-rank reconstruction on the B3 decision. Implement only ..."
 role = "production"
 context_files = []

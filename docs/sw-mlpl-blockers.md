@@ -86,6 +86,15 @@ Likely priority is stable QR or least-squares before a broad eigensolver; SVD
 becomes justified by PCA and low-rank reconstruction. Do not request all three
 merely to resemble NumPy.
 
+The executed LA14-LA15 decision does **not** promote B3. Bounded classical
+Gram-Schmidt exposes projection subtraction, dependence, reconstruction, and
+orthogonality loss; bounded power iteration exposes convergence, iteration-
+limit cycling, and spectral ambiguity. Those lessons are complete without a
+missing primitive. Therefore no speculative `qr` or `eigen` failure probe is
+added. LA16 must separately decide whether its ordered, degenerate-aware SVD
+semantics create the first lesson-blocking decomposition need. See
+`docs/decomposition-blocker-decision.md`.
+
 ## Expressible conveniences, not blockers initially
 
 `norm`, distance, cosine similarity, outer product, trace, diagonal extraction,

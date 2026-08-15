@@ -1,6 +1,6 @@
 number = 5
 slug = "decomposition-blocker-decision"
-status = "pending"
+status = "in-progress"
 description = "Decide B3 from executed LA14-LA15 evidence. Promote only the smallest robust ..."
 role = "validation"
 context_files = []

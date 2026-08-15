@@ -1,0 +1,15 @@
+# Lesson LA20 -- bounded unbatched single-head attention.
+# effects: writes one deterministic SVG preview under out/
+# loops: none
+include "../../lib/ml_payoffs.mlpl";
+include "../../lib/attention_render.mlpl";
+print("WHAT THIS SHOWS -- One attention head scores every query against every key, normalizes each query row, then mixes value rows with those weights.")
+print("PREREQUISITES -- LA02 dot products, LA03 normalization, LA08 rank-2 matmul, and LA09 transpose. SHAPES -- Q:[query=2,feature=2], K:[key=3,feature=2], scores/weights:[query=2,key=3], V:[key=3,value=2], output:[query=2,value=2].")
+r = u:single_head_attention([[1,0],[0,1]], [[1,0],[0,1],[1,1]], [[10,0],[0,10],[5,5]])?
+print("NUMERICAL CONTRACT -- scores are QK^T/sqrt(2); native stable softmax makes each row sum exactly one; the first output favors value coordinate 0 and the second favors coordinate 1.")
+disp({raw_scores: r.raw_scores, scale: r.scale, scaled_scores: r.scaled_scores, weights: r.weights, row_sums: r.weight_row_sums, output: r.output})
+written = write_text("out/LA20-attention.svg", u:attention_svg())
+flat = flatten(r.output)
+print("HOW TO READ THE RESULT -- each score row belongs to one query and each column to one key; pink row weights form a convex mixture of the three purple value rows.")
+print("THE POINT -- attention is matrix multiplication, scaling, row normalization, and another matrix multiplication with explicit semantic axes. BOUNDARY -- exactly one unbatched head; B1 blocks rank-3 batch/head matmul, and this fixture does not claim masking, projections, training, or transformer completeness.")
+if equal(r.weight_row_sums, [1,1]) * gt(take(flat,0,0), take(flat,0,1)) * gt(take(flat,0,3), take(flat,0,2)) * equal(r.score_shape,[2,3]) * equal(r.output_shape,[2,2]) * is_ok(written) { ok({lesson: "LA20", score_shape: r.score_shape, weight_row_sums: r.weight_row_sums, output: r.output, blocker: r.blocker, artifact: "out/LA20-attention.svg"}) } else { err("LA20 invariant failed") }

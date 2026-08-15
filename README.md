@@ -244,3 +244,15 @@ values with 7 adapter values. It verifies the nonzero output identity
 - [CLI lesson](demos/19-lora/low_rank_update.mlpl)
 - [Standalone web lesson](demos/web/lora.mlpl)
 - [Native mlplunit coverage](tests/test_lora.mlpl)
+
+## Lesson LA20 — bounded single-head attention
+
+![Queries and transposed keys produce scaled scores, normalized rows, and value mixtures](assets/previews/LA20-attention.svg)
+
+The rank-2 lesson exposes `QK^T/sqrt(d)`, native stable row softmax, and
+weighted value mixing. Every weight row sums to one. B1 remains visible for
+batch and head axes rather than being hidden behind explicit compatibility loops.
+
+- [CLI lesson](demos/20-attention/single_head.mlpl)
+- [Standalone web lesson](demos/web/attention.mlpl)
+- [Native mlplunit coverage](tests/test_attention.mlpl)

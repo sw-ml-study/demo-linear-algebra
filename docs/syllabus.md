@@ -24,7 +24,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA17 | Least squares | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry | linear regression |
 | LA18 | PCA | LA16-LA17 | center, project, and explain variance captured | dimensionality reduction |
 | LA19 | LoRA **(runnable)** | LA08-LA09; LA16 motivation only | show `W + AB`, parameter counts, and output delta | efficient fine-tuning mechanism |
-| LA20 | Attention math | LA04, LA08-LA09 | trace `softmax(QK^T/sqrt(d))V` with explicit axes | transformers |
+| LA20 | Attention math **(runnable, single head)** | LA02-LA03, LA08-LA09 | trace `softmax(QK^T/sqrt(d))V` with explicit axes | transformer mechanism |
 
 Every lesson names what it does **not** establish. Finite fixtures demonstrate
 a law on those values; they do not prove the general theorem. Iterative demos
@@ -113,6 +113,14 @@ dimension or a universal savings guarantee—a 2x2 rank-one adapter uses four
 values, exactly matching its base. The lesson supplies fixed factors and makes
 no claim about training, optimizers, framework compatibility, compression
 quality, or model improvement.
+
+LA20 executes one unbatched attention head with `Q:[query,feature]`,
+`K:[key,feature]`, and `V:[key,value]`. It exposes raw `QK^T`, division by
+`sqrt(feature)`, stable row-wise softmax weights whose sums equal one, and the
+final `[query,key]@[key,value]` mixture. The symmetric fixture produces outputs
+approximately `[6.0167,3.9833]` and `[3.9833,6.0167]`. This is not masking,
+learned Q/K/V projections, training, or a complete transformer. B1 remains the
+verified blocker when batch or head axes require rank-3-or-higher matmul.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

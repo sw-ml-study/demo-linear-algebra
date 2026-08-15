@@ -1,0 +1,17 @@
+# LA20 bounded single-head attention evidence.
+include "lib/ml_payoffs.mlpl";
+include "lib/numerics.mlpl";
+
+@test {name: "attention exposes scaled query-key scores", tags:["LA20","attention","scores"]}
+def u:test_attention_scores() { "Check raw dots, scale, semantic shapes, and symmetric score structure."; r=u:single_head_attention([[1,0],[0,1]],[[1,0],[0,1],[1,1]],[[10,0],[0,10],[5,5]])?; u:assert_eq(r.raw_scores,[[1,0,1],[0,1,1]],"raw scores")?; u:assert_true(u:approx_equal(r.scale,sqrt(2),0.000000000001)?,"scale")?; u:assert_eq([r.score_shape,r.weight_shape,r.output_shape],[[2,3],[2,3],[2,2]],"pipeline shapes")?; u:assert_eq(r.axes.scores,"query,key","score axes") }
+
+@test {name: "stable softmax normalizes every attention row", tags:["LA20","attention","softmax"]}
+def u:test_attention_weights() { "Verify row sums, ordering, symmetry, and bounded probabilities."; r=u:single_head_attention([[1,0],[0,1]],[[1,0],[0,1],[1,1]],[[10,0],[0,10],[5,5]])?; f=flatten(r.weights); u:assert_eq(r.weight_row_sums,[1,1],"row sums")?; u:assert_true(gt(take(f,0,0),take(f,0,1))*gt(take(f,0,4),take(f,0,3)),"query preferences")?; u:assert_true(u:approx_equal(take(f,0,0),take(f,0,4),0.000000000001)?,"symmetric weights")?; u:assert_true(gt(reduce_mul(f),0),"positive probabilities") }
+
+@test {name: "attention weights produce checked value mixtures", tags:["LA20","attention","values"]}
+def u:test_attention_output() { "Cross-check output coordinates against independent golden approximations."; r=u:single_head_attention([[1,0],[0,1]],[[1,0],[0,1],[1,1]],[[10,0],[0,10],[5,5]])?; expected=[[6.016681,3.983319],[3.983319,6.016681]]; u:assert_true(u:approx_equal(r.output,expected,0.000001)?,"golden output")?; u:assert_eq(matmul(r.weights,r.values),r.output,"value mixing") }
+
+@test {name: "single-head attention rejects shape and finite violations", tags:["LA20","attention","errors"]}
+def u:test_attention_errors() { "Keep batch/head ranks and incompatible axes outside the checked rank-2 contract."; u:assert_true(is_err(u:single_head_attention([[1,0]],[[1,0,0]],[[1,2]])),"feature mismatch")?; u:assert_true(is_err(u:single_head_attention([[1,0]],[[1,0],[0,1]],[[1,2]])),"key/value mismatch")?; u:assert_true(is_err(u:single_head_attention(reshape(range(8),[2,2,2]),[[1,0]],[[1,2]])),"rank-three query")?; u:assert_true(is_err(u:single_head_attention([[1,1/0]],[[1,0]],[[1,2]])),"nonfinite query") }
+
+u:run_registered_tests()

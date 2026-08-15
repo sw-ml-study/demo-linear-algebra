@@ -1,6 +1,6 @@
 # Implementation plan: linear algebra you can see and use
 
-Status: **LA01-LA15 and LA19 are runnable; LA16 is constrained by verified SVD
+Status: **LA01-LA15 and LA19-LA20 are runnable; LA16 is constrained by verified SVD
 blocker B3; the linear-algebra-for-ML saga is active**.
 
 This plan turns the brief in `docs/research.txt` into executable teaching

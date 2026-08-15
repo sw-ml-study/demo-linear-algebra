@@ -12,8 +12,9 @@ plan](docs/plan.md), and inspect [the measured capability
 baseline](docs/capability-baseline.md).
 
 The first six-lesson unit is complete; see its [acceptance
-report](docs/foundation-acceptance.md). The next bounded program is [matrices as
-transformations](docs/matrices-saga.md).
+report](docs/foundation-acceptance.md). The matrix unit is also complete; see
+its [acceptance report](docs/matrix-acceptance.md). The next bounded program is
+[systems, rank, and conditioning](docs/systems-saga.md).
 
 Once the foundation harness is available:
 
@@ -142,3 +143,13 @@ the repository has a general determinant or inverse primitive.
 - [CLI lesson](demos/10-determinant-area/signed_area.mlpl)
 - [Standalone web lesson](demos/web/signed_area.mlpl)
 - [Native mlplunit coverage](tests/test_determinant2.mlpl)
+
+## Matrix payoff — a dense layer
+
+The integration demo computes `XW+b` with axes
+`[sample,feature] @ [feature,output] + [output] -> [sample,output]`. It checks
+native rank-2 multiplication against LA08's derived dots before broadcasting
+the bias, connecting the matrix unit directly to learned feature transforms.
+
+- [CLI payoff](demos/00-matrix-payoff/dense_layer.mlpl)
+- [Native mlplunit coverage](tests/test_dense_layer.mlpl)

@@ -1,0 +1,28 @@
+# Matrix-unit payoff: checked rank-2 dense layer XW+b.
+include "lib/matrices.mlpl";
+
+@test {name: "dense layer matches derived row-column products plus bias", tags: ["matrix-payoff", "dense"]}
+def u:test_dense_layer_values() { "Cross-check native XW against LA08 derivation before bias.";
+  inputs = [[1, 2], [3, 4]]; weights = [[2, 0], [1, 3]]; bias = [10, -1];
+  derived = u:matrix_multiply_derived(inputs, weights)?; outputs = u:dense_layer(inputs, weights, bias)?;
+  u:assert_eq(derived, [[4, 6], [10, 12]], "derived XW")?;
+  u:assert_eq(outputs, [[14, 5], [20, 11]], "XW+b")
+}
+
+@test {name: "dense layer propagates sample and output labels", tags: ["matrix-payoff", "labels"]}
+def u:test_dense_layer_labels() { "Pin semantic axes across contraction and output-axis broadcasting.";
+  inputs : [sample, feature] = [[1, 2], [3, 4]]; weights : [feature, output] = [[2, 0], [1, 3]]; bias : [output] = [10, -1]; outputs = u:dense_layer(inputs, weights, bias)?;
+  u:assert_eq(shape(outputs), [2, 2], "dense output shape")?;
+  u:assert_eq(labels(outputs), "sample,output", "dense output labels")?;
+  u:assert_true(1 - equal(outputs, [[14, 5], [20, 11]]), "labels disappeared from structural equality")?;
+  u:assert_true(reduce_mul(eq(outputs, [[14, 5], [20, 11]])), "numeric output mismatch")
+}
+
+@test {name: "dense layer rejects feature and bias mismatches", tags: ["matrix-payoff", "errors"]}
+def u:test_dense_layer_boundaries() { "Reject incompatible XW and output bias shapes before arithmetic.";
+  u:assert_true(is_err(u:dense_layer([[1, 2, 3]], [[1, 2], [3, 4]], [0, 0])), "feature mismatch accepted")?;
+  u:assert_true(is_err(u:dense_layer([[1, 2]], [[1, 2], [3, 4]], [0, 0, 0])), "bias width mismatch accepted")?;
+  u:assert_true(is_err(u:dense_layer([[1, 2]], [[1, 2], [3, 4]], [[0, 0]])), "rank-two bias accepted")
+}
+
+u:run_registered_tests()

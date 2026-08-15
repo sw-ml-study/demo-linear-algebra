@@ -32,7 +32,7 @@ evidence against a pinned interpreter.
 
 Acceptance report: `docs/foundation-acceptance.md`.
 
-## Queued — `matrices-as-transformations`
+## Completed — `matrices-as-transformations`
 
 Implement LA07-LA10: matrix anatomy, row-column matmul, composition, transpose,
 labeled shapes, 2D determinant/area, and a dense-layer payoff. Measure, but do
@@ -41,12 +41,16 @@ not assume, higher-rank matmul semantics.
 Reconciled executable plan: `docs/matrices-saga.md`. Foundation evidence shows
 rank-2 work is unblocked; B1 constrains only higher-rank follow-on lessons.
 
-## Queued — `systems-rank-conditioning`
+Acceptance report: `docs/matrix-acceptance.md`.
+
+## Next — `systems-rank-conditioning`
 
 Implement LA11-LA13 with pedagogical elimination, residuals, singular and
 inconsistent witnesses, and a conditioning visual. Promote B2 only when the
 lesson evidence proves the current language cannot meet the stable general
 contract.
+
+Reconciled executable plan: `docs/systems-saga.md`.
 
 ## Queued — `factorizations`
 

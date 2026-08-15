@@ -91,6 +91,13 @@ structural `equal` distinguishes it from a positional scalar. This is semantic
 friction, not a current blocker; matrix lessons preserve and explain it rather
 than silently stripping provenance.
 
+The dense-layer payoff also measured that `[sample,output] + [output]` fails
+with `add: expected [2, 2], got [2]`; rank-1-to-rank-2 trailing-axis
+broadcasting is not supported by the configured runtime. This is friction, not
+a current blocker: the bounded payoff constructs repeated bias rows as
+`ones([samples,1]) @ reshape(bias,[1,outputs])`. Higher-rank model ergonomics
+may revisit a general broadcasting contract alongside B1.
+
 ## Evidence template
 
 For each finding record: configured command and version; minimal source;

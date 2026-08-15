@@ -1,0 +1,19 @@
+# Matrix unit payoff -- a dense layer is XW+b.
+# visual: ascii
+# loops: bounded by matrix shape in the independent derivation
+
+include "../../lib/matrices.mlpl";
+
+print("WHAT THIS SHOWS -- A dense layer applies the same feature-to-output matrix to every sample, then broadcasts one output bias row.")
+print("PREREQUISITES -- LA07 transformations, LA08 row-column multiplication, LA09 labels/composition, and LA10 singularity. SHAPES -- X:[sample=2,feature=2], W:[feature=2,output=2], b:[output=2], Y:[sample=2,output=2].")
+inputs : [sample, feature] = [[1, 2], [3, 4]]
+weights : [feature, output] = [[2, 0], [1, 3]]
+bias : [output] = [10, -1]
+linear = matmul(inputs, weights)
+derived = u:matrix_multiply_derived([[1, 2], [3, 4]], [[2, 0], [1, 3]])?
+outputs = u:dense_layer(inputs, weights, bias)?
+disp([linear, outputs])
+print("NUMERICAL CONTRACT -- LA08's derived dots equal native XW numerically; a rank-2 repeated bias row adds [10,-1] to every sample and produces [[14,5],[20,11]].")
+print("HOW TO READ THE RESULT -- Each output row belongs to one sample; each cell is a feature-row dot an output-column, shifted by that output's bias.")
+print("THE POINT -- Weight columns define learned output features, rank-2 matmul evaluates a batch, and labels preserve sample/output roles. BOUNDARY -- native rank-1-to-rank-2 bias broadcasting is unsupported, so dense_layer explicitly repeats bias rows; rank-3 multi-head matmul remains blocker B1.")
+if reduce_mul(eq(derived, linear)) * reduce_mul(eq(outputs, [[14, 5], [20, 11]])) * equal(labels(outputs), "sample,output") * is_err(u:dense_layer(inputs, weights, [1, 2, 3])) { ok({payoff: "XW+b", input_shape: shape(inputs), weight_shape: shape(weights), output_shape: shape(outputs), output_labels: labels(outputs)}) } else { err("dense-layer payoff invariant failed") }

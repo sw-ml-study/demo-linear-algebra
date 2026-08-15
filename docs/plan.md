@@ -1,6 +1,7 @@
 # Implementation plan: linear algebra you can see and use
 
-Status: **foundation curriculum LA01-LA06 accepted; matrices saga is next**.
+Status: **foundation LA01-LA06 and matrix curriculum LA07-LA10 accepted;
+systems, rank, and conditioning is next**.
 
 This plan turns the brief in `docs/research.txt` into executable teaching
 material and a focused sw-MLPL forcing function. The central question is:
@@ -111,7 +112,7 @@ they compose clearly from reshape, elementwise operations, and reductions.
 
 One AgentRail saga is active at a time. `docs/sagas.md` is the durable queue.
 
-### Saga 1 — foundation and vector geometry (active)
+### Saga 1 — foundation and vector geometry (complete)
 
 Establish mlplunit, binary selection, catalogs, web lesson checks, the
 capability matrix, and a coherent first unit through cosine similarity and
@@ -123,11 +124,15 @@ Teach matrices, transpose, row-column multiplication, composition, labeled
 axes, determinant/area in bounded dimensions, and a dense linear layer. End
 with exact shape-error and label-propagation evidence.
 
+Status: complete; see `docs/matrix-acceptance.md`.
+
 ### Saga 3 — systems, rank, and numerical honesty
 
 Implement pedagogical elimination where current indexing permits it; compare
 residuals; distinguish unique, singular, inconsistent, and ill-conditioned
 systems. Measure whether a stable general solve is blocked upstream.
+
+Reconciled next plan: `docs/systems-saga.md`.
 
 ### Saga 4 — orthogonality and factorizations
 

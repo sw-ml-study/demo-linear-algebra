@@ -46,3 +46,7 @@ def u:matrix_area_kind2(matrix) { "Classify a 2D transform as preserving or reve
   determinant = u:matrix_determinant2(matrix)?;
   if gt(determinant, 0) { ok("orientation_preserved") } else { if lt(determinant, 0) { ok("orientation_reversed") } else { ok("singular_collapsed") } }
 }
+def u:dense_layer(inputs, weights, bias) { "Apply X:[sample,feature] @ W:[feature,output] plus one broadcast [output] bias.";
+  dimensions = u:matrix_product_dimensions(inputs, weights)?;
+  if 1 - eq(rank(bias), 1) { err({kind: "dense_bias_rank", actual: rank(bias), expected: 1}) } else { if eq(tally(bias), dimensions.columns) { bias_rows = matmul(ones([dimensions.rows, 1]), reshape(bias, [1, dimensions.columns])); ok(matmul(inputs, weights) + bias_rows) } else { err({kind: "dense_bias_shape", bias: shape(bias), expected_output: dimensions.columns}) } }
+}

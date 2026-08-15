@@ -1,6 +1,6 @@
-name = "systems-rank-conditioning"
-status = "completed"
-current_step = 6
-created_at = "2026-08-14T17:16:59"
+name = "factorizations"
+status = "active"
+current_step = 1
+created_at = "2026-08-15T09:48:56"
 plan_file = ".agentrail/plan.md"
 retroactive = false

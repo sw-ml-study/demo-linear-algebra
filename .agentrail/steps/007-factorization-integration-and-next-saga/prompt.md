@@ -1,0 +1,1 @@
+Integrate all accepted LA14-LA16 work, visuals, syllabus, tests, and previews; run and audit the complete gate; publish factorization acceptance; reconcile the ML-payoff saga around verified B1, B2, and any verified B3 scope; close with explicit blockers and constrained follow-on work.

@@ -1,0 +1,1 @@
+Decide B3 from executed LA14-LA15 evidence. Promote only the smallest robust QR or eigen capability that blocks a required lesson, backed by a minimal failing probe and an upstream acceptance contract; otherwise document why bounded teaching algorithms remain sufficient.

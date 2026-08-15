@@ -1,0 +1,1 @@
+Gate LA16 SVD and low-rank reconstruction on the B3 decision. Implement only if singular values and vectors, ordering, degeneracy, and reconstruction can be represented honestly; otherwise publish the constrained lesson leaf and exact upstream requirements without unstable compatibility code.

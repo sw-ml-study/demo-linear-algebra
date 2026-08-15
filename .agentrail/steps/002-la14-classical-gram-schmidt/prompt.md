@@ -1,0 +1,1 @@
+Implement LA14 classical Gram-Schmidt with visible projection subtraction, Q^T Q and QR-A checks, an explicit maximum shape and tolerance, dependent-column errors, mlplunit coverage, CLI narration, and a standalone web visualization.

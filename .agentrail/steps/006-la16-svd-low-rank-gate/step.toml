@@ -1,0 +1,8 @@
+number = 6
+slug = "la16-svd-low-rank-gate"
+status = "pending"
+description = "Gate LA16 SVD and low-rank reconstruction on the B3 decision. Implement only ..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T09:49:10"
+commits = []

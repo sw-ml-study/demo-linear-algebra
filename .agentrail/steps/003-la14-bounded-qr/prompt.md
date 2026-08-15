@@ -1,0 +1,1 @@
+Extend LA14 to bounded QR teaching fixtures, compare independently computed reconstruction and orthogonality errors, cover near-dependent counterexamples, and state clearly that the algorithm is educational rather than numerically stable general QR.

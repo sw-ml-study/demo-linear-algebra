@@ -1,0 +1,1 @@
+Probe column assembly/extraction, nested iteration, orthogonality and reconstruction residuals, dependent and near-dependent columns, and bounded convergence-state records on pinned fixtures.

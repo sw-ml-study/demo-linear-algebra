@@ -1,0 +1,8 @@
+number = 7
+slug = "factorization-integration-and-next-saga"
+status = "pending"
+description = "Integrate all accepted LA14-LA16 work, visuals, syllabus, tests, and previews..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T09:49:10"
+commits = []

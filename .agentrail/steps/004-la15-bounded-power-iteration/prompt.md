@@ -1,0 +1,1 @@
+Implement the capability-supported portion of LA15 as a bounded power-iteration trace with explicit tolerance, iteration limit, residual, sign convention, mlplunit tests, CLI/web visualization, and ambiguous or non-convergent counterexamples.

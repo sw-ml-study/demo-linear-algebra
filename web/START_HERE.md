@@ -22,7 +22,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA15 | Eigenvectors by bounded iteration **(runnable)** | LA08, LA13 | inspect a residual trace and distinguish convergence, limit, and ambiguity | repeated dynamics |
 | LA16 | SVD and low-rank approximation **(blocked by B3)** | LA14-LA15 | reconstruct at several ordered ranks and plot monotone error once stable SVD exists | compression |
 | LA17 | Least squares **(blocked by B2)** | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry once stable general solve/least-squares diagnostics exist | linear regression |
-| LA18 | PCA | LA16-LA17 | center, project, and explain variance captured | dimensionality reduction |
+| LA18 | PCA **(blocked by B3)** | LA16-LA17 | center, compute ordered components, project, reconstruct, and explain variance once stable SVD exists | dimensionality reduction |
 | LA19 | LoRA **(runnable)** | LA08-LA09; LA16 motivation only | show `W + AB`, parameter counts, and output delta | efficient fine-tuning mechanism |
 | LA20 | Attention math **(runnable, single head)** | LA02-LA03, LA08-LA09 | trace `softmax(QK^T/sqrt(d))V` with explicit axes | transformer mechanism |
 
@@ -112,6 +112,15 @@ they square the condition number and still require a stable solve. LA17 gains
 CLI, web, and test artifacts only after the B2 acceptance contract supports an
 honest regression fit with independently checked residuals and reliability
 diagnostics.
+
+LA18 is constrained even though centering, covariance arithmetic, projection,
+and reconstruction from supplied directions are expressible. PCA must compute
+ordered orthonormal components from the centered data. Repeated use of LA15's
+single-candidate power iteration on `X^T X` would square conditioning, inherit
+cycling and ambiguity, accumulate deflation error, and invent a repeated-
+variance policy. Hand-authored axes would not be computed PCA. B3 must first
+provide stable ordered SVD semantics so explained-variance ratios,
+degeneracies, and monotone rank-k reconstruction can be tested honestly.
 
 LA19 constructs a LoRA-style update without depending on the blocked SVD
 lesson: `W:[input,output]` remains fixed while `A:[input,rank]` and

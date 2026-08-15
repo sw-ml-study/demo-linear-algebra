@@ -16,5 +16,6 @@ LA14	Classical Gram-Schmidt projection subtraction	runnable	demos/14-gram-schmid
 LA15	Bounded power iteration and eigenpair residuals	runnable	demos/15-power-iteration/dominant_direction.mlpl	demos/web/power_iteration.mlpl
 LA16	SVD and low-rank reconstruction	blocked	-	-
 LA17	Stable least-squares regression	blocked	-	-
+LA18	Principal component analysis	blocked	-	-
 LA19	Bounded LoRA low-rank update	runnable	demos/19-lora/low_rank_update.mlpl	demos/web/lora.mlpl
 LA20	Bounded single-head attention	runnable	demos/20-attention/single_head.mlpl	demos/web/attention.mlpl

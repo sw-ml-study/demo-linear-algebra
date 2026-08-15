@@ -240,6 +240,14 @@ general `solve(A,B)` path, and neither normal equations nor the bounded LA11
 2x2 teaching solver provides an honest production regression foundation. See
 the [executed LA17 gate](docs/la17-least-squares-gate.md).
 
+## Lesson LA18 — principal component analysis (constrained)
+
+LA18 remains behind SVD-specific B3. Centering and projection are available,
+but the runtime cannot yet compute stable ordered components with honest
+degeneracy, explained-variance, and reconstruction behavior. The
+[executed LA18 gate](docs/la18-pca-gate.md) rejects fixed components and
+covariance power-iteration deflation as substitutes.
+
 ## Lesson LA19 — bounded LoRA low-rank update
 
 ![A four-by-three base matrix plus narrow rank-one factors producing a full-shaped update and checked output delta](assets/previews/LA19-lora.svg)

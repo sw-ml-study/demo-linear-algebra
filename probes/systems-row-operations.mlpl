@@ -1,0 +1,7 @@
+# Probe: flat scatter can update and swap cells before reshaping a matrix.
+matrix = [[1, 2, 3], [4, 5, 6]]
+flat = flatten(matrix)
+updated = reshape(scatter(flat, 1 * 3 + 2, 60), [2, 3])
+swapped_flat = scatter(scatter(flat, 0, take(flat, 0, 3)), 3, take(flat, 0, 0))
+swapped = reshape(swapped_flat, [2, 3])
+if equal(updated, [[1, 2, 3], [4, 5, 60]]) * equal(swapped, [[4, 2, 3], [1, 5, 6]]) { ok({probe: "systems-row-operations", updated: updated, partially_swapped: swapped}) } else { err("flat scatter row-update behavior changed") }

@@ -1,0 +1,3 @@
+# Probe: invalid square-root and comparison behavior.
+value = sqrt(-1)
+if (1 - eq(value, value)) * (1 - lt(value, 0)) * (1 - gt(value, 0)) { ok({probe: "systems-nonfinite", value: value, self_equal: eq(value, value), less_than_zero: lt(value, 0), greater_than_zero: gt(value, 0)}) } else { err("NaN comparison behavior changed") }

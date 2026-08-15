@@ -1,0 +1,18 @@
+# Checked primitives for bounded systems, elimination, and residual lessons.
+# loops: bounded by matrix width
+
+include "matrices.mlpl";
+
+def u:is_finite_numeric(value) { "Detect finite numeric arrays because NaN and infinity make value-value unequal to zero."; reduce_mul(eq(value - value, 0)) }
+def u:matrix_set_cell(matrix, row_index, column_index, value) { "Update one checked rank-two cell through flat scatter and reshape.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  if u:valid_matrix_index(row_index, dimensions.rows) * u:valid_matrix_index(column_index, dimensions.columns) { ok(reshape(scatter(flatten(matrix), row_index * dimensions.columns + column_index, value), [dimensions.rows, dimensions.columns])) } else { err({kind: "matrix_cell_index", row: row_index, column: column_index, shape: shape(matrix)}) }
+}
+def u:matrix_swap_rows(matrix, first_row, second_row) { "Swap two checked rows through bounded flat cell updates.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  if u:valid_matrix_index(first_row, dimensions.rows) * u:valid_matrix_index(second_row, dimensions.rows) { original = flatten(matrix); changed = original; column = 0; while lt(column, dimensions.columns) { first_index = first_row * dimensions.columns + column; second_index = second_row * dimensions.columns + column; changed = scatter(scatter(changed, first_index, take(original, 0, second_index)), second_index, take(original, 0, first_index)); column = column + 1 }; ok(reshape(changed, [dimensions.rows, dimensions.columns])) } else { err({kind: "matrix_row_index", first: first_row, second: second_row, rows: dimensions.rows}) }
+}
+def u:system_residual(coefficients, candidate, targets) { "Compute Ax-b and its Euclidean norm independently from any solve path.";
+  dimensions = u:matrix_dimensions(coefficients)?;
+  if eq(rank(candidate), 1) * eq(rank(targets), 1) * eq(tally(candidate), dimensions.columns) * eq(tally(targets), dimensions.rows) { predicted = matmul(coefficients, candidate); residual = predicted - targets; ok({predicted: predicted, residual: residual, norm: sqrt(reduce_add(residual * residual))}) } else { err({kind: "system_shape", coefficients: shape(coefficients), candidate: shape(candidate), targets: shape(targets)}) }
+}

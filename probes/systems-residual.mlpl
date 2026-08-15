@@ -1,0 +1,13 @@
+# Probe: exact and near-singular residual norms remain finite and distinguish solution error.
+exact_a = [[2, 1], [1, 3]]
+exact_x = [1, 2]
+exact_b = matmul(exact_a, exact_x)
+exact_residual = sqrt(reduce_add((matmul(exact_a, exact_x) - exact_b) * (matmul(exact_a, exact_x) - exact_b)))
+near_a = [[1, 1], [1, 1.000001]]
+near_b = matmul(near_a, [1, 1])
+candidate = [2, 0]
+near_delta = matmul(near_a, candidate) - near_b
+near_residual = sqrt(reduce_add(near_delta * near_delta))
+solution_delta = candidate - [1, 1]
+solution_error = sqrt(reduce_add(solution_delta * solution_delta))
+if eq(exact_residual, 0) * gt(near_residual, 0) * lt(near_residual, 0.00001) * gt(solution_error, 1) { ok({probe: "systems-residual", exact: exact_residual, near: near_residual, solution_error: solution_error}) } else { err("residual behavior changed") }

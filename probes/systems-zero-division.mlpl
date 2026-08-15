@@ -1,0 +1,3 @@
+# Probe: numeric division by zero yields positive infinity rather than a Result error.
+value = 1 / 0
+if gt(value, 0) * (1 - eq(value - value, 0)) { ok({probe: "systems-zero-division", value: value}) } else { err("division-by-zero behavior changed") }

@@ -9,3 +9,7 @@ matrix-extraction-out-of-bounds	error	shape mismatch: 2 vs 2 elements
 matmul-inner-mismatch	error	matmul: expected [2, 3], got [2, 2]
 higher-rank-matmul	error	index has 3 components but array has rank 2
 web-statement-contract	success	-
+systems-row-operations	success	-
+systems-zero-division	success	-
+systems-nonfinite	success	-
+systems-residual	success	-

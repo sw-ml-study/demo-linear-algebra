@@ -57,6 +57,13 @@ singular matrix, an ill-conditioned fixture with residual tolerance, and shape
 diagnostics. The test oracle must be independently derived or cross-checked,
 not the same implementation copied twice.
 
+Pre-LA11 probes confirm bounded row updates/swaps and independent residuals are
+expressible. They also show division by zero returns infinity and invalid
+square root returns NaN rather than a Result, so lesson algorithms must guard
+pivots and intermediates explicitly. See `docs/systems-capability-baseline.md`.
+B2 remains a candidate; these findings neither prove nor replace a stable
+general solve.
+
 ## B3 — decomposition boundary: QR/eigen/SVD (candidate blocker)
 
 Affected: robust LA14-LA18.

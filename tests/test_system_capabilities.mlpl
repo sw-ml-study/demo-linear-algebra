@@ -1,0 +1,38 @@
+# Executable contracts established before LA11-LA13.
+include "lib/systems.mlpl";
+
+@test {name: "flat scatter supports checked cell updates and row swaps", tags: ["systems", "capability", "rows"]}
+def u:test_system_row_operations() { "Pin the mutation-free matrix plumbing needed by elimination.";
+  matrix = [[1, 2, 3], [4, 5, 6]];
+  u:assert_eq(u:matrix_set_cell(matrix, 1, 2, 60)?, [[1, 2, 3], [4, 5, 60]], "cell update")?;
+  u:assert_eq(u:matrix_swap_rows(matrix, 0, 1)?, [[4, 5, 6], [1, 2, 3]], "row swap")?;
+  u:assert_true(is_err(u:matrix_set_cell(matrix, 2, 0, 9)), "bad row accepted")?;
+  u:assert_true(is_err(u:matrix_swap_rows(matrix, -1, 0)), "bad swap accepted")
+}
+
+@test {name: "non-finite arithmetic requires explicit guards", tags: ["systems", "capability", "nonfinite"]}
+def u:test_system_nonfinite_contract() { "Show infinity and NaN propagate instead of returning Results.";
+  infinity = 1 / 0; not_a_number = sqrt(-1);
+  u:assert_true(1 - u:is_finite_numeric(infinity), "infinity accepted as finite")?;
+  u:assert_true(1 - u:is_finite_numeric(not_a_number), "NaN accepted as finite")?;
+  u:assert_true(u:is_finite_numeric([0, -2, 3.5]), "finite vector rejected")?;
+  u:assert_true(1 - eq(not_a_number, not_a_number), "NaN unexpectedly self-equal")
+}
+
+@test {name: "residual is independent and exact on a known solution", tags: ["systems", "residual"]}
+def u:test_exact_system_residual() { "Check Ax-b without sharing a future solver implementation.";
+  measured = u:system_residual([[2, 1], [1, 3]], [1, 2], [4, 7])?;
+  u:assert_eq(measured.predicted, [4, 7], "prediction")?;
+  u:assert_eq(measured.residual, [0, 0], "residual")?;
+  u:assert_eq(measured.norm, 0, "residual norm")
+}
+
+@test {name: "near-singular system separates residual from solution error", tags: ["systems", "conditioning", "counterexample"]}
+def u:test_near_singular_residual() { "Pin a small-residual inaccurate candidate for LA13.";
+  coefficients = [[1, 1], [1, 1.000001]]; targets = matmul(coefficients, [1, 1]); candidate = [2, 0]; measured = u:system_residual(coefficients, candidate, targets)?; error = sqrt(reduce_add((candidate - [1, 1]) * (candidate - [1, 1])));
+  u:assert_true(gt(measured.norm, 0) * lt(measured.norm, 0.00001), "near residual not small")?;
+  u:assert_true(gt(error, 1), "solution error not large")?;
+  u:assert_true(gt(error / measured.norm, 100000), "conditioning contrast too small")
+}
+
+u:run_registered_tests()

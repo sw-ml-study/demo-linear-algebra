@@ -1,6 +1,6 @@
 number = 1
 slug = "systems-capability-probes"
-status = "pending"
+status = "in-progress"
 description = "Probe flat-scatter row updates, row swaps, division-by-zero behavior, non-fin..."
 role = "validation"
 context_files = []

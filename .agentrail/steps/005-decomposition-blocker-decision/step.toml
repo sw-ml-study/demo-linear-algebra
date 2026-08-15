@@ -1,8 +1,9 @@
 number = 5
 slug = "decomposition-blocker-decision"
-status = "in-progress"
+status = "completed"
 description = "Decide B3 from executed LA14-LA15 evidence. Promote only the smallest robust ..."
 role = "validation"
 context_files = []
 created_at = "2026-08-15T09:49:09"
-commits = []
+completed_at = "2026-08-15T14:13:22"
+commits = ["3cf81335dc092656e69eedc0ee6523ab355d0f16"]

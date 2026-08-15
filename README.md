@@ -24,6 +24,10 @@ The [ML-payoff integration map](docs/ml-payoff-integration.md) links LA17-LA20
 to executable prerequisites, lesson evidence, and the exact B1-B3 probes that
 must trigger reconciliation when upstream capabilities change.
 
+The ML-payoff program is accepted in
+[its acceptance report](docs/ml-payoff-acceptance.md). The remaining work is
+the bounded [curriculum and capability closeout](docs/curriculum-closeout-saga.md).
+
 Once the foundation harness is available:
 
 ```sh

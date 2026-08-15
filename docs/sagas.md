@@ -66,7 +66,7 @@ Reconciled executable plan: `docs/factorizations-saga.md`.
 Acceptance report: `docs/factorization-acceptance.md`. LA14-LA15 are runnable;
 LA16 remains a visible constrained leaf behind SVD-specific B3.
 
-## Next — `linear-algebra-for-ml`
+## Completed — `linear-algebra-for-ml`
 
 Implement LA17-LA20: least squares, PCA, low-rank reconstruction, LoRA, and
 attention. Reuse earlier APIs and visual grammar. Promote B1 or decomposition
@@ -74,9 +74,15 @@ asks only with executable evidence.
 
 Reconciled executable plan: `docs/ml-payoff-saga.md`.
 
-## Queued — `curriculum-and-capability-closeout`
+Acceptance report: `docs/ml-payoff-acceptance.md`. LA19 and bounded LA20 are
+runnable; LA17 remains constrained by B2, while LA16 and LA18 remain
+constrained by SVD-specific B3. B1 constrains batched/multi-head extensions.
+
+## Next — `curriculum-and-capability-closeout`
 
 Audit the complete learning path, generated artifacts, accessibility/static
 fallbacks, terminology, numerical claims, and upstream contracts. Completion
 means the planned bounded curriculum is integrated; it does not mean linear
 algebra or sw-MLPL development is finished.
+
+Reconciled executable plan: `docs/curriculum-closeout-saga.md`.

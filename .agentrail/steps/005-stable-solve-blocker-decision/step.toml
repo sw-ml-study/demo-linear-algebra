@@ -1,8 +1,9 @@
 number = 5
 slug = "stable-solve-blocker-decision"
-status = "in-progress"
+status = "completed"
 description = "Decide B2 from executed LA11-LA13 evidence. Promote it only if ordinary MLPL ..."
 role = "validation"
 context_files = []
 created_at = "2026-08-14T17:17:14"
-commits = []
+completed_at = "2026-08-14T17:49:36"
+commits = ["7d2357b02ea136fab45380ffa94d6b691308acff"]

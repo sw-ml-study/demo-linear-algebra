@@ -1,0 +1,1 @@
+Implement LA11 bounded 2x2 systems with geometric unique, parallel, coincident, and inconsistent witnesses plus independently computed residuals. Add mlplunit tests, CLI/web lessons, visualization, catalog, syllabus, and explicit shape/numerical boundaries.

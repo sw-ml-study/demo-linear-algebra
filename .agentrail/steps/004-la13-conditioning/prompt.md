@@ -1,0 +1,1 @@
+Implement LA13 conditioning with paired nearby systems, perturbation ratios, residual-versus-solution-error narration, explicit tolerance policy, tests, CLI/web visualization, and counterexamples to treating small residual as proof of an accurate solution.

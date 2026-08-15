@@ -1,0 +1,1 @@
+Decide B2 from executed LA11-LA13 evidence. Promote it only if ordinary MLPL cannot honestly provide the required stable pivoting, rank/condition diagnostics, multiple right-hand sides, and non-finite handling; otherwise document why the bounded curriculum remains sufficient.

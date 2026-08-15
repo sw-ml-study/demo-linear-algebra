@@ -1,0 +1,8 @@
+number = 5
+slug = "stable-solve-blocker-decision"
+status = "pending"
+description = "Decide B2 from executed LA11-LA13 evidence. Promote it only if ordinary MLPL ..."
+role = "validation"
+context_files = []
+created_at = "2026-08-14T17:17:14"
+commits = []

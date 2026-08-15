@@ -1,0 +1,1 @@
+Implement LA12 pedagogical elimination with a visible augmented matrix, checked pivot decisions, row operations, rank classifications, and advertised size limits. Test exact unique, singular, and inconsistent cases without presenting the routine as a production solver.

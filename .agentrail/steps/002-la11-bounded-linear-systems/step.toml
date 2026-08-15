@@ -1,0 +1,8 @@
+number = 2
+slug = "la11-bounded-linear-systems"
+status = "pending"
+description = "Implement LA11 bounded 2x2 systems with geometric unique, parallel, coinciden..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T17:17:14"
+commits = []

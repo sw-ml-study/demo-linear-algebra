@@ -1,0 +1,1 @@
+Matrices LA07-LA10 and dense-layer integration accepted in docs/matrix-acceptance.md

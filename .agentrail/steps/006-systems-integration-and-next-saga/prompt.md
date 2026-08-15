@@ -1,0 +1,1 @@
+Integrate LA11-LA13, run and audit the complete gate, publish systems/rank/conditioning acceptance, reconcile the factorization saga from measured evidence, and close the active saga with explicit blockers and constrained follow-on work.

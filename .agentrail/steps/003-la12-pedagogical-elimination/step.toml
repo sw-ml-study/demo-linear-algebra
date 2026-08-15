@@ -1,0 +1,8 @@
+number = 3
+slug = "la12-pedagogical-elimination"
+status = "pending"
+description = "Implement LA12 pedagogical elimination with a visible augmented matrix, check..."
+role = "production"
+context_files = []
+created_at = "2026-08-14T17:17:14"
+commits = []

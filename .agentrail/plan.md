@@ -1,42 +1,37 @@
-# Next saga plan: matrices as transformations
+# Reconciled next saga: systems, rank, and conditioning
 
-Purpose: deliver LA07–LA10 and make rank-2 matrix multiplication visible from
-individual row-column dots through composed ML transformations.
+Purpose: deliver LA11-LA13 using small transparent algorithms while measuring
+whether stable general solve support must become blocker B2.
 
-This plan is reconciled against the foundation runtime evidence. Rank-2
-`matmul`, transpose, general axis transpose, reductions, and named-axis
-propagation work. B1 higher-rank `matmul` is real but does not block this saga.
-General solve, QR, eigen, and SVD are outside its scope.
+Matrix-saga evidence changes the starting point: rank-2 row/cell extraction,
+flat `scatter`, loops, reductions, shape checks, and labels are sufficient for
+bounded pedagogical elimination. Native extraction diagnostics are not clear
+enough for learners, so the existing checked wrappers remain the public lesson
+boundary. Nothing yet justifies claiming a stable general solver exists.
 
 ## Proposed steps
 
-1. **Matrix anatomy and extraction probes** — verify current row/column/cell
-   extraction, empty dimensions, label retention, and mismatch diagnostics.
-   Establish LA07 library/test/catalog contracts before choosing helper APIs.
-2. **LA07 matrices transform basis vectors** — show a matrix as stored columns
-   and as a function on inputs; transform a basis grid and connect weights to
-   feature transformations.
-3. **LA08 row-column multiplication** — derive every output cell from a row
-   dot a column, cross-check rank-2 `matmul`, visualize active row/column and
-   accumulator, and reject incompatible inner dimensions.
-4. **LA09 composition and transpose** — verify `A(Bx)=(AB)x`, transpose
-   identities, and labeled-axis behavior; visualize successive grid transforms
-   versus one composed transform.
-5. **LA10 signed area and singularity** — derive the 2D determinant as bounded
-   lesson code, show orientation/area change and a collapsed singular grid,
-   and avoid claiming a general determinant primitive.
-6. **Dense-layer payoff and matrix integration** — connect `XW+b` to the four
-   lessons, run the complete gate, publish matrix acceptance, and reconcile the
-   systems/rank/conditioning saga from measured indexing behavior.
+1. Probe flat-scatter row updates, row swaps, division-by-zero behavior,
+   non-finite comparisons, and residual norms on exact and near-singular
+   fixtures.
+2. Implement LA11 bounded 2x2 systems with geometric unique, parallel, and
+   coincident/inconsistent witnesses plus explicit residuals.
+3. Implement LA12 pedagogical elimination with a visible augmented matrix,
+   pivot decisions, row operations, rank classifications, and size limits.
+4. Implement LA13 conditioning with paired nearby systems, perturbation ratios,
+   residual-versus-solution-error narration, and explicit tolerance policy.
+5. Decide B2 from evidence: keep stable general solve constrained if ordinary
+   MLPL cannot honestly provide pivoting, rank/condition diagnostics, multiple
+   right-hand sides, and non-finite handling.
+6. Integrate LA11-LA13, publish acceptance, and reconcile factorization work.
 
 ## Acceptance
 
-- LA07–LA10 each have tested CLI/web forms, meaningful matrix/grid visuals,
-  exact shape narration, counterexamples, and demo-produced fresh previews.
-- Rank-2 `matmul` is derived from visible row-column dots before it is used as
-  a primitive in the dense-layer payoff.
-- Named axes are checked as semantic metadata, including the established fact
-  that labels participate in structural equality.
-- The bounded determinant remains curriculum code; missing general solve or
-  decomposition APIs are neither implemented nor prematurely requested.
-- B1 stays pinned and explicitly constrains only higher-rank follow-on work.
+- Every solver advertises its maximum size and numerical policy.
+- Unique, singular/underdetermined, and inconsistent cases are distinguished;
+  no zero pivot is silently divided.
+- Residuals are computed independently from the solve path.
+- Conditioning distinguishes a small residual from an accurate solution.
+- B2 is promoted only with a minimal executable failing probe and an upstream
+  acceptance contract; a toy elimination routine is never presented as a
+  production-grade general solve.

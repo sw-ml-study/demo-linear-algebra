@@ -1,0 +1,1 @@
+Probe flat-scatter row updates, row swaps, division-by-zero behavior, non-finite comparisons, and residual norms on exact and near-singular fixtures. Record executable runtime evidence and refine LA11-LA13 helper contracts before implementation.

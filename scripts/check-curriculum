@@ -5,7 +5,7 @@ tab=$(printf '\t')
 lesson_count=0
 while IFS="$tab" read -r id title status cli web; do
   [ "$id" = id ] && continue
-  case "$id" in LA0[1-9]|LA1[0-5]) ;; *) continue;; esac
+  case "$id" in LA0[1-9]|LA1[0-5]|LA19) ;; *) continue;; esac
   lesson_count=$((lesson_count + 1))
   [ "$status" = runnable ] || { echo "$id is not runnable" >&2; exit 1; }
   [ -f "$repo_root/$cli" ] || { echo "$id missing CLI path: $cli" >&2; exit 1; }
@@ -23,7 +23,7 @@ while IFS="$tab" read -r id title status cli web; do
   [ -f "$generated" ] || { echo "$id generated web copy missing" >&2; exit 1; }
   cmp "$repo_root/$web" "$generated" || { echo "$id generated web copy is stale" >&2; exit 1; }
 done < "$repo_root/catalog/lessons.tsv"
-[ "$lesson_count" -eq 15 ] || { echo "expected fifteen runnable lessons through LA15, found $lesson_count" >&2; exit 1; }
+[ "$lesson_count" -eq 16 ] || { echo "expected sixteen runnable lessons through LA15 plus LA19, found $lesson_count" >&2; exit 1; }
 
 if find "$repo_root/demos/web" -type f -name '*.mlpl' -exec grep -lE 'include "|write_text\(|read_text\(' {} \; | grep .; then
   echo "authored web lessons must be standalone and effect-free" >&2
@@ -55,6 +55,7 @@ grep -q '^LA13.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA14.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA15.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q '^LA16.*blocked' "$repo_root/catalog/lessons.tsv"
+grep -q '^LA19.*runnable' "$repo_root/catalog/lessons.tsv"
 grep -q 'W\*0=0' "$repo_root/docs/syllabus.md"
 grep -q 'shared `inner` dimension is consumed' "$repo_root/docs/syllabus.md"
 grep -q '(AB)^T=B^T A^T' "$repo_root/docs/syllabus.md"
@@ -80,4 +81,5 @@ grep -q 'SVD and low-rank approximation \*\*(blocked by B3)\*\*' "$repo_root/doc
 grep -q '20 capability probes' "$repo_root/docs/factorization-acceptance.md"
 grep -q 'General QR and eigen remain outside' "$repo_root/docs/factorization-acceptance.md"
 grep -q 'Reconciled executable plan: `docs/ml-payoff-saga.md`' "$repo_root/docs/sagas.md"
-echo "curriculum: fifteen lessons integrated through LA15"
+grep -q 'X(W+AB)-XW=(XA)B' "$repo_root/docs/syllabus.md"
+echo "curriculum: sixteen runnable lessons through LA19 with constrained gaps explicit"

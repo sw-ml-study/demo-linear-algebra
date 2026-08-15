@@ -76,4 +76,9 @@ committed="$repo_root/assets/previews/LA15-power-iteration.svg"
 [ -f "$generated" ] || { echo "missing generated LA15 preview; run demos first" >&2; exit 1; }
 [ -f "$committed" ] || { echo "missing committed LA15 preview" >&2; exit 1; }
 cmp "$generated" "$committed" || { echo "LA15 preview is stale" >&2; exit 1; }
+generated="$repo_root/out/LA19-lora.svg"
+committed="$repo_root/assets/previews/LA19-lora.svg"
+[ -f "$generated" ] || { echo "missing generated LA19 preview; run demos first" >&2; exit 1; }
+[ -f "$committed" ] || { echo "missing committed LA19 preview" >&2; exit 1; }
+cmp "$generated" "$committed" || { echo "LA19 preview is stale" >&2; exit 1; }
 echo "assets: fresh"

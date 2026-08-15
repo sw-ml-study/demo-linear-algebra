@@ -16,8 +16,9 @@ report](docs/foundation-acceptance.md). The matrix unit is also complete; see
 its [acceptance report](docs/matrix-acceptance.md). Systems, rank, and
 conditioning are accepted in [the systems report](docs/systems-acceptance.md).
 Factorizations are accepted in [the factorization report](docs/factorization-acceptance.md),
-with LA16 constrained by B3. The next program is the measured
-[linear-algebra-for-ML saga](docs/ml-payoff-saga.md).
+with LA16 constrained by B3. The measured
+[linear-algebra-for-ML saga](docs/ml-payoff-saga.md) is active, and LA19 is
+the first runnable payoff.
 
 Once the foundation harness is available:
 
@@ -231,3 +232,15 @@ configured runtime reports `unknown function: svd`; hand-authored factors or
 power-iteration deflation would not honestly define ordering, paired signs,
 rectangular shapes, or repeated/zero singular values. See the
 [executable blocker decision](docs/svd-blocker-decision.md).
+
+## Lesson LA19 — bounded LoRA low-rank update
+
+![A four-by-three base matrix plus narrow rank-one factors producing a full-shaped update and checked output delta](assets/previews/LA19-lora.svg)
+
+The checked fixture keeps `W` fixed and constructs `A@B`, comparing 12 base
+values with 7 adapter values. It verifies the nonzero output identity
+`X(W+AB)-XW=(XA)B` while explicitly making no training or quality claim.
+
+- [CLI lesson](demos/19-lora/low_rank_update.mlpl)
+- [Standalone web lesson](demos/web/lora.mlpl)
+- [Native mlplunit coverage](tests/test_lora.mlpl)

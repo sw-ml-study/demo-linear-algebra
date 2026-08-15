@@ -1,0 +1,16 @@
+# LA19 bounded LoRA mechanism evidence.
+include "lib/ml_payoffs.mlpl";
+
+@test {name: "bounded LoRA produces the exact rank-one update and merge", tags: ["LA19", "lora", "update"]}
+def u:test_lora_update() { "Cross-check factor product and merged weights against independent golden matrices."; r = u:bounded_lora([[1,0,0],[0,1,0],[0,0,1],[1,1,1]], [[1],[2],[0],[-1]], [[2,-1,1]], [[1,0,1,0],[0,1,0,1]])?; u:assert_eq(r.delta, [[2,-1,1],[4,-2,2],[0,0,0],[-2,1,-1]], "delta golden")?; u:assert_eq(r.merged, [[3,-1,1],[4,-1,2],[0,0,1],[-1,2,0]], "merged golden")?; u:assert_eq([r.rank,r.base_parameters,r.adapter_parameters,r.parameter_savings], [1,12,7,5], "rank and counts") }
+
+@test {name: "merged and factorized paths have the same output delta", tags: ["LA19", "lora", "composition"]}
+def u:test_lora_output_effect() { "Verify X(W+AB)-XW=(XA)B and a nonzero golden effect."; r = u:bounded_lora([[1,0,0],[0,1,0],[0,0,1],[1,1,1]], [[1],[2],[0],[-1]], [[2,-1,1]], [[1,0,1,0],[0,1,0,1]])?; u:assert_eq(r.base_outputs, [[1,0,1],[1,2,1]], "base outputs")?; u:assert_eq(r.adapted_outputs, [[3,-1,2],[3,1,2]], "adapted outputs")?; u:assert_eq(r.output_delta, [[2,-1,1],[2,-1,1]], "output delta")?; u:assert_eq(r.output_delta, r.factorized_output_delta, "factorized effect parity") }
+
+@test {name: "low rank does not imply parameter savings for every shape", tags: ["LA19", "lora", "boundary"]}
+def u:test_lora_count_boundary() { "Expose a rank-one 2x2 update whose four factor values do not beat four base values."; r = u:bounded_lora([[1,0],[0,1]], [[1],[1]], [[1,1]], [[1,0]])?; u:assert_eq([r.base_parameters,r.adapter_parameters,r.parameter_savings,r.parameter_efficient], [4,4,0,0], "small-shape accounting")?; u:assert_eq(r.rank, 1, "factor rank") }
+
+@test {name: "bounded LoRA rejects incompatible nonfinite and oversized factors", tags: ["LA19", "lora", "errors"]}
+def u:test_lora_errors() { "Enforce the declared rank-2 shape and finite-value boundary."; u:assert_true(is_err(u:bounded_lora([[1,0],[0,1]], [[1],[1],[1]], [[1,1]], [[1,0]])), "left/base mismatch")?; u:assert_true(is_err(u:bounded_lora([[1,0],[0,1]], [[1],[1]], [[1,1,1]], [[1,0]])), "right/base mismatch")?; u:assert_true(is_err(u:bounded_lora([[1,0],[0,1]], [[1,0,0],[0,1,0]], [[1,0],[0,1],[1,1]], [[1,0]])), "oversized rank")?; u:assert_true(is_err(u:bounded_lora([[1,0],[0,1/0]], [[1],[1]], [[1,1]], [[1,0]])), "nonfinite base") }
+
+u:run_registered_tests()

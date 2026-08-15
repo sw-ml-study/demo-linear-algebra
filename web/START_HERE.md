@@ -23,7 +23,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA16 | SVD and low-rank approximation **(blocked by B3)** | LA14-LA15 | reconstruct at several ordered ranks and plot monotone error once stable SVD exists | compression |
 | LA17 | Least squares | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry | linear regression |
 | LA18 | PCA | LA16-LA17 | center, project, and explain variance captured | dimensionality reduction |
-| LA19 | LoRA | LA08, LA16 | show `W + AB`, parameter counts, and output delta | efficient fine-tuning |
+| LA19 | LoRA **(runnable)** | LA08-LA09; LA16 motivation only | show `W + AB`, parameter counts, and output delta | efficient fine-tuning mechanism |
 | LA20 | Attention math | LA04, LA08-LA09 | trace `softmax(QK^T/sqrt(d))V` with explicit axes | transformers |
 
 Every lesson names what it does **not** establish. Finite fixtures demonstrate
@@ -103,6 +103,16 @@ singular-value behavior. B3 specifies stable thin SVD, paired signs,
 degeneracy policy, independent reconstruction/orthogonality checks, and
 monotone rank-k error. Until that contract is executable, LA16 has no CLI/web
 artifact and does not pretend fixed factors were computed.
+
+LA19 constructs a LoRA-style update without depending on the blocked SVD
+lesson: `W:[input,output]` remains fixed while `A:[input,rank]` and
+`B:[rank,output]` produce `delta W=A@B`. The checked 4x3 rank-one fixture uses
+12 base values and 7 adapter values, saving 5 trainable values. It independently
+verifies `X(W+AB)-XW=(XA)B=[[2,-1,1],[2,-1,1]]`. Factor rank is not matrix
+dimension or a universal savings guarantee—a 2x2 rank-one adapter uses four
+values, exactly matching its base. The lesson supplies fixed factors and makes
+no claim about training, optimizers, framework compatibility, compression
+quality, or model improvement.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

@@ -1,0 +1,14 @@
+# Lesson LA19 -- bounded LoRA arithmetic changes a matrix through two small factors.
+# effects: writes one deterministic SVG preview under out/
+# loops: none
+include "../../lib/ml_payoffs.mlpl";
+include "../../lib/lora_render.mlpl";
+print("WHAT THIS SHOWS -- A LoRA-style adapter keeps W fixed and adds the rank-one product A@B; the same update changes outputs without replacing W.")
+print("PREREQUISITES -- LA08 matrix multiplication and LA09 composition; LA16 motivates low-rank compression but is not required for this constructed factor update. SHAPES -- X:[sample=2,input=4], W:[input=4,output=3], A:[input=4,rank=1], B:[rank=1,output=3].")
+result = u:bounded_lora([[1,0,0],[0,1,0],[0,0,1],[1,1,1]], [[1],[2],[0],[-1]], [[2,-1,1]], [[1,0,1,0],[0,1,0,1]])?
+print("NUMERICAL CONTRACT -- A@B is the exact rank-one delta; X(W+AB)-XW equals (XA)B and both sample deltas are [2,-1,1]. W has 12 values; this rank-one adapter has 7, saving 5 trainable values for this shape.")
+disp({base_shape: result.base_shape, factor_shapes: [result.left_shape, result.right_shape], delta: result.delta, merged: result.merged, parameter_counts: [result.base_parameters, result.adapter_parameters, result.parameter_savings], output_delta: result.output_delta})
+written = write_text("out/LA19-lora.svg", u:lora_svg())
+print("HOW TO READ THE RESULT -- Green A selects one input direction; gold B spreads its scalar activation across three outputs; pink A@B has the full W shape but factor rank at most one.")
+print("THE POINT -- Low-rank factors can parameterize a smaller trainable update and reproduce its output effect through composition. BOUNDARY -- fixed factors only: no training, optimizer, framework compatibility, compression quality, or model improvement is claimed; savings depend on dimensions.")
+if equal(result.output_delta, [[2,-1,1],[2,-1,1]]) * equal(result.output_delta, result.factorized_output_delta) * eq(result.parameter_savings, 5) * eq(result.training_claim, 0) * is_ok(written) { ok({lesson: "LA19", rank: result.rank, base_parameters: result.base_parameters, adapter_parameters: result.adapter_parameters, output_delta: result.output_delta, artifact: "out/LA19-lora.svg"}) } else { err("LA19 invariant failed") }

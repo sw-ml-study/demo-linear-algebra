@@ -1,0 +1,31 @@
+# Web Lesson LA19 -- bounded LoRA low-rank update.
+# effects: none
+# loops: none
+# ─────────────────────────────────────────────────────────────────────────────
+# * WHAT THIS SHOWS -- fixed W receives a constructed rank-one A@B update, and the factorized path produces the same output delta as the merged matrix.
+# * PREREQUISITES -- LA08 matrix multiplication and LA09 composition; LA16 is motivation, not an executable dependency.
+# * SHAPES -- X:[sample=2,input=4], W:[input=4,output=3], A:[input=4,rank=1], B:[rank=1,output=3], A@B:[4,3].
+# * EXECUTABLE CLAIM -- exact fixtures verify A@B, W+A@B, and X(W+AB)-XW=(XA)B=[[2,-1,1],[2,-1,1]].
+# * NUMERICAL CONTRACT -- W stores 12 values; A and B store 7 trainable adapter values, a saving of 5 for this particular 4x3 rank-one shape.
+# * BOUNDARY -- fixed factors only; no training, optimizer, framework compatibility, compression quality, or model improvement claim. Small shapes may save nothing.
+# ─────────────────────────────────────────────────────────────────────────────
+base = [[1,0,0],[0,1,0],[0,0,1],[1,1,1]]
+left_factor = [[1],[2],[0],[-1]]
+right_factor = [[2,-1,1]]
+inputs = [[1,0,1,0],[0,1,0,1]]
+delta = matmul(left_factor, right_factor)
+merged = base + delta
+base_outputs = matmul(inputs, base)
+adapted_outputs = matmul(inputs, merged)
+output_delta = adapted_outputs - base_outputs
+factorized_output_delta = matmul(matmul(inputs, left_factor), right_factor)
+disp({base_shape: shape(base), factor_shapes: [shape(left_factor),shape(right_factor)], delta: delta, merged: merged})  # checked update
+disp({base_parameters: 12, adapter_parameters: 7, parameter_savings: 5, output_delta: output_delta, factorized_parity: equal(output_delta,factorized_output_delta)})  # payoff evidence
+# THE VISUAL -- factor blocks show how two narrow matrices create a full-shaped update; the lower strip shows the resulting output delta.
+def u:lora_visual() { "Render LA19 factor shapes and output effect."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1040 500\" role=\"img\"><title>LoRA adds a low-rank factor product to a frozen base matrix</title><desc>A four by three base matrix receives a rank-one update made from four by one and one by three factors. Twelve base values compare with seven adapter values, and two sample outputs visibly change.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868;stroke-width:2}.base{fill:#7aa2f7}.a{fill:#9ece6a}.b{fill:#e0af68}.d{fill:#f7768e}.small{font-size:15px}.big{font-size:22px}</style><rect width=\"1040\" height=\"500\" fill=\"#1a1b26\"/><text class=\"big\" x=\"30\" y=\"35\">W + A @ B: rank-one update, checked output effect</text><rect class=\"p\" x=\"25\" y=\"65\" width=\"205\" height=\"245\"/><text x=\"45\" y=\"95\">W [4,3]</text><rect class=\"base\" x=\"50\" y=\"120\" width=\"150\" height=\"155\"/><text x=\"125\" y=\"205\" text-anchor=\"middle\">12 base</text><text x=\"125\" y=\"230\" text-anchor=\"middle\">parameters</text><text class=\"big\" x=\"245\" y=\"205\">+</text><rect class=\"p\" x=\"285\" y=\"65\" width=\"130\" height=\"245\"/><text x=\"305\" y=\"95\">A [4,1]</text><rect class=\"a\" x=\"330\" y=\"120\" width=\"40\" height=\"155\"/><text class=\"big\" x=\"425\" y=\"205\">@</text><rect class=\"p\" x=\"465\" y=\"65\" width=\"205\" height=\"245\"/><text x=\"485\" y=\"95\">B [1,3]</text><rect class=\"b\" x=\"490\" y=\"170\" width=\"150\" height=\"40\"/><text x=\"565\" y=\"255\" text-anchor=\"middle\">4 + 3 = 7 adapter</text><text class=\"big\" x=\"685\" y=\"205\">=</text><rect class=\"p\" x=\"725\" y=\"65\" width=\"290\" height=\"245\"/><text x=\"745\" y=\"95\">delta W = A @ B [4,3]</text><rect class=\"d\" x=\"755\" y=\"120\" width=\"225\" height=\"155\"/><text x=\"867\" y=\"190\" text-anchor=\"middle\">rank at most 1</text><text x=\"867\" y=\"220\" text-anchor=\"middle\">5 fewer trainable values</text><rect class=\"p\" x=\"25\" y=\"340\" width=\"990\" height=\"120\"/><text x=\"45\" y=\"372\">two samples: X(W+AB) - XW = (XA)B</text><text class=\"big\" x=\"45\" y=\"410\">output delta = [[2,-1,1], [2,-1,1]]</text><text class=\"small\" x=\"45\" y=\"442\">mechanism only: factors are fixed; no optimizer, training result, or quality improvement is claimed</text></svg>" }
+visual = u:lora_visual()  # bind once
+visual  # render once
+# ─────────────────────────────────────────────────────────────────────────────
+# * HOW TO READ THE RESULT -- green A compresses each input to one scalar; gold B expands it across outputs; pink is their full-shaped but rank-at-most-one product.
+# * THE POINT -- factorization can reduce trainable parameter count while exactly reproducing the merged update's effect for the checked inputs.
+# ─────────────────────────────────────────────────────────────────────────────

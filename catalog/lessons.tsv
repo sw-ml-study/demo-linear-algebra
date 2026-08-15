@@ -12,3 +12,4 @@ LA10	Determinant as signed area	runnable	demos/10-determinant-area/signed_area.m
 LA11	Bounded linear systems	runnable	demos/11-linear-systems/intersections.mlpl	demos/web/linear_systems.mlpl
 LA12	Pedagogical elimination and rank	runnable	demos/12-elimination/row_reduction.mlpl	demos/web/elimination.mlpl
 LA13	Conditioning and numerical reliability	runnable	demos/13-conditioning/perturbations.mlpl	demos/web/conditioning.mlpl
+LA14	Classical Gram-Schmidt projection subtraction	runnable	demos/14-gram-schmidt/projection_subtraction.mlpl	demos/web/gram_schmidt.mlpl

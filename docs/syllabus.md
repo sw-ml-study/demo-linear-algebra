@@ -18,7 +18,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA11 | Linear systems and residuals **(runnable)** | LA08, LA10 | classify bounded unique, inconsistent, and underdetermined fixtures with independent residuals | fitting parameters |
 | LA12 | Elimination and rank **(runnable)** | LA11 | trace guarded row swaps/elimination and compare coefficient/augmented ranks | identifiability |
 | LA13 | Conditioning **(runnable)** | LA03, LA11-LA12 | compare perturbation amplification and separate residual from solution error | numerical reliability |
-| LA14 | Gram-Schmidt and QR | LA06-LA08 | construct an orthogonal basis and measure reconstruction error | stable feature bases |
+| LA14 | Gram-Schmidt and QR **(runnable)** | LA06-LA08, LA13 | subtract projections and measure orthogonality/reconstruction separately | stable feature bases |
 | LA15 | Eigenvectors by bounded iteration | LA08, LA13 | inspect convergence and a non-convergent/ambiguous case | repeated dynamics |
 | LA16 | SVD and low-rank approximation | LA14-LA15 | reconstruct at several ranks and plot error | compression |
 | LA17 | Least squares | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry | linear regression |
@@ -76,6 +76,13 @@ a `1e-12` solver threshold. A separate wrong candidate has residual about
 `1e-6` but solution error `sqrt(2)`, proving on this fixture that small residual
 does not certify accurate parameters. The ratio is not claimed to be a
 scale-invariant general condition number or estimator.
+
+LA14 applies classical Gram-Schmidt to exactly two columns with two or three
+rows. It exposes `q1`, the second column projection, perpendicular residual,
+and `q2`; positive diagonal entries of `R` fix the sign convention. Independent
+Frobenius errors check `Q^TQ-I` and `QR-A`. Residual norm at or below the
+caller's positive tolerance returns a dependent-column error. This bounded
+derivation is teaching code, not stable general QR.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

@@ -1,0 +1,11 @@
+# LA14 bounded classical Gram-Schmidt evidence.
+include "lib/factorizations.mlpl";
+@test {name: "classical Gram-Schmidt exposes exact projection subtraction", tags: ["LA14", "trace"]}
+def u:test_gram_schmidt_trace() { "Pin every visible step."; result = u:classical_gram_schmidt2([[1, 1], [0, 1], [0, 0]], 0.000000001)?; u:assert_eq(result.first_unit, [1, 0, 0], "q1")?; u:assert_eq(result.projection, [1, 0, 0], "projection")?; u:assert_eq(result.second_residual, [0, 1, 0], "residual")?; u:assert_eq(result.second_unit, [0, 1, 0], "q2") }
+@test {name: "bounded QR reconstructs and remains orthogonal", tags: ["LA14", "residual"]}
+def u:test_gram_schmidt_factors() { "Check factors and independent errors."; result = u:classical_gram_schmidt2([[1, 1], [0, 1], [0, 0]], 0.000000001)?; u:assert_eq(result.q, [[1, 0], [0, 1], [0, 0]], "Q")?; u:assert_eq(result.r, [[1, 1], [0, 1]], "R")?; u:assert_eq(result.orthogonality_error, 0, "orthogonality")?; u:assert_eq(result.reconstruction_error, 0, "reconstruction")?; u:assert_eq(result.sign_policy, "positive_r_diagonal", "sign") }
+@test {name: "dependent and tolerance-near columns return errors", tags: ["LA14", "counterexample"]}
+def u:test_gram_schmidt_dependence() { "Make near-dependence policy explicit."; dependent = [[1, 2], [0, 0], [0, 0]]; near = [[1, 2], [0, 0.000001], [0, 0]]; u:assert_true(is_err(u:classical_gram_schmidt2(dependent, 0.000000001)), "dependent accepted")?; u:assert_true(is_err(u:classical_gram_schmidt2(near, 0.00001)), "near accepted")?; u:assert_true(is_ok(u:classical_gram_schmidt2(near, 0.0000001)), "near rejected") }
+@test {name: "Gram-Schmidt enforces shape tolerance and finite contracts", tags: ["LA14", "errors"]}
+def u:test_gram_schmidt_contract() { "Enforce maximum shape and numeric policy."; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0]], 0.000000001)), "one row")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0, 0], [0, 1, 0]], 0.000000001)), "three columns")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0], [0, 1], [0, 0], [0, 0]], 0.000000001)), "four rows")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0], [0, 1]], 0)), "zero tolerance")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0], [0, 1 / 0]], 0.000000001)), "infinite") }
+u:run_registered_tests()

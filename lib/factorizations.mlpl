@@ -1,0 +1,15 @@
+# Checked teaching algorithms for bounded factorization lessons.
+# loops: bounded by advertised shapes
+include "systems.mlpl";
+
+def u:frobenius_norm(matrix) { "Compute sqrt(sum of squared cells) for one finite rank-two matrix."; dimensions = u:matrix_dimensions(matrix)?; if 1 - u:is_finite_numeric(matrix) { err({kind: "factorization_nonfinite"}) } else { ok(sqrt(reduce_add(flatten(matrix * matrix)))) } }
+
+def u:classical_gram_schmidt2(matrix, tolerance) { "Orthogonalize exactly two columns and at most three rows using classical Gram-Schmidt teaching steps.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  if (1 - u:is_finite_numeric(matrix)) + (1 - u:is_finite_numeric(tolerance)) { err({kind: "gram_schmidt_nonfinite"}) } else { if 1 - gt(tolerance, 0) { err({kind: "gram_schmidt_tolerance", tolerance: tolerance}) } else { if (1 - eq(dimensions.columns, 2)) + lt(dimensions.rows, 2) + gt(dimensions.rows, 3) { err({kind: "gram_schmidt_shape", actual: shape(matrix), maximum: [3, 2]}) } else {
+    first = u:matrix_column(matrix, 0)?; second = u:matrix_column(matrix, 1)?; r11 = sqrt(dot(first, first));
+    if 1 - gt(r11, tolerance) { err({kind: "dependent_column", column: 0, residual_norm: r11, tolerance: tolerance}) } else { q1 = first / r11; r12 = dot(q1, second); projection = r12 * q1; residual = second - projection; r22 = sqrt(dot(residual, residual));
+      if 1 - gt(r22, tolerance) { err({kind: "dependent_column", column: 1, residual_norm: r22, tolerance: tolerance, projection: projection}) } else { q2 = residual / r22; q = transpose([q1, q2]); r = [[r11, r12], [0, r22]]; orthogonality_error = u:frobenius_norm(matmul(transpose(q), q) - [[1, 0], [0, 1]])?; reconstruction_error = u:frobenius_norm(matmul(q, r) - matrix)?; ok({q: q, r: r, first_unit: q1, projection_coefficient: r12, projection: projection, second_residual: residual, second_unit: q2, orthogonality_error: orthogonality_error, reconstruction_error: reconstruction_error, tolerance: tolerance, maximum: [3, 2], method: "classical_gram_schmidt", sign_policy: "positive_r_diagonal"}) }
+    }
+  } } }
+}

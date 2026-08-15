@@ -193,3 +193,15 @@ an accurate parameter vector.
 - [CLI lesson](demos/13-conditioning/perturbations.mlpl)
 - [Standalone web lesson](demos/web/conditioning.mlpl)
 - [Native mlplunit coverage](tests/test_conditioning2.mlpl)
+
+## Lesson LA14 — classical Gram–Schmidt
+
+![The second column split into its projection on the first unit direction and a perpendicular residual, beside orthogonality and reconstruction checks](assets/previews/LA14-gram-schmidt.svg)
+
+The checked three-by-two fixture exposes every subtraction that creates the
+second orthogonal direction. `Q^TQ-I` and `QR-A` are measured independently;
+dependent columns return an error at the stated tolerance.
+
+- [CLI lesson](demos/14-gram-schmidt/projection_subtraction.mlpl)
+- [Standalone web lesson](demos/web/gram_schmidt.mlpl)
+- [Native mlplunit coverage](tests/test_gram_schmidt2.mlpl)

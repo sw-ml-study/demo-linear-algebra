@@ -1,6 +1,6 @@
 number = 2
 slug = "la14-classical-gram-schmidt"
-status = "pending"
+status = "in-progress"
 description = "Implement LA14 classical Gram-Schmidt with visible projection subtraction, Q^..."
 role = "production"
 context_files = []

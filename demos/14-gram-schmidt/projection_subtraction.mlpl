@@ -1,0 +1,20 @@
+# Lesson LA14 -- classical Gram-Schmidt makes orthogonalization visible.
+# effects: writes one deterministic SVG preview under out/
+# loops: bounded by maximum input shape [3,2]
+include "../../lib/factorizations.mlpl";
+include "../../lib/gram_schmidt_render.mlpl";
+print("WHAT THIS SHOWS -- Classical Gram-Schmidt keeps the first column direction, subtracts the second column's projection on it, and normalizes the perpendicular residual.")
+print("PREREQUISITES -- LA06 projection, LA08 matrix multiplication, and LA13 reliability. SHAPES -- A,Q:[row<=3,column=2], R:[2,2], columns:[row].")
+tolerance = 0.000000001
+a = [[1, 1], [0, 1], [0, 0]]
+factorization = u:classical_gram_schmidt2(a, tolerance)?
+print("PROJECTION TRACE -- q1, projection r12*q1, residual a2-r12*q1, then q2.")
+disp([factorization.first_unit, factorization.projection, factorization.second_residual, factorization.second_unit])
+disp(factorization.q)
+disp(factorization.r)
+print("NUMERICAL CONTRACT -- positive R diagonal fixes sign; dependence is residual norm <=1e-9; independent Q^TQ-I and QR-A Frobenius errors are zero on this exact fixture.")
+dependent_rejected = is_err(u:classical_gram_schmidt2([[1, 2], [0, 0], [0, 0]], tolerance))
+written = write_text("out/LA14-gram-schmidt.svg", u:gram_schmidt_svg())
+print("HOW TO READ THE RESULT -- Blue q1 plus the green perpendicular residual reconstructs pink a2; right panels separately certify orthogonality and reconstruction.")
+print("THE POINT -- Orthogonal coordinates avoid overlapping directions. BOUNDARY -- exactly two columns and at most three rows; classical Gram-Schmidt teaching code is not stable general QR.")
+if eq(factorization.orthogonality_error, 0) * eq(factorization.reconstruction_error, 0) * dependent_rejected * is_ok(written) { ok({lesson: "LA14", q: factorization.q, r: factorization.r, artifact: "out/LA14-gram-schmidt.svg"}) } else { err("LA14 invariant failed") }

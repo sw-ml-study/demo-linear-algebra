@@ -10,3 +10,4 @@ LA08	Matrix multiplication is composed dot products	runnable	demos/08-matrix-mul
 LA09	Composition and transpose	runnable	demos/09-composition-transpose/successive.mlpl	demos/web/composition_transpose.mlpl
 LA10	Determinant as signed area	runnable	demos/10-determinant-area/signed_area.mlpl	demos/web/signed_area.mlpl
 LA11	Bounded linear systems	runnable	demos/11-linear-systems/intersections.mlpl	demos/web/linear_systems.mlpl
+LA12	Pedagogical elimination and rank	runnable	demos/12-elimination/row_reduction.mlpl	demos/web/elimination.mlpl

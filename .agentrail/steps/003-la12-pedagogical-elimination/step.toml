@@ -1,6 +1,6 @@
 number = 3
 slug = "la12-pedagogical-elimination"
-status = "pending"
+status = "in-progress"
 description = "Implement LA12 pedagogical elimination with a visible augmented matrix, check..."
 role = "production"
 context_files = []

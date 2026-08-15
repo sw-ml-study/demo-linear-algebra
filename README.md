@@ -166,3 +166,16 @@ coincident underdetermination. Candidates are verified through an independent
 - [CLI lesson](demos/11-linear-systems/intersections.mlpl)
 - [Standalone web lesson](demos/web/linear_systems.mlpl)
 - [Native mlplunit coverage](tests/test_systems2.mlpl)
+
+## Lesson LA12 — elimination and rank
+
+![A zero pivot triggers a row swap before echelon and RREF states, with rank pairs below](assets/previews/LA12-elimination.svg)
+
+The bounded trace turns `[A|b]` into visible row-operation states, guarding
+every pivot before division. Coefficient and augmented rank pairs distinguish
+unique, inconsistent, and underdetermined systems without presenting this
+2×2 teaching algorithm as a production solver.
+
+- [CLI lesson](demos/12-elimination/row_reduction.mlpl)
+- [Standalone web lesson](demos/web/elimination.mlpl)
+- [Native mlplunit coverage](tests/test_elimination2.mlpl)

@@ -1,0 +1,22 @@
+# Lesson LA12 -- bounded elimination makes pivots and rank visible.
+# visual: ascii, svg
+# loops: 0
+
+include "../../lib/systems.mlpl";
+include "../../lib/elimination_render.mlpl";
+
+print("WHAT THIS SHOWS -- Gaussian elimination swaps in a safe pivot, subtracts a row multiple, and reads solution count from coefficient versus augmented rank.")
+print("PREREQUISITES -- LA11 system classifications. SHAPES -- A:[equation=2,unknown=2], b:[equation=2], [A|b]:[row=2,column=3].")
+tolerance = 0.000000001
+unique = u:eliminate_system2([[0, 2], [1, 1]], [4, 3], tolerance)?
+inconsistent = u:eliminate_system2([[1, 1], [2, 2]], [2, 5], tolerance)?
+under = u:eliminate_system2([[1, 1], [2, 2]], [2, 4], tolerance)?
+disp(unique.initial)
+disp(unique.pivoted)
+disp(unique.echelon)
+disp(unique.rref)
+written = write_text("out/LA12-elimination.svg", u:elimination_svg())
+print("NUMERICAL CONTRACT -- Every division requires |pivot|>1e-9; the exact swapped fixture reaches RREF [[1,0,1],[0,1,2]] and independent residual 0.")
+print("HOW TO READ THE RESULT -- Gold marks the rejected zero pivot, the row swap exposes pivots 1 and 2, and the lower rank pairs distinguish one, zero, or infinitely many solutions.")
+print("THE POINT -- Row operations preserve solution sets while pivots reveal rank. BOUNDARY -- eliminate_system2 accepts at most and exactly 2x2 coefficients with one RHS; it is teaching code, not stable general Gaussian elimination.")
+if eq(unique.swapped, 1) * equal(unique.candidate, [1, 2]) * eq(unique.residual_norm, 0) * equal([inconsistent.coefficient_rank, inconsistent.augmented_rank], [1, 2]) * equal([under.coefficient_rank, under.augmented_rank], [1, 1]) * is_err(u:eliminate_system2(reshape(range(9), [3, 3]), [1, 2, 3], tolerance)) * is_ok(written) { ok({lesson: "LA12", candidate: unique.candidate, maximum: unique.maximum, artifact: "out/LA12-elimination.svg"}) } else { err("LA12 elimination invariant failed") }

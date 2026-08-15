@@ -30,3 +30,13 @@ def u:solve_system2(coefficients, targets, tolerance) { "Classify and solve only
     }
   }
 }
+def u:eliminate_system2(coefficients, targets, tolerance) { "Trace Gaussian elimination for exactly two equations and two unknowns, with guarded pivots and rank classification.";
+  if 1 - u:valid_system2(coefficients, targets, tolerance) { err({kind: "elimination2_contract", coefficients: shape(coefficients), targets: shape(targets), tolerance: tolerance, maximum: [2, 2]}) } else {
+    a = u:matrix_cell(coefficients, 0, 0)?; b = u:matrix_cell(coefficients, 0, 1)?; c = u:matrix_cell(coefficients, 1, 0)?; d = u:matrix_cell(coefficients, 1, 1)?; e = take(targets, 0, 0); f = take(targets, 0, 1); initial = [[a, b, e], [c, d, f]];
+    swapped = (1 - gt(abs(a), tolerance)) * gt(abs(c), tolerance); pivoted = if swapped { [[c, d, f], [a, b, e]] } else { initial }; p = u:matrix_cell(pivoted, 0, 0)?; q = u:matrix_cell(pivoted, 0, 1)?; r = u:matrix_cell(pivoted, 0, 2)?; s = u:matrix_cell(pivoted, 1, 0)?; t = u:matrix_cell(pivoted, 1, 1)?; u = u:matrix_cell(pivoted, 1, 2)?;
+    multiplier = if gt(abs(p), tolerance) { s / p } else { 0 }; echelon = if gt(abs(p), tolerance) { [[p, q, r], [0, t - multiplier * q, u - multiplier * r]] } else { pivoted }; second_pivot = u:matrix_cell(echelon, 1, 1)?; second_target = u:matrix_cell(echelon, 1, 2)?; classified = u:solve_system2(coefficients, targets, tolerance)?;
+    if equal(classified.kind, "unique") { y = second_target / second_pivot; x = (r - q * y) / p; candidate = [x, y]; measured = u:system_residual(coefficients, candidate, targets)?; ok({kind: "unique", initial: initial, swapped: swapped, pivoted: pivoted, multiplier: multiplier, echelon: echelon, rref: [[1, 0, x], [0, 1, y]], coefficient_rank: 2, augmented_rank: 2, candidate: candidate, residual_norm: measured.norm, maximum: [2, 2]}) } else {
+      coefficient_nonzero = gt(reduce_add(abs(flatten(coefficients))), tolerance); coefficient_rank = if coefficient_nonzero { 1 } else { 0 }; augmented_rank = if equal(classified.kind, "parallel_inconsistent") { coefficient_rank + 1 } else { coefficient_rank }; ok({kind: classified.kind, initial: initial, swapped: swapped, pivoted: pivoted, multiplier: multiplier, echelon: echelon, coefficient_rank: coefficient_rank, augmented_rank: augmented_rank, maximum: [2, 2]})
+    }
+  }
+}

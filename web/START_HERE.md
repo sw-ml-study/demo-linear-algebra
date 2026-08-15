@@ -16,7 +16,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA09 | Composition and transpose **(runnable)** | LA08 | verify `A(Bx)=(AB)x`, reject reordered `BA`, and track transposed axes | chained layers and Q/K scores |
 | LA10 | Determinant as signed area (2D first) **(runnable)** | LA07 | classify exact positive, negative, and zero area fixtures | volume change and singularity |
 | LA11 | Linear systems and residuals **(runnable)** | LA08, LA10 | classify bounded unique, inconsistent, and underdetermined fixtures with independent residuals | fitting parameters |
-| LA12 | Elimination and rank | LA11 | perform and inspect pedagogical row reduction | identifiability |
+| LA12 | Elimination and rank **(runnable)** | LA11 | trace guarded row swaps/elimination and compare coefficient/augmented ranks | identifiability |
 | LA13 | Conditioning | LA03, LA11 | show small input changes causing large solution changes | numerical reliability |
 | LA14 | Gram-Schmidt and QR | LA06-LA08 | construct an orthogonal basis and measure reconstruction error | stable feature bases |
 | LA15 | Eigenvectors by bounded iteration | LA08, LA13 | inspect convergence and a non-convergent/ambiguous case | repeated dynamics |
@@ -62,6 +62,13 @@ cross-products distinguish parallel inconsistency from coincident equations.
 The returned unique solution or coincident witness is checked through the
 independent `Ax-b` residual path. This bounded formula is not a stable general
 solver and rejects non-finite or differently shaped inputs.
+
+LA12 advertises an exact 2x2, one-right-hand-side maximum. It records the
+initial augmented matrix, any safe-pivot row swap, elimination multiplier,
+echelon state, and unique RREF. Every division follows `|pivot|>1e-9`.
+Coefficient and augmented ranks distinguish unique `2=2`, inconsistent `1<2`,
+and underdetermined `1=1<2` fixtures. This transparent trace is not a
+production-grade general elimination routine.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

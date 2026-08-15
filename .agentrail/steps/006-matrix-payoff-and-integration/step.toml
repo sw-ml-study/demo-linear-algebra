@@ -1,8 +1,9 @@
 number = 6
 slug = "matrix-payoff-and-integration"
-status = "in-progress"
+status = "completed"
 description = "Connect XW+b to LA07-LA10 in a dense-layer payoff; run the complete gate; aud..."
 role = "production"
 context_files = []
 created_at = "2026-08-14T14:43:14"
-commits = []
+completed_at = "2026-08-14T17:15:28"
+commits = ["3cc1f7912d8769d20d2a6c1565d830ebd39ed42e"]

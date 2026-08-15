@@ -1,8 +1,9 @@
 number = 5
 slug = "la18-pca-gate"
-status = "pending"
+status = "completed"
 description = "Gate LA18 PCA on B3. Implement only if stable ordered components, degeneracy,..."
 role = "production"
 context_files = []
 created_at = "2026-08-15T14:38:54"
-commits = []
+completed_at = "2026-08-15T16:20:44"
+commits = ["e38d8fa495669dba9b9f4aee7c41f870b52a9c9f"]

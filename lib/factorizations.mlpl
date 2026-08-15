@@ -13,3 +13,15 @@ def u:classical_gram_schmidt2(matrix, tolerance) { "Orthogonalize exactly two co
     }
   } } }
 }
+
+def u:power_iteration2(matrix, initial, tolerance, maximum_iterations) { "Trace a bounded two-by-two power iteration with Rayleigh value, residual, and deterministic vector sign.";
+  dimensions = u:matrix_dimensions(matrix)?;
+  valid_limit = gt(maximum_iterations, 0) * eq(maximum_iterations, floor(maximum_iterations)) * (1 - gt(maximum_iterations, 100));
+  if (1 - eq(dimensions.rows, 2)) + (1 - eq(dimensions.columns, 2)) + (1 - eq(rank(initial), 1)) + (1 - eq(tally(initial), 2)) { err({kind: "power_iteration_shape", matrix: shape(matrix), initial: shape(initial), maximum: [2, 2]}) } else { if (1 - u:is_finite_numeric(matrix)) + (1 - u:is_finite_numeric(initial)) + (1 - u:is_finite_numeric(tolerance)) { err({kind: "power_iteration_nonfinite"}) } else { if (1 - gt(tolerance, 0)) + (1 - valid_limit) { err({kind: "power_iteration_policy", tolerance: tolerance, maximum_iterations: maximum_iterations, allowed_iterations: [1, 100]}) } else {
+    initial_norm = sqrt(dot(initial, initial)); if 1 - gt(initial_norm, tolerance) { err({kind: "power_iteration_zero_initial", norm: initial_norm, tolerance: tolerance}) } else {
+      vector = initial / initial_norm; dominant = if gt(abs(take(vector, 0, 1)), abs(take(vector, 0, 0))) { take(vector, 0, 1) } else { take(vector, 0, 0) }; vector = if lt(dominant, 0) { -1 * vector } else { vector }; product = matmul(matrix, vector); value = dot(vector, product); difference = product - value * vector; residual = sqrt(dot(difference, difference)); residual_history = fill([maximum_iterations + 1], -1); residual_history = scatter(residual_history, 0, residual); iteration = 0;
+      while lt(iteration, maximum_iterations) * gt(residual, tolerance) { candidate = matmul(matrix, vector); candidate_norm = sqrt(dot(candidate, candidate)); if 1 - gt(candidate_norm, tolerance) { residual = 1 / 0; iteration = maximum_iterations } else { vector = candidate / candidate_norm; dominant = if gt(abs(take(vector, 0, 1)), abs(take(vector, 0, 0))) { take(vector, 0, 1) } else { take(vector, 0, 0) }; vector = if lt(dominant, 0) { -1 * vector } else { vector }; product = matmul(matrix, vector); value = dot(vector, product); difference = product - value * vector; residual = sqrt(dot(difference, difference)); iteration = iteration + 1; residual_history = scatter(residual_history, iteration, residual) } };
+      if 1 - u:is_finite_numeric(residual) { err({kind: "power_iteration_zero_image", iteration: iteration}) } else { status = if gt(residual, tolerance) { "maximum_iterations" } else { "converged" }; ok({status: status, iteration: iteration, value: value, vector: vector, residual: residual, residual_history: residual_history, history_count: iteration + 1, tolerance: tolerance, maximum_iterations: maximum_iterations, maximum_shape: [2, 2], sign_policy: "largest_magnitude_component_nonnegative", method: "bounded_power_iteration"}) }
+    }
+  } } }
+}

@@ -1,6 +1,6 @@
 number = 4
 slug = "la15-bounded-power-iteration"
-status = "pending"
+status = "in-progress"
 description = "Implement the capability-supported portion of LA15 as a bounded power-iterati..."
 role = "production"
 context_files = []

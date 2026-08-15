@@ -208,3 +208,16 @@ tiny threshold: reconstruction is zero while orthogonality error is about
 - [CLI lesson](demos/14-gram-schmidt/projection_subtraction.mlpl)
 - [Standalone web lesson](demos/web/gram_schmidt.mlpl)
 - [Native mlplunit coverage](tests/test_gram_schmidt2.mlpl)
+
+## Lesson LA15 — bounded power iteration
+
+![A diagonal matrix aligns an iterate while a rotation cycles and identity remains spectrally ambiguous](assets/previews/LA15-power-iteration.svg)
+
+The lesson keeps the Rayleigh value, eigenpair residual, iteration count, hard
+limit, and deterministic sign policy visible. A rotation reaches the limit
+with residual one; identity has a tiny residual without a unique dominant
+direction.
+
+- [CLI lesson](demos/15-power-iteration/dominant_direction.mlpl)
+- [Standalone web lesson](demos/web/power_iteration.mlpl)
+- [Native mlplunit coverage](tests/test_power_iteration2.mlpl)

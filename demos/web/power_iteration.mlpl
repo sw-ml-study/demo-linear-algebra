@@ -1,0 +1,31 @@
+# Web Lesson LA15 -- bounded power iteration exposes outcomes.
+# effects: none
+# loops: bounded by 8 iterations
+# ─────────────────────────────────────────────────────────────────────────────
+# * WHAT THIS SHOWS -- normalized powers can align with a dominant direction, but cycling and ambiguity require explicit outcomes.
+# * PREREQUISITES -- LA03 normalization, LA07 transforms, LA13 reliability.
+# * SHAPES -- each A:[2,2], vector:[2], Rayleigh value/residual:scalars.
+# * EXECUTABLE CLAIM -- diag(2,1) lowers residual; rotation retains residual 1; identity preserves an arbitrary initial direction.
+# * NUMERICAL CONTRACT -- eight visible steps; sign uses largest-magnitude component nonnegative; CLI uses tolerance plus hard limit.
+# * BOUNDARY -- fixed 2x2 witnesses, not a general eigensolver or convergence guarantee.
+# ─────────────────────────────────────────────────────────────────────────────
+matrix = [[2, 0], [0, 1]]
+vector = [1, 1] / sqrt(2)
+iteration = 0
+while lt(iteration, 8) { candidate = matmul(matrix, vector); vector = candidate / sqrt(dot(candidate, candidate)); iteration = iteration + 1 }
+value = dot(vector, matmul(matrix, vector))
+difference = matmul(matrix, vector) - value * vector
+residual = sqrt(dot(difference, difference))
+rotation_vector = [1, 0]
+rotation_step = matmul([[0, -1], [1, 0]], rotation_vector)
+identity_vector = [1, 1] / sqrt(2)
+disp([iteration, vector, value, residual])  # converging fixture state
+disp([rotation_vector, rotation_step, identity_vector])  # cycling and ambiguity witnesses
+# THE VISUAL -- three panels separate convergence, iteration-limit cycling, and spectral ambiguity.
+def u:power_iteration_visual() { "Render LA15 bounded outcomes."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 470\" role=\"img\"><title>Bounded power iteration exposes convergence and failure</title><desc>A diagonal matrix aligns toward one axis, a rotation cycles, and identity has tiny residual without a unique dominant direction.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.b{stroke:#7aa2f7}.g{stroke:#9ece6a}.bad{fill:#f7768e}.gold{fill:#e0af68}.v{stroke-width:5}.axis{stroke:#565f89}</style><rect width=\"1000\" height=\"470\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">residual plus hard iteration limit bounds every claim</text><rect class=\"p\" x=\"20\" y=\"60\" width=\"310\" height=\"330\"/><text x=\"40\" y=\"92\">diag(2,1): CONVERGES</text><path class=\"axis\" d=\"M70 320H290M100 350V120\"/><path class=\"v b\" d=\"M100 320L220 200\"/><path class=\"v g\" d=\"M100 320L280 315\"/><text x=\"45\" y=\"370\">iterate aligns horizontally</text><rect class=\"p\" x=\"345\" y=\"60\" width=\"310\" height=\"330\"/><text x=\"365\" y=\"92\">rotation: CYCLES</text><path class=\"axis\" d=\"M390 270H610M500 350V120\"/><path class=\"v b\" d=\"M500 270L600 270\"/><path class=\"v g\" d=\"M500 270L500 150\"/><text class=\"bad\" x=\"380\" y=\"370\">residual remains 1</text><rect class=\"p\" x=\"670\" y=\"60\" width=\"310\" height=\"330\"/><text x=\"690\" y=\"92\">identity: AMBIGUOUS</text><path class=\"axis\" d=\"M715 320H940M750 350V120\"/><path class=\"v b\" d=\"M750 320L900 170\"/><text class=\"gold\" x=\"695\" y=\"370\">every direction is eigen</text><text x=\"500\" y=\"445\" text-anchor=\"middle\">a tiny residual does not imply a unique dominant eigenvector</text></svg>" }
+visual = u:power_iteration_visual()  # bind once
+visual  # render once
+# ─────────────────────────────────────────────────────────────────────────────
+# * HOW TO READ THE RESULT -- left aligns, middle rotates forever, right is valid but non-unique.
+# * THE POINT -- convergence state and spectral assumptions matter as much as the final vector.
+# ─────────────────────────────────────────────────────────────────────────────

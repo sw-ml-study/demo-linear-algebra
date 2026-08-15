@@ -19,7 +19,7 @@ context instead of treating linear algebra as detached textbook vocabulary.
 | LA12 | Elimination and rank **(runnable)** | LA11 | trace guarded row swaps/elimination and compare coefficient/augmented ranks | identifiability |
 | LA13 | Conditioning **(runnable)** | LA03, LA11-LA12 | compare perturbation amplification and separate residual from solution error | numerical reliability |
 | LA14 | Gram-Schmidt and QR **(runnable)** | LA06-LA08, LA13 | subtract projections and measure orthogonality/reconstruction separately | stable feature bases |
-| LA15 | Eigenvectors by bounded iteration | LA08, LA13 | inspect convergence and a non-convergent/ambiguous case | repeated dynamics |
+| LA15 | Eigenvectors by bounded iteration **(runnable)** | LA08, LA13 | inspect a residual trace and distinguish convergence, limit, and ambiguity | repeated dynamics |
 | LA16 | SVD and low-rank approximation | LA14-LA15 | reconstruct at several ranks and plot error | compression |
 | LA17 | Least squares | LA06, LA11, LA14 | fit an overdetermined system and inspect residual geometry | linear regression |
 | LA18 | PCA | LA16-LA17 | center, project, and explain variance captured | dimensionality reduction |
@@ -87,6 +87,14 @@ An admitted near-dependent fixture sharpens that boundary: `QR-A` is zero for
 the measured values while `Q^TQ-I` has Frobenius norm about `1.11e-3`.
 Therefore reconstruction alone does not certify an orthogonal or stable QR;
 the same fixture is rejected under the lesson's ordinary `1e-9` tolerance.
+
+LA15 traces power iteration for exactly 2x2 matrices. It reports a Rayleigh
+value, eigenpair residual, residual history, tolerance, iteration count, and a
+hard integer limit no greater than 100. The largest-magnitude vector component
+is made nonnegative to fix sign. `diag(2,1)` converges on the checked policy;
+a 90-degree rotation reaches its limit with residual one, while identity stops
+with a tiny residual but has no unique dominant direction. The lesson neither
+guarantees convergence nor computes a general ordered eigensystem.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

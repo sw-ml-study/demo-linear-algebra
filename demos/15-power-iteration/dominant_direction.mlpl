@@ -1,0 +1,18 @@
+# Lesson LA15 -- bounded power iteration exposes convergence state.
+# effects: writes one deterministic SVG preview under out/
+# loops: hard limit at most 100; fixture limit 16
+include "../../lib/factorizations.mlpl";
+include "../../lib/power_iteration_render.mlpl";
+print("WHAT THIS SHOWS -- Repeated matrix-vector multiplication and normalization can approach a dominant direction, but residual and a hard limit decide what may be claimed.")
+print("PREREQUISITES -- LA03 normalization, LA07 transformations, LA13 reliability. SHAPES -- A:[2,2], vector:[2], value/residual:scalars, history:[limit+1].")
+converged = u:power_iteration2([[2, 0], [0, 1]], [1, 1], 0.01, 16)?
+print("CONVERGENCE TRACE -- residual history has history_count valid entries; unused fixed-capacity cells are -1.")
+disp(converged.residual_history)
+rotation = u:power_iteration2([[0, -1], [1, 0]], [1, 0], 0.000001, 6)?
+identity = u:power_iteration2([[1, 0], [0, 1]], [1, 1], 0.000001, 6)?
+print("NUMERICAL CONTRACT -- stop at residual<=tolerance or the integer limit; max 100. Largest-magnitude component is nonnegative. Rotation reaches the limit with residual 1.")
+disp([[converged.iteration, converged.value, converged.residual], [rotation.iteration, rotation.value, rotation.residual], [identity.iteration, identity.value, identity.residual]])
+written = write_text("out/LA15-power-iteration.svg", u:power_iteration_svg())
+print("HOW TO READ THE RESULT -- green alignment and falling residual support the diagonal result; rotation cycles; identity stops immediately but cannot identify a unique dominant direction.")
+print("THE POINT -- iterative eigenpair candidates need residuals, limits, and spectral assumptions. BOUNDARY -- exactly 2x2 teaching code; it neither guarantees convergence nor computes a general ordered eigensystem.")
+if equal(converged.status, "converged") * equal(rotation.status, "maximum_iterations") * eq(rotation.residual, 1) * equal(identity.status, "converged") * is_ok(written) { ok({lesson: "LA15", converged: converged, rotation: rotation, identity_ambiguous: identity, artifact: "out/LA15-power-iteration.svg"}) } else { err("LA15 invariant failed") }

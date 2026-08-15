@@ -1,0 +1,19 @@
+# LA15 bounded power-iteration evidence.
+include "lib/factorizations.mlpl";
+
+@test {name: "power iteration approaches the dominant diagonal eigenpair", tags: ["LA15", "power", "convergence"]}
+def u:test_power_dominant_fixture() { "Trace a separated dominant magnitude with an explicit limit."; result = u:power_iteration2([[2, 0], [0, 1]], [1, 1], 0.01, 16)?; u:assert_eq(result.status, "converged", "status")?; u:assert_true(lt(result.iteration, 16), "did not stop early")?; u:assert_true(gt(take(result.vector, 0, 0), 0.999), "direction")?; u:assert_true(gt(result.value, 1.99) * lt(result.residual, 0.01), "eigenpair residual")?; u:assert_eq(result.history_count, result.iteration + 1, "history count") }
+
+@test {name: "power iteration sign is deterministic", tags: ["LA15", "sign"]}
+def u:test_power_sign_policy() { "Make the largest-magnitude vector component nonnegative."; result = u:power_iteration2([[2, 0], [0, 1]], [-1, -0.5], 0.01, 16)?; u:assert_true(gt(take(result.vector, 0, 0), 0), "dominant component negative")?; u:assert_eq(result.sign_policy, "largest_magnitude_component_nonnegative", "sign policy") }
+
+@test {name: "rotation reaches the iteration limit with nonzero residual", tags: ["LA15", "counterexample", "nonconvergent"]}
+def u:test_power_rotation_limit() { "Expose a cycling real-vector fixture rather than claim convergence."; result = u:power_iteration2([[0, -1], [1, 0]], [1, 0], 0.000001, 6)?; u:assert_eq(result.status, "maximum_iterations", "rotation status")?; u:assert_eq(result.iteration, 6, "rotation limit")?; u:assert_eq(result.value, 0, "Rayleigh value")?; u:assert_eq(result.residual, 1, "rotation residual") }
+
+@test {name: "identity convergence is spectrally ambiguous", tags: ["LA15", "counterexample", "ambiguous"]}
+def u:test_power_identity_ambiguity() { "Show tiny residual does not prove a unique dominant eigenvector."; result = u:power_iteration2([[1, 0], [0, 1]], [1, 1], 0.000001, 6)?; u:assert_eq(result.status, "converged", "identity status")?; u:assert_eq(result.iteration, 0, "identity should stop initially")?; u:assert_true(lt(result.residual, 0.000000000001), "identity residual")?; u:assert_true(gt(take(result.vector, 0, 0), 0) * gt(take(result.vector, 0, 1), 0), "initial direction not preserved") }
+
+@test {name: "power iteration rejects invalid shapes policies and values", tags: ["LA15", "errors"]}
+def u:test_power_contract() { "Enforce 2x2, nonzero initial vector, finite values, tolerance, and bounded integer limit."; u:assert_true(is_err(u:power_iteration2([[1]], [1], 0.01, 4)), "bad shape")?; u:assert_true(is_err(u:power_iteration2([[1, 0], [0, 1]], [0, 0], 0.01, 4)), "zero initial")?; u:assert_true(is_err(u:power_iteration2([[1, 0], [0, 1]], [1, 0], 0, 4)), "zero tolerance")?; u:assert_true(is_err(u:power_iteration2([[1, 0], [0, 1]], [1, 0], 0.01, 0)), "zero limit")?; u:assert_true(is_err(u:power_iteration2([[1, 0], [0, 1]], [1, 0], 0.01, 4.5)), "fractional limit")?; u:assert_true(is_err(u:power_iteration2([[1, 0], [0, 1 / 0]], [1, 0], 0.01, 4)), "nonfinite matrix") }
+
+u:run_registered_tests()

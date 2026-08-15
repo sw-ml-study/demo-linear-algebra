@@ -1,6 +1,6 @@
 number = 3
 slug = "la14-bounded-qr"
-status = "pending"
+status = "in-progress"
 description = "Extend LA14 to bounded QR teaching fixtures, compare independently computed r..."
 role = "production"
 context_files = []

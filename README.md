@@ -201,6 +201,9 @@ an accurate parameter vector.
 The checked three-by-two fixture exposes every subtraction that creates the
 second orthogonal direction. `Q^TQ-I` and `QR-A` are measured independently;
 dependent columns return an error at the stated tolerance.
+The QR comparison also admits a near-dependent fixture only under an explicitly
+tiny threshold: reconstruction is zero while orthogonality error is about
+`1.11e-3`, demonstrating why both diagnostics matter.
 
 - [CLI lesson](demos/14-gram-schmidt/projection_subtraction.mlpl)
 - [Standalone web lesson](demos/web/gram_schmidt.mlpl)

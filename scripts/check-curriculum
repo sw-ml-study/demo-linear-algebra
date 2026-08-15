@@ -69,4 +69,5 @@ grep -q 'Reconciled executable plan: `docs/factorizations-saga.md`' "$repo_root/
 grep -q 'four power steps' "$repo_root/docs/factorization-capability-baseline.md"
 grep -q 'B3 therefore remains a candidate' "$repo_root/docs/factorization-capability-baseline.md"
 grep -q 'teaching code, not stable general QR' "$repo_root/docs/syllabus.md"
+grep -q 'reconstruction alone does not certify' "$repo_root/docs/syllabus.md"
 echo "curriculum: fourteen lessons integrated through LA14"

@@ -8,4 +8,15 @@ def u:test_gram_schmidt_factors() { "Check factors and independent errors."; res
 def u:test_gram_schmidt_dependence() { "Make near-dependence policy explicit."; dependent = [[1, 2], [0, 0], [0, 0]]; near = [[1, 2], [0, 0.000001], [0, 0]]; u:assert_true(is_err(u:classical_gram_schmidt2(dependent, 0.000000001)), "dependent accepted")?; u:assert_true(is_err(u:classical_gram_schmidt2(near, 0.00001)), "near accepted")?; u:assert_true(is_ok(u:classical_gram_schmidt2(near, 0.0000001)), "near rejected") }
 @test {name: "Gram-Schmidt enforces shape tolerance and finite contracts", tags: ["LA14", "errors"]}
 def u:test_gram_schmidt_contract() { "Enforce maximum shape and numeric policy."; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0]], 0.000000001)), "one row")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0, 0], [0, 1, 0]], 0.000000001)), "three columns")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0], [0, 1], [0, 0], [0, 0]], 0.000000001)), "four rows")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0], [0, 1]], 0)), "zero tolerance")?; u:assert_true(is_err(u:classical_gram_schmidt2([[1, 0], [0, 1 / 0]], 0.000000001)), "infinite") }
+
+@test {name: "near-dependent QR can reconstruct while losing orthogonality", tags: ["LA14", "qr", "conditioning", "counterexample"]}
+def u:test_near_dependent_qr_quality() { "Show why reconstruction alone cannot certify a numerically reliable factorization.";
+  matrix = [[1, 1], [1, 1.000000000001], [1, 1]]; result = u:classical_gram_schmidt2(matrix, 0.000000000000001)?; independently_orthogonal = u:frobenius_norm(matmul(transpose(result.q), result.q) - [[1, 0], [0, 1]])?; independently_reconstructed = u:frobenius_norm(matmul(result.q, result.r) - matrix)?;
+  u:assert_eq(independently_reconstructed, 0, "near reconstruction")?; u:assert_true(gt(independently_orthogonal, 0.001) * lt(independently_orthogonal, 0.002), "orthogonality loss not exposed")?; u:assert_eq(result.reconstruction_error, independently_reconstructed, "reported reconstruction")?; u:assert_eq(result.orthogonality_error, independently_orthogonal, "reported orthogonality")
+}
+
+@test {name: "near-dependent acceptance follows the caller tolerance", tags: ["LA14", "qr", "tolerance"]}
+def u:test_near_dependent_qr_tolerance() { "Reject the same tiny residual under a teaching-safe threshold and accept it only when explicitly lowered.";
+  matrix = [[1, 1], [1, 1.000000000001], [1, 1]]; u:assert_true(is_err(u:classical_gram_schmidt2(matrix, 0.000000001)), "near dependence accepted at 1e-9")?; u:assert_true(is_ok(u:classical_gram_schmidt2(matrix, 0.000000000000001)), "near dependence rejected at 1e-15")
+}
 u:run_registered_tests()

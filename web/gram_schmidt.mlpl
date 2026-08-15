@@ -23,14 +23,22 @@ orthogonality_delta = matmul(transpose(q), q) - [[1, 0], [0, 1]]
 reconstruction_delta = matmul(q, r) - a
 orthogonality_error = sqrt(reduce_add(flatten(orthogonality_delta * orthogonality_delta)))
 reconstruction_error = sqrt(reduce_add(flatten(reconstruction_delta * reconstruction_delta)))
+near_q = [[0.5773502691896258, -0.40870137090696584], [0.5773502691896258, 0.8160431231482399], [0.5773502691896258, -0.40870137090696584]]  # admitted near-dependent result
+near_r = [[1.7320508075688772, 1.732050807569455], [0, 0.00000000000081656941952928]]
+near_a = [[1, 1], [1, 1.000000000001], [1, 1]]
+near_orthogonality_delta = matmul(transpose(near_q), near_q) - [[1, 0], [0, 1]]
+near_reconstruction_delta = matmul(near_q, near_r) - near_a
+near_orthogonality_error = sqrt(reduce_add(flatten(near_orthogonality_delta * near_orthogonality_delta)))
+near_reconstruction_error = sqrt(reduce_add(flatten(near_reconstruction_delta * near_reconstruction_delta)))
 disp([a1, projection, residual, q2])  # visible subtraction trace
 disp([q, r])  # fixed factors
 disp([orthogonality_error, reconstruction_error])  # independent checks
+disp([[reconstruction_error, orthogonality_error], [near_reconstruction_error, near_orthogonality_error]])  # exact versus near-dependent QR quality
 # THE VISUAL -- projection subtraction turns overlapping columns into perpendicular Q directions.
 def u:gram_schmidt_visual() { "Render the checked LA14 projection subtraction."; "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 980 470\" role=\"img\"><title>Classical Gram-Schmidt subtracts a projection</title><desc>The second column splits into a projection on the first unit column and a perpendicular residual, producing orthogonal Q columns.</desc><style>text{font-family:monospace;fill:#c0caf5}.p{fill:#24283b;stroke:#414868}.b{stroke:#7aa2f7}.pink{stroke:#f7768e}.gold{stroke:#e0af68}.g{stroke:#9ece6a}.v{fill:none;stroke-width:5}.ok{fill:#9ece6a}</style><rect width=\"980\" height=\"470\" fill=\"#1a1b26\"/><text x=\"30\" y=\"32\">a2 = projection on q1 + perpendicular residual</text><rect class=\"p\" x=\"20\" y=\"60\" width=\"580\" height=\"330\"/><path class=\"v b\" d=\"M100 330L350 330\"/><path class=\"v pink\" d=\"M100 330L350 100\"/><path class=\"v gold\" d=\"M100 330L350 330\"/><path class=\"v g\" d=\"M350 330L350 100\"/><text x=\"210\" y=\"360\">q1 / projection</text><text x=\"360\" y=\"220\">residual to q2</text><rect class=\"p\" x=\"630\" y=\"60\" width=\"330\" height=\"330\"/><text x=\"655\" y=\"110\">Q orthogonal columns</text><text x=\"655\" y=\"155\">R upper triangular</text><text class=\"ok\" x=\"655\" y=\"225\">||Q^TQ-I||F = 0</text><text class=\"ok\" x=\"655\" y=\"270\">||QR-A||F = 0</text><text x=\"655\" y=\"335\">max CLI shape [3,2]</text><text x=\"490\" y=\"445\" text-anchor=\"middle\">dependent residual <= tolerance returns Err; bounded teaching code</text></svg>" }
 visual = u:gram_schmidt_visual()  # bind once
 visual  # render once
 # ─────────────────────────────────────────────────────────────────────────────
 # * HOW TO READ THE RESULT -- gold is overlap removed from pink a2; green is the new perpendicular direction.
-# * THE POINT -- orthogonal bases separate coordinates; Q^TQ and QR must be checked independently.
+# * THE POINT -- orthogonal bases separate coordinates; exact reconstruction can coexist with degraded orthogonality, so Q^TQ and QR must be checked independently.
 # ─────────────────────────────────────────────────────────────────────────────

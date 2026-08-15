@@ -14,7 +14,12 @@ disp(factorization.q)
 disp(factorization.r)
 print("NUMERICAL CONTRACT -- positive R diagonal fixes sign; dependence is residual norm <=1e-9; independent Q^TQ-I and QR-A Frobenius errors are zero on this exact fixture.")
 dependent_rejected = is_err(u:classical_gram_schmidt2([[1, 2], [0, 0], [0, 0]], tolerance))
+near_matrix = [[1, 1], [1, 1.000000000001], [1, 1]]
+near_rejected = is_err(u:classical_gram_schmidt2(near_matrix, tolerance))
+near_exposed = u:classical_gram_schmidt2(near_matrix, 0.000000000000001)?
+print("QR QUALITY COMPARISON -- the exact fixture has both errors zero. The admitted near-dependent fixture reconstructs exactly here but loses orthogonality by about 1.11e-3; reconstruction alone is insufficient.")
+disp([[factorization.reconstruction_error, factorization.orthogonality_error], [near_exposed.reconstruction_error, near_exposed.orthogonality_error]])
 written = write_text("out/LA14-gram-schmidt.svg", u:gram_schmidt_svg())
 print("HOW TO READ THE RESULT -- Blue q1 plus the green perpendicular residual reconstructs pink a2; right panels separately certify orthogonality and reconstruction.")
 print("THE POINT -- Orthogonal coordinates avoid overlapping directions. BOUNDARY -- exactly two columns and at most three rows; classical Gram-Schmidt teaching code is not stable general QR.")
-if eq(factorization.orthogonality_error, 0) * eq(factorization.reconstruction_error, 0) * dependent_rejected * is_ok(written) { ok({lesson: "LA14", q: factorization.q, r: factorization.r, artifact: "out/LA14-gram-schmidt.svg"}) } else { err("LA14 invariant failed") }
+if eq(factorization.orthogonality_error, 0) * eq(factorization.reconstruction_error, 0) * dependent_rejected * near_rejected * eq(near_exposed.reconstruction_error, 0) * gt(near_exposed.orthogonality_error, 0.001) * is_ok(written) { ok({lesson: "LA14", q: factorization.q, r: factorization.r, near_orthogonality_error: near_exposed.orthogonality_error, artifact: "out/LA14-gram-schmidt.svg"}) } else { err("LA14 invariant failed") }

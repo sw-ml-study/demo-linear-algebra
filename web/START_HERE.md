@@ -83,6 +83,10 @@ and `q2`; positive diagonal entries of `R` fix the sign convention. Independent
 Frobenius errors check `Q^TQ-I` and `QR-A`. Residual norm at or below the
 caller's positive tolerance returns a dependent-column error. This bounded
 derivation is teaching code, not stable general QR.
+An admitted near-dependent fixture sharpens that boundary: `QR-A` is zero for
+the measured values while `Q^TQ-I` has Frobenius norm about `1.11e-3`.
+Therefore reconstruction alone does not certify an orthogonal or stable QR;
+the same fixture is rejected under the lesson's ordinary `1e-9` tolerance.
 
 Suggested browser route: LA01 → LA02 → LA03 → LA06 → LA07 → LA08 → LA17 →
 LA18 → LA19 → LA20. The remaining leaves deepen definitions, failure modes,

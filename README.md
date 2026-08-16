@@ -35,6 +35,9 @@ blocking probe from one audited table.
 The [accessibility and static-fallback audit](docs/accessibility-audit.md)
 checks all 17 standalone web lessons and previews on every full gate.
 
+The [terminology and numerical-claims audit](docs/terminology-and-numerical-claims-audit.md)
+pins axis conventions, tolerance language, diagnostics, and lesson non-claims.
+
 Once the foundation harness is available:
 
 ```sh

@@ -25,5 +25,6 @@ audit:
     ./scripts/check-ml-payoffs
     ./scripts/check-lesson-index
     ./scripts/check-accessibility
+    ./scripts/check-claims
 
 check: probes demos tests web audit

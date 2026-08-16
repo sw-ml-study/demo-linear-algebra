@@ -1,0 +1,31 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+require() { pattern=$1; file=$2; grep -Fq "$pattern" "$repo_root/$file" || { echo "claim drift: '$pattern' missing from $file" >&2; exit 1; }; }
+
+# Axis conventions: transformation lessons use column-vector W*x; ML payoffs use row-batch XW.
+require 'LA07 uses the `[output,input]` convention' docs/syllabus.md
+require 'W:[input=4,output=3]' demos/19-lora/low_rank_update.mlpl
+require 'Q:[query=2,feature=2]' demos/20-attention/single_head.mlpl
+require 'scores: "query,key"' lib/ml_payoffs.mlpl
+require 'output: "query,value"' lib/ml_payoffs.mlpl
+
+# Tolerances and diagnostics remain qualified rather than universal claims.
+require 'inclusive absolute tolerance 1e-9' demos/03-norm-distance/normalize.mlpl
+require '|det|<=1e-9' demos/11-linear-systems/intersections.mlpl
+require 'reconstruction alone does not certify' docs/syllabus.md
+require 'does not certify accurate parameters' docs/syllabus.md
+require 'hard integer limit no greater than 100' docs/syllabus.md
+require 'each row sum exactly one' demos/20-attention/single_head.mlpl
+
+# Non-claims and blocker scope must agree across teaching and upstream documents.
+require 'no training, optimizer, framework compatibility, compression quality, or model improvement is claimed' demos/19-lora/low_rank_update.mlpl
+require 'exactly one unbatched head' demos/20-attention/single_head.mlpl
+require 'B1 — batched and higher-rank matrix multiplication (verified blocker)' docs/sw-mlpl-blockers.md
+require 'B2 — stable general linear solve with diagnostics (verified blocker)' docs/sw-mlpl-blockers.md
+require 'B3 — stable ordered SVD for low-rank reconstruction (verified blocker)' docs/sw-mlpl-blockers.md
+require 'General QR and eigen remain outside' docs/factorization-acceptance.md
+require 'Normal equations are not used as a workaround' docs/syllabus.md
+require 'Hand-authored axes would not be computed PCA' docs/syllabus.md
+
+echo "claims: axes, tolerances, diagnostics, non-claims, and blocker scope aligned"

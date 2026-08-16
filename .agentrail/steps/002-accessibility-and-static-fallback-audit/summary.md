@@ -1,0 +1,1 @@
+Audited all 17 runnable web lessons and previews for accessible SVG roles, titles, descriptions, narration order, single static visual definitions, effect-free sources, authored/generated parity, and reduced-motion requirements. Documented the browser-dialect boundary. Full gate passed with 23 probes, 18 CLI programs, and 94 tests.

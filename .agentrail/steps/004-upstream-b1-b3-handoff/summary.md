@@ -1,0 +1,1 @@
+Published an implementation-ready B1-B3 handoff with exact reproducers, observed diagnostics, required semantics, acceptance fixtures, affected leaves, and downstream unlock actions. Added a full-gate audit tying the handoff to probe files, expected failures, and payoff catalog states. Full gate passed with 23 probes, 18 CLI programs, and 94 tests.

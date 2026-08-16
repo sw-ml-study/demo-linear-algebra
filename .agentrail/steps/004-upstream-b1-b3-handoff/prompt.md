@@ -1,0 +1,1 @@
+Produce an upstream handoff for B1 through B3 with minimal reproducers, required semantics, acceptance fixtures, affected leaves, and exact downstream unlock actions.

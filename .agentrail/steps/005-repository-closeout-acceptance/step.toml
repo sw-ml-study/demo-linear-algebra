@@ -1,0 +1,8 @@
+number = 5
+slug = "repository-closeout-acceptance"
+status = "pending"
+description = "Run the complete gate and Agentrail audit, publish repository acceptance, and..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T17:11:16"
+commits = []

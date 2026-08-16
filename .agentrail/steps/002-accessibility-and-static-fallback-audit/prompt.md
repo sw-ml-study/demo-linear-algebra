@@ -1,0 +1,1 @@
+Audit all web lessons and previews for accessible names, descriptions, static fallback behavior, readable ordering, and authored/generated parity.

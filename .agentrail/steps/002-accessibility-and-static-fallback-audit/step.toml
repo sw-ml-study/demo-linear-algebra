@@ -1,0 +1,8 @@
+number = 2
+slug = "accessibility-and-static-fallback-audit"
+status = "pending"
+description = "Audit all web lessons and previews for accessible names, descriptions, static..."
+role = "validation"
+context_files = []
+created_at = "2026-08-15T17:11:16"
+commits = []

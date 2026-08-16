@@ -1,0 +1,1 @@
+Audit terminology and numerical claims across CLI, web, README, syllabus, tests, and blocker decisions; reconcile shape conventions and tolerance language without weakening lesson boundaries.

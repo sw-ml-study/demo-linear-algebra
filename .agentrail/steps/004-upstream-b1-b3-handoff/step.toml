@@ -1,0 +1,8 @@
+number = 4
+slug = "upstream-b1-b3-handoff"
+status = "pending"
+description = "Produce an upstream handoff for B1 through B3 with minimal reproducers, requi..."
+role = "production"
+context_files = []
+created_at = "2026-08-15T17:11:16"
+commits = []

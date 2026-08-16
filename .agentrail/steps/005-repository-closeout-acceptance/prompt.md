@@ -1,0 +1,1 @@
+Run the complete gate and Agentrail audit, publish repository acceptance, and leave capability-triggered reopening instructions rather than an open-ended feature queue.

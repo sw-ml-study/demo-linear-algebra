@@ -1,0 +1,1 @@
+Build one generated capability and lesson index connecting every LA ID, status, prerequisite, CLI, web, test, preview evidence, and blocking probe.

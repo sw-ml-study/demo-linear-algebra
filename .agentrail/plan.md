@@ -1,45 +1,31 @@
-# Reconciled next saga: linear algebra for ML
+# Reconciled next saga: curriculum and capability closeout
 
-Purpose: connect the accepted curriculum to regression, PCA, LoRA, and
-attention without bypassing verified B1, B2, or B3.
-
-Capability gating overrides numeric lesson order. Rank-2 `matmul`, transpose,
-reductions, explicit bias rows, bounded normalization, and fixed-shape records
-support LoRA arithmetic and a single-head attention derivation. Stable general
-least squares is blocked by B2, stable ordered SVD/PCA by B3, and batched or
-multi-head matmul by B1. The saga must keep constrained leaves visible while
-delivering the supported payoff first.
+Purpose: audit the bounded curriculum as a finished teaching repository while
+preserving executable B1-B3 handoff points. This saga adds no speculative
+lesson or numerical-library implementation.
 
 ## Proposed steps
 
-1. Probe low-rank `A@B` updates, parameter-count arithmetic, stable softmax at
-   extreme logits, row-wise attention normalization, and the exact rank-2 to
-   higher-rank boundary against the configured runtime.
-2. Implement LA19 bounded LoRA: compare `W` with `W+A@B`, expose shapes and
-   parameter counts, verify output deltas, and visualize the low-rank update.
-3. Implement the capability-supported LA20 single-head attention path with
-   visible `QK^T/sqrt(d)`, stable row weights, and value mixing; keep batched
-   and multi-head execution constrained by B1.
-4. Publish LA17 as constrained behind B2 unless a stable general least-squares
-   path with diagnostics has appeared; do not use normal equations or the 2x2
-   teaching solver as production regression.
-5. Gate LA18 PCA on B3. Implement only if stable ordered components,
-   degeneracy, centering, explained variance, and reconstruction can be
-   represented honestly; otherwise publish the constrained leaf.
-6. Integrate runnable and constrained LA17-LA20 leaves, cross-link every ML
-   payoff to prerequisite lessons, and test blocker probes for capability
-   changes that require reconciliation.
-7. Run and audit the complete gate, publish ML-payoff acceptance, and reconcile
-   the final curriculum/capability closeout without claiming blocked leaves ran.
+1. Build one generated capability/lesson index connecting every LA ID, status,
+   prerequisite, CLI/web/test/preview evidence, and blocking probe.
+2. Audit all web lessons and previews for accessible names, descriptions,
+   static fallback behavior, readable ordering, and authored/generated parity.
+3. Audit terminology and numerical claims across CLI, web, README, syllabus,
+   tests, and blocker decisions; reconcile shape conventions and tolerance
+   language without weakening lesson boundaries.
+4. Produce an upstream handoff for B1-B3 with minimal reproducers, required
+   semantics, acceptance fixtures, affected leaves, and exact unlock actions.
+5. Run the complete gate and Agentrail audit, publish repository acceptance,
+   and leave capability-triggered reopening instructions rather than an open-
+   ended feature queue.
 
 ## Acceptance
 
-- Every runnable payoff exposes semantic shapes, deterministic fixtures,
-  independent golden checks, and a visualization where relationships benefit.
-- LoRA distinguishes factor rank from matrix rank and checks parameter savings
-  plus output effect; it does not claim training or quality improvement.
-- Attention derives stable weights and verifies each row sums to one; B1 stays
-  explicit wherever batch/head axes are required.
-- LA17 and LA18 become runnable only when B2/B3 acceptance contracts are met;
-  otherwise their constrained status and downstream effects remain documented.
-- No compatibility implementation hides a verified upstream blocker.
+- Every runnable lesson has discoverable CLI, web, test, and preview evidence.
+- Every constrained leaf names one verified blocker and has no fake runnable
+  artifact.
+- Accessibility and static behavior are checked rather than asserted only in
+  prose.
+- Numerical terminology, axes, tolerances, and non-claims agree across media.
+- B1-B3 handoff contracts are sufficient for upstream implementation and for
+  deterministic downstream reconciliation when a probe changes behavior.

@@ -1,0 +1,1 @@
+Added executable drift checks and a report aligning transformation and row-batch axes, attention axes, tolerance policies, residual and conditioning distinctions, iterative limits, non-claims, and narrow B1-B3 scope across teaching and blocker documents. Full gate passed with 23 probes, 18 CLI programs, and 94 tests.

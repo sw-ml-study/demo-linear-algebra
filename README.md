@@ -28,6 +28,10 @@ The ML-payoff program is accepted in
 [its acceptance report](docs/ml-payoff-acceptance.md). The remaining work is
 the bounded [curriculum and capability closeout](docs/curriculum-closeout-saga.md).
 
+Use the generated [capability and lesson index](docs/capability-lesson-index.md)
+to find every lesson's prerequisites, runnable artifacts, tests, previews, and
+blocking probe from one audited table.
+
 Once the foundation harness is available:
 
 ```sh

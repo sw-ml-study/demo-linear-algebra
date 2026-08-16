@@ -15,10 +15,14 @@ demos:
 web:
     ./scripts/build-web-demos
 
+index:
+    ./scripts/build-lesson-index
+
 audit:
     ./scripts/check-structure
     ./scripts/check-assets
     ./scripts/check-curriculum
     ./scripts/check-ml-payoffs
+    ./scripts/check-lesson-index
 
 check: probes demos tests web audit

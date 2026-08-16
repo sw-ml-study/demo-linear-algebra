@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+temporary=$(mktemp "${TMPDIR:-/tmp}/lesson-index-check.XXXXXX")
+trap 'rm -f "$temporary"' EXIT
+"$repo_root/scripts/build-lesson-index" "$temporary" >/dev/null
+cmp "$temporary" "$repo_root/docs/capability-lesson-index.md" || { echo "generated lesson index is stale" >&2; exit 1; }
+tab=$(printf '\t')
+count=0
+while IFS="$tab" read -r id prerequisites test preview blocker; do
+  [ "$id" = id ] && continue
+  count=$((count + 1))
+  lesson=$(awk -F '\t' -v id="$id" '$1==id { print $0 }' "$repo_root/catalog/lessons.tsv")
+  [ -n "$lesson" ] || { echo "evidence without lesson: $id" >&2; exit 1; }
+  status=$(printf '%s\n' "$lesson" | awk -F '\t' '{print $3}')
+  cli=$(printf '%s\n' "$lesson" | awk -F '\t' '{print $4}')
+  web=$(printf '%s\n' "$lesson" | awk -F '\t' '{print $5}')
+  if [ "$status" = runnable ]; then
+    for path in "$cli" "$web" "$test" "$preview"; do [ "$path" != - ] && [ -f "$repo_root/$path" ] || { echo "$id missing runnable evidence: $path" >&2; exit 1; }; done
+  else
+    [ "$cli" = - ] && [ "$web" = - ] && [ "$test" = - ] && [ "$preview" = - ] && [ "$blocker" != - ] || { echo "$id constrained evidence is inconsistent" >&2; exit 1; }
+  fi
+done < "$repo_root/catalog/lesson-evidence.tsv"
+[ "$count" -eq 20 ] || { echo "expected 20 indexed lessons, found $count" >&2; exit 1; }
+echo "lesson index: 20 lessons current and evidence-complete"

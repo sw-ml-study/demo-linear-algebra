@@ -1,0 +1,21 @@
+id	prerequisites	test	preview	blocker_probe
+LA01	scalar arithmetic	tests/test_vectors.mlpl	assets/previews/LA01-vector-laws.svg	-
+LA02	LA01	tests/test_dot_product.mlpl	assets/previews/LA02-dot-alignment.svg	-
+LA03	LA02; square root	tests/test_norm_distance.mlpl	assets/previews/LA03-norm-distance.svg	-
+LA04	LA03	tests/test_cosine_similarity.mlpl	assets/previews/LA04-cosine-retrieval.svg	-
+LA05	LA01	tests/test_span_projection.mlpl	assets/previews/LA05-span.svg	-
+LA06	LA02; LA03	tests/test_span_projection.mlpl	assets/previews/LA06-projection.svg	-
+LA07	LA01; LA05	tests/test_matrix_transform.mlpl	assets/previews/LA07-matrix-basis.svg	-
+LA08	LA02; LA07	tests/test_matrix_multiplication.mlpl	assets/previews/LA08-row-column.svg	-
+LA09	LA08	tests/test_composition_transpose.mlpl	assets/previews/LA09-composition.svg	-
+LA10	LA07	tests/test_determinant2.mlpl	assets/previews/LA10-signed-area.svg	-
+LA11	LA08; LA10	tests/test_systems2.mlpl	assets/previews/LA11-linear-systems.svg	-
+LA12	LA11	tests/test_elimination2.mlpl	assets/previews/LA12-elimination.svg	-
+LA13	LA03; LA11; LA12	tests/test_conditioning2.mlpl	assets/previews/LA13-conditioning.svg	-
+LA14	LA06; LA07; LA08; LA13	tests/test_gram_schmidt2.mlpl	assets/previews/LA14-gram-schmidt.svg	-
+LA15	LA08; LA13	tests/test_power_iteration2.mlpl	assets/previews/LA15-power-iteration.svg	-
+LA16	LA14; LA15	-	-	svd-decomposition
+LA17	LA06; LA11; LA14	-	-	stable-general-solve
+LA18	LA16; LA17	-	-	svd-decomposition
+LA19	LA08; LA09; LA16 motivation only	tests/test_lora.mlpl	assets/previews/LA19-lora.svg	-
+LA20	LA02; LA03; LA08; LA09	tests/test_attention.mlpl	assets/previews/LA20-attention.svg	higher-rank-matmul

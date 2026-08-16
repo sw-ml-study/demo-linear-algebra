@@ -26,5 +26,6 @@ audit:
     ./scripts/check-lesson-index
     ./scripts/check-accessibility
     ./scripts/check-claims
+    ./scripts/check-upstream-handoff
 
 check: probes demos tests web audit

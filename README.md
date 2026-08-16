@@ -38,6 +38,9 @@ checks all 17 standalone web lessons and previews on every full gate.
 The [terminology and numerical-claims audit](docs/terminology-and-numerical-claims-audit.md)
 pins axis conventions, tolerance language, diagnostics, and lesson non-claims.
 
+The consolidated [B1-B3 upstream handoff](docs/upstream-b1-b3-handoff.md)
+provides exact reproducers, semantics, fixtures, affected leaves, and unlock steps.
+
 Once the foundation harness is available:
 
 ```sh

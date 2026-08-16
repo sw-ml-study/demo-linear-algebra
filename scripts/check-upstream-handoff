@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+handoff="$repo_root/docs/upstream-b1-b3-handoff.md"
+for section in 'B1 — higher-rank and batched matrix multiplication' 'B2 — stable general solve with diagnostics' 'B3 — stable ordered SVD' 'Minimal reproducer' 'Required semantics' 'Acceptance fixtures' 'Affected scope' 'Unlock actions' 'Reopening protocol'; do grep -q "$section" "$handoff" || { echo "upstream handoff missing: $section" >&2; exit 1; }; done
+grep -q '^higher-rank-matmul.*error.*index has 3 components but array has rank 2' "$repo_root/catalog/probes.tsv"
+grep -q '^stable-general-solve.*error.*unknown function: solve' "$repo_root/catalog/probes.tsv"
+grep -q '^svd-decomposition.*error.*unknown function: svd' "$repo_root/catalog/probes.tsv"
+for probe in higher-rank-matmul stable-general-solve svd-decomposition; do [ -f "$repo_root/probes/$probe.mlpl" ] || { echo "handoff probe missing: $probe" >&2; exit 1; }; grep -q "$probe" "$handoff"; done
+grep -q 'LA17.*blocked.*stable-general-solve' "$repo_root/catalog/ml-payoffs.tsv"
+grep -q 'LA18.*blocked.*svd-decomposition' "$repo_root/catalog/ml-payoffs.tsv"
+grep -q 'LA20.*runnable.*higher-rank-matmul' "$repo_root/catalog/ml-payoffs.tsv"
+echo "upstream handoff: B1-B3 reproducers, contracts, fixtures, and unlocks aligned"

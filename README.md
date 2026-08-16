@@ -32,6 +32,9 @@ Use the generated [capability and lesson index](docs/capability-lesson-index.md)
 to find every lesson's prerequisites, runnable artifacts, tests, previews, and
 blocking probe from one audited table.
 
+The [accessibility and static-fallback audit](docs/accessibility-audit.md)
+checks all 17 standalone web lessons and previews on every full gate.
+
 Once the foundation harness is available:
 
 ```sh

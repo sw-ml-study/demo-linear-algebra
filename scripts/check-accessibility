@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+tab=$(printf '\t')
+count=0
+while IFS="$tab" read -r id title status cli web; do
+  [ "$id" = id ] && continue
+  [ "$status" = runnable ] || continue
+  count=$((count + 1))
+  source="$repo_root/$web"
+  generated="$repo_root/web/$(basename "$web")"
+  preview=$(awk -F '\t' -v id="$id" '$1==id {print $4}' "$repo_root/catalog/lesson-evidence.tsv")
+  [ -f "$source" ] && [ -f "$generated" ] && [ -f "$repo_root/$preview" ]
+  cmp "$source" "$generated"
+  grep -q 'role=\\"img\\"' "$source"
+  grep -q '<title>' "$source"
+  grep -q '<desc>' "$source"
+  [ "$(grep -c 'visual = u:' "$source")" -eq 1 ]
+  prolog=$(grep -n 'WHAT THIS SHOWS' "$source" | head -1 | cut -d: -f1)
+  binding=$(grep -n 'visual = u:' "$source" | head -1 | cut -d: -f1)
+  epilog=$(grep -n 'HOW TO READ THE RESULT' "$source" | head -1 | cut -d: -f1)
+  [ "$prolog" -lt "$binding" ] && [ "$binding" -lt "$epilog" ] || { echo "$id narration order is not prolog, visual, epilog" >&2; exit 1; }
+  if grep -qE '<animate|@keyframes' "$source"; then grep -q 'prefers-reduced-motion' "$source" || { echo "$id animation lacks reduced-motion fallback" >&2; exit 1; }; fi
+  if grep -qE 'include "|write_text\(|read_text\(' "$source"; then echo "$id web lesson has external effects" >&2; exit 1; fi
+  grep -q 'role="img"' "$repo_root/$preview"
+  grep -q '<title>' "$repo_root/$preview"
+  grep -q '<desc>' "$repo_root/$preview"
+  if grep -qE '<animate|@keyframes' "$repo_root/$preview"; then grep -q 'prefers-reduced-motion' "$repo_root/$preview" || { echo "$id preview lacks reduced-motion fallback" >&2; exit 1; }; fi
+  [ "$(grep -o '<svg' "$source" | wc -l | tr -d ' ')" -eq 1 ] || { echo "$id does not define exactly one static SVG" >&2; exit 1; }
+done < "$repo_root/catalog/lessons.tsv"
+[ "$count" -eq 17 ] || { echo "expected 17 runnable web lessons, found $count" >&2; exit 1; }
+echo "accessibility: 17 web lessons and previews named, ordered, static, and synchronized"

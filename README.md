@@ -41,6 +41,10 @@ pins axis conventions, tolerance language, diagnostics, and lesson non-claims.
 The consolidated [B1-B3 upstream handoff](docs/upstream-b1-b3-handoff.md)
 provides exact reproducers, semantics, fixtures, affected leaves, and unlock steps.
 
+The repository is closed out in the [final acceptance report](docs/repository-acceptance.md).
+No feature saga is queued; executable capability changes trigger narrowly
+scoped reopening through the documented protocol.
+
 Once the foundation harness is available:
 
 ```sh

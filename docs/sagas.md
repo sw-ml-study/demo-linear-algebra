@@ -78,7 +78,7 @@ Acceptance report: `docs/ml-payoff-acceptance.md`. LA19 and bounded LA20 are
 runnable; LA17 remains constrained by B2, while LA16 and LA18 remain
 constrained by SVD-specific B3. B1 constrains batched/multi-head extensions.
 
-## Next — `curriculum-and-capability-closeout`
+## Completed — `curriculum-and-capability-closeout`
 
 Audit the complete learning path, generated artifacts, accessibility/static
 fallbacks, terminology, numerical claims, and upstream contracts. Completion
@@ -86,3 +86,7 @@ means the planned bounded curriculum is integrated; it does not mean linear
 algebra or sw-MLPL development is finished.
 
 Reconciled executable plan: `docs/curriculum-closeout-saga.md`.
+
+Acceptance report: `docs/repository-acceptance.md`. No saga is queued. Future
+work begins only when an executable B1-B3 probe or supported runtime/browser
+contract changes, using the targeted reopening protocol in the report.

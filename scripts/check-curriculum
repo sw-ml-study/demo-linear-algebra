@@ -93,4 +93,8 @@ grep -q 'Hand-authored axes would not be computed PCA' "$repo_root/docs/syllabus
 grep -q '94 native mlplunit tests' "$repo_root/docs/ml-payoff-acceptance.md"
 grep -q 'Completed — `linear-algebra-for-ml`' "$repo_root/docs/sagas.md"
 grep -q 'Reconciled executable plan: `docs/curriculum-closeout-saga.md`' "$repo_root/docs/sagas.md"
+grep -q 'Completed — `curriculum-and-capability-closeout`' "$repo_root/docs/sagas.md"
+grep -q 'No saga is queued' "$repo_root/docs/sagas.md"
+grep -q '94 native mlplunit tests' "$repo_root/docs/repository-acceptance.md"
+grep -q 'Capability-triggered reopening' "$repo_root/docs/repository-acceptance.md"
 echo "curriculum: seventeen runnable lessons through LA20 with constrained gaps explicit"

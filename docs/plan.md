@@ -1,7 +1,7 @@
 # Implementation plan: linear algebra you can see and use
 
-Status: **LA01-LA15 and LA19-LA20 are runnable; LA16 and LA18 are constrained
-by B3 and LA17 by B2; the ML-payoff saga is accepted and closeout is next**.
+Status: **accepted and closed out: LA01-LA15 and LA19-LA20 are runnable; LA16
+and LA18 are constrained by B3 and LA17 by B2; reopening is capability-triggered**.
 
 This plan turns the brief in `docs/research.txt` into executable teaching
 material and a focused sw-MLPL forcing function. The central question is:
